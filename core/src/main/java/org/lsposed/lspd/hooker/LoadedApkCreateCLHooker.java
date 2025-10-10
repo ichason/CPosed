@@ -48,7 +48,7 @@ import oc.os.lz.secure.XC_MethodReplacement;
 import oc.os.lz.secure.CBridge;
 import oc.os.lz.secure.CHelpers;
 import oc.os.lz.secure.CInit;
-import androidc.os.content.secure.callbacks.XC_LoadPackage;
+import oc.os.lz.secure.callbacks.XC_LoadPackage;
 import io.github.libxposed.api.XposedInterface;
 import io.github.libxposed.api.XposedModuleInterface;
 import io.github.libxposed.api.annotations.AfterInvocation;
@@ -98,7 +98,7 @@ public class LoadedApkCreateCLHooker implements XposedInterface.Hooker {
                 packageName = "system";
             }
 
-            Object mAppDir =CHelpers.getObjectField(loadedApk, "mAppDir");
+            Object mAppDir = CHelpers.getObjectField(loadedApk, "mAppDir");
             ClassLoader classLoader = (ClassLoader) CHelpers.getObjectField(loadedApk, "mClassLoader");
             Hookers.logD("LoadedApk#createClassLoader ends: " + mAppDir + " -> " + classLoader);
 

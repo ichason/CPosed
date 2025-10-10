@@ -174,7 +174,7 @@ namespace android {
             return {nullptr, 0u};
         }
 
-        static bool setup(const clant::HookHandler &handler) {
+        static bool setup(const splant::HookHandler &handler) {
             RETRIEVE_MEM_FUNC_SYMBOL(stringAt, LP_SELECT("_ZNK7android13ResStringPool8stringAtEjPj", "_ZNK7android13ResStringPool8stringAtEmPm"));
             RETRIEVE_MEM_FUNC_SYMBOL(stringAtS, LP_SELECT("_ZNK7android13ResStringPool8stringAtEj", "_ZNK7android13ResStringPool8stringAtEm"));
             return !stringAtSym || !stringAtSSym;

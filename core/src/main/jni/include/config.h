@@ -31,7 +31,7 @@ namespace lspd {
 
 //#define LOG_DISABLED
 //#define DEBUG
-    using clant::operator""_tstr;
+    using splant::operator""_tstr;
 
     inline bool constexpr Is64() {
 #if defined(__LP64__)

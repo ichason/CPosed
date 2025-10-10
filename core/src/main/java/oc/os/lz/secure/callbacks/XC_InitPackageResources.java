@@ -24,7 +24,7 @@ import android.content.res.XResources;
 
 import java.util.concurrent.CopyOnWriteArraySet;
 
-import aoc.os.lz.secure.ICHookInitPackageResources;
+import oc.os.lz.secure.ICHookInitPackageResources;
 
 /**
  * This class is only used for internal purposes, except for the {@link InitPackageResourcesParam}

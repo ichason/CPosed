@@ -105,6 +105,7 @@ public class LSPosedContext implements XposedInterface {
             var ctx = new LSPosedContext(module.packageName, module.applicationInfo, module.service);
             for (var entry : module.file.moduleClassNames) {
                 var moduleClass = mcl.loadClass(entry);
+                // Log.d(TAG, "  Loading class " + moduleClass);
                 if (!XposedModule.class.isAssignableFrom(moduleClass)) {
                     Log.e(TAG, "    This class doesn't implement any sub-interface of XposedModule, skipping it");
                     continue;

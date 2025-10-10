@@ -41,8 +41,8 @@ public class XModuleResources extends Resources {
 	 * Creates a new instance.
 	 *
 	 * <p>This is usually called with {@link StartupParam#modulePath} from
-	 * {@link #initZygote} and {@link InitPackageResourcesParam#res} from
-	 * {@link #handleInitPackageResources} (or {@code null} for
+	 * {@link ICHookZygoteInit#initZygote} and {@link InitPackageResourcesParam#res} from
+	 * {@link ICHookInitPackageResources#handleInitPackageResources} (or {@code null} for
 	 * system-wide replacements).
 	 *
 	 * @param path The path to the APK from which the resources should be loaded.

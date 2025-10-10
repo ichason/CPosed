@@ -3,7 +3,7 @@ package oc.os.lz.secure;
 import android.content.res.XResources;
 
 import oc.os.lz.secure.callbacks.XC_InitPackageResources;
-import aoc.os.lz.secure.callbacks.XC_InitPackageResources.InitPackageResourcesParam;
+import oc.os.lz.secure.callbacks.XC_InitPackageResources.InitPackageResourcesParam;
 
 /**
  * Get notified when the resources for an app are initialized.

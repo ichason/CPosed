@@ -26,7 +26,7 @@
 #include <mutex>
 #include <set>
 
-using namespace clant;
+using namespace splant;
 
 namespace {
 struct ModuleCallback {
@@ -106,7 +106,7 @@ LSP_DEF_NATIVE_METHOD(jboolean, HookBridge, hookMethod, jboolean useModernApi, j
                                                                                "([Ljava/lang/Object;)Ljava/lang/Object;"),
                                                       false);
         auto hooker_object = env->NewObject(hooker, init, hookMethod);
-        hook_item->SetBackup(clant::Hook(env, hookMethod, hooker_object, callback_method));
+        hook_item->SetBackup(splant::Hook(env, hookMethod, hooker_object, callback_method));
         env->DeleteLocalRef(hooker_object);
     }
     jobject backup = hook_item->GetBackup();
@@ -164,7 +164,7 @@ LSP_DEF_NATIVE_METHOD(jboolean, HookBridge, unhookMethod, jboolean useModernApi,
 
 LSP_DEF_NATIVE_METHOD(jboolean, HookBridge, deoptimizeMethod, jobject hookMethod,
                       jclass hooker, jint priority, jobject callback) {
-    return clant::Deoptimize(env, hookMethod);
+    return splant::Deoptimize(env, hookMethod);
 }
 
 LSP_DEF_NATIVE_METHOD(jobject, HookBridge, invokeOriginalMethod, jobject hookMethod,
@@ -291,7 +291,7 @@ LSP_DEF_NATIVE_METHOD(jboolean, HookBridge, instanceOf, jobject object, jclass e
 }
 
 LSP_DEF_NATIVE_METHOD(jboolean, HookBridge, setTrusted, jobject cookie) {
-    return clant::MakeDexFileTrusted(env, cookie);
+    return splant::MakeDexFileTrusted(env, cookie);
 }
 
 LSP_DEF_NATIVE_METHOD(jobjectArray, HookBridge, callbackSnapshot, jclass callback_class, jobject method) {
@@ -323,7 +323,7 @@ LSP_DEF_NATIVE_METHOD(jobjectArray, HookBridge, callbackSnapshot, jclass callbac
 }
 
 LSP_DEF_NATIVE_METHOD(void, HookBridge, restore) {
-    LOGE(" u know, this native method called ");
+    LOGE("called in native HookBridge restore");
     splant::Restore();
 }
 

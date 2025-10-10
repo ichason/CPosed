@@ -220,14 +220,14 @@ void Logcat::ProcessBuffer(struct log_msg *buf) {
 
     std::string_view tag(entry.tag, entry.tagLen);
     bool shortcut = false;
-    if (tag == "CPosed-Bridge"sv || tag == "XSharedPreferences"sv || tag == "LSPosedContext") [[unlikely]] {
+    if (tag == "SPosed-Bridge"sv || tag == "XSharedPreferences"sv || tag == "LSPosedContext") [[unlikely]] {
         modules_print_count_ += PrintLogLine(entry, modules_file_.get());
         shortcut = true;
     }
     if (verbose_ && (shortcut || buf->id() == log_id::LOG_ID_CRASH ||
                      entry.pid == my_pid_ || tag == "Magisk"sv || tag == "Dobby"sv ||
                      tag.starts_with("Riru"sv) || tag.starts_with("zygisk"sv) ||
-                     tag == "LSPlant"sv || tag.starts_with("CPosed"sv))) [[unlikely]] {
+                     tag == "LSPlant"sv || tag.starts_with("SPosed"sv))) [[unlikely]] {
         verbose_print_count_ += PrintLogLine(entry, verbose_file_.get());
     }
     if (entry.pid == my_pid_ && tag == "LSPosedLogcat"sv) [[unlikely]] {

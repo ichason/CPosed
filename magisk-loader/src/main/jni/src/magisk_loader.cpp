@@ -31,7 +31,7 @@
 #include "symbol_cache.h"
 #include "utils/jni_helper.hpp"
 
-using namespace clant;
+using namespace splant;
 
 static_assert(FS_IOC_SETFLAGS == LP_SELECT(0x40046602, 0x40086602));
 
@@ -115,7 +115,7 @@ namespace lspd {
             instance->HookBridge(*this, env);
 
             if (application_binder) {
-                clant::InitInfo initInfo{
+                splant::InitInfo initInfo{
                     .inline_hooker = [](auto t, auto r) {
                         void* bk = nullptr;
                         return HookFunction(t, r, &bk) == RS_SUCCESS ? bk : nullptr;
@@ -190,7 +190,7 @@ namespace lspd {
         auto binder = skip_ ? ScopedLocalRef<jobject>{env, nullptr}
                             : instance->RequestBinder(env, nice_name);
         if (binder) {
-            clant::InitInfo initInfo{
+            splant::InitInfo initInfo{
                     .inline_hooker = [](auto t, auto r) {
                         void* bk = nullptr;
                         return HookFunction(t, r, &bk) == RS_SUCCESS ? bk : nullptr;

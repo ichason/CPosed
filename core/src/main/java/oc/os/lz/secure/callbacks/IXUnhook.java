@@ -27,7 +27,7 @@ import oc.os.lz.secure.ICHookZygoteInit;
  *
  * <p class="warning">Just like hooking methods etc., unhooking applies only to the current process.
  * In other process (or when the app is removed from memory and then restarted), the hook will still
- * be active. The Zygote process (see {@link }) is an exception, the hook won't
+ * be active. The Zygote process (see {@link ICHookZygoteInit}) is an exception, the hook won't
  * be inherited by any future processes forked from it in the future.
  *
  * @param <T> The class of the callback.

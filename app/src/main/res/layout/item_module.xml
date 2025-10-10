@@ -61,7 +61,7 @@
             app:layout_constraintStart_toEndOf="@id/app_icon"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintWidth_max="wrap"
-            tools:text="C Manager" />
+            tools:text="LSPosed Manager" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/app_Package_Name"

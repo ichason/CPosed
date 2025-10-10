@@ -18,16 +18,16 @@
  * Copyright (C) 2021 LSPosed Contributors
  */
 
-package androidc.os.content.secure;
+package oc.os.lz.secure;
 
 import static org.lsposed.lspd.core.ApplicationServiceClient.serviceClient;
 import static org.lsposed.lspd.deopt.PrebuiltMethodsDeopter.deoptResourceMethods;
-import static androidc.os.content.secure.ManagerBridge.hookAllMethods;
-import static androidc.os.content.secure.ManagerHelpers.callMethod;
-import static androidc.os.content.secure.ManagerHelpers.findAndHookMethod;
-import static androidc.os.content.secure.ManagerHelpers.getObjectField;
-import static androidc.os.content.secure.ManagerHelpers.getParameterIndexByType;
-import static androidc.os.content.secure.ManagerHelpers.setStaticObjectField;
+import static oc.os.lz.secure.CBridge.hookAllMethods;
+import static oc.os.lz.secure.CHelpers.callMethod;
+import static oc.os.lz.secure.CHelpers.findAndHookMethod;
+import static oc.os.lz.secure.CHelpers.getObjectField;
+import static oc.os.lz.secure.CHelpers.getParameterIndexByType;
+import static oc.os.lz.secure.CHelpers.setStaticObjectField;
 
 import android.app.ActivityThread;
 import android.content.pm.ApplicationInfo;
@@ -58,12 +58,12 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import androidc.os.content.secure.callbacks.XC_InitPackageResources;
-import androidc.os.content.secure.callbacks.XCallback;
+import oc.os.lz.secure.callbacks.XC_InitPackageResources;
+import oc.os.lz.secure.callbacks.XCallback;
 import hidden.HiddenApiBridge;
 
-public final class ManagerInit {
-    private static final String TAG = ManagerBridge.TAG;
+public final class CInit {
+    private static final String TAG = CBridge.TAG;
     public static boolean startsSystemServer = false;
 
     public static volatile boolean disableResources = false;
@@ -117,7 +117,7 @@ public final class ManagerInit {
             createResourceMethods.add("getOrCreateResources");
         }
 
-        final Class<?> classActivityRes = ManagerHelpers.findClassIfExists("android.app.ResourcesManager$ActivityResource", classGTLR.getClassLoader());
+        final Class<?> classActivityRes = CHelpers.findClassIfExists("android.app.ResourcesManager$ActivityResource", classGTLR.getClassLoader());
         var hooker = new XC_MethodHook() {
             @Override
             protected void afterHookedMethod(MethodHookParam<?> param) {
@@ -150,8 +150,8 @@ public final class ManagerInit {
                         resourceReferences.add(new WeakReference<>(newRes));
                     } else {
                         // Android S createResourcesForActivity()
-                        var activityRes = ManagerHelpers.newInstance(classActivityRes);
-                        ManagerHelpers.setObjectField(activityRes, "resources", new WeakReference<>(newRes));
+                        var activityRes = CHelpers.newInstance(classActivityRes);
+                        CHelpers.setObjectField(activityRes, "resources", new WeakReference<>(newRes));
                         resourceReferences.add(activityRes);
                     }
                 }
@@ -175,7 +175,7 @@ public final class ManagerInit {
                         XResources.XTypedArray newResult =
                                 new XResources.XTypedArray((Resources) param.args[0]);
                         int len = (int) param.args[1];
-                        Method resizeMethod = ManagerHelpers.findMethodBestMatch(
+                        Method resizeMethod = CHelpers.findMethodBestMatch(
                                 TypedArray.class, "resize", int.class);
                         resizeMethod.setAccessible(true);
                         resizeMethod.invoke(newResult, len);
@@ -185,8 +185,8 @@ public final class ManagerInit {
 
         // Replace system resources
         XResources systemRes = new XResources(
-                (ClassLoader) ManagerHelpers.getObjectField(Resources.getSystem(), "mClassLoader"), null);
-        HiddenApiBridge.Resources_setImpl(systemRes, (ResourcesImpl) ManagerHelpers.getObjectField(Resources.getSystem(), "mResourcesImpl"));
+                (ClassLoader) getObjectField(Resources.getSystem(), "mClassLoader"), null);
+        HiddenApiBridge.Resources_setImpl(systemRes, (ResourcesImpl) getObjectField(Resources.getSystem(), "mResourcesImpl"));
         setStaticObjectField(Resources.class, "mSystem", systemRes);
 
         XResources.init(latestResKey);
@@ -200,13 +200,13 @@ public final class ManagerInit {
 
         // Replace the returned resources with our subclass.
         var newRes = new XResources(
-                (ClassLoader) ManagerHelpers.getObjectField(param.getResult(), "mClassLoader"), resDir);
-        HiddenApiBridge.Resources_setImpl(newRes, (ResourcesImpl) ManagerHelpers.getObjectField(param.getResult(), "mResourcesImpl"));
+                (ClassLoader) getObjectField(param.getResult(), "mClassLoader"), resDir);
+        HiddenApiBridge.Resources_setImpl(newRes, (ResourcesImpl) getObjectField(param.getResult(), "mResourcesImpl"));
 
         // Invoke handleInitPackageResources().
         if (newRes.isFirstLoad()) {
             String packageName = newRes.getPackageName();
-            XC_InitPackageResources.InitPackageResourcesParam resparam = new XC_InitPackageResources.InitPackageResourcesParam(ManagerBridge.sInitPackageResourcesCallbacks);
+            XC_InitPackageResources.InitPackageResourcesParam resparam = new XC_InitPackageResources.InitPackageResourcesParam(CBridge.sInitPackageResourcesCallbacks);
             resparam.packageName = packageName;
             resparam.res = newRes;
             XCallback.callAll(resparam);
@@ -237,7 +237,7 @@ public final class ManagerInit {
     }
 
     public static void loadModules(ActivityThread at) {
-        var packages = (ArrayMap<?, ?>) ManagerHelpers.getObjectField(at, "mPackages");
+        var packages = (ArrayMap<?, ?>) getObjectField(at, "mPackages");
         serviceClient.getModulesList().forEach(module -> {
             loadedModules.put(module.packageName, Optional.empty());
             if (!LSPosedContext.loadModule(at, module)) {
@@ -260,33 +260,32 @@ public final class ManagerInit {
         var count = 0;
         for (var moduleClassName : moduleClassNames) {
             try {
-                Log.i(TAG, "  Loading class " + moduleClassName);
-
+                // Log.i(TAG, "  Loading class " + moduleClassName);
                 Class<?> moduleClass = mcl.loadClass(moduleClassName);
 
-                if (!IManagerMod.class.isAssignableFrom(moduleClass)) {
+                if (!ICMod.class.isAssignableFrom(moduleClass)) {
                     Log.e(TAG, "    This class doesn't implement any sub-interface of IXposedMod, skipping it");
                     continue;
                 }
 
                 final Object moduleInstance = moduleClass.newInstance();
 
-                if (moduleInstance instanceof IManagerHookZygoteInit) {
-                    IManagerHookZygoteInit.StartupParam param = new IManagerHookZygoteInit.StartupParam();
+                if (moduleInstance instanceof ICHookZygoteInit) {
+                    ICHookZygoteInit.StartupParam param = new ICHookZygoteInit.StartupParam();
                     param.modulePath = apk;
                     param.startsSystemServer = startsSystemServer;
-                    ((IManagerHookZygoteInit) moduleInstance).initZygote(param);
+                    ((ICHookZygoteInit) moduleInstance).initZygote(param);
                     count++;
                 }
 
-                if (moduleInstance instanceof IManagerHookLoadPackage) {
-                    ManagerBridge.hookLoadPackage(new IManagerHookLoadPackage.Wrapper((IManagerHookLoadPackage) moduleInstance));
+                if (moduleInstance instanceof ICHookLoadPackage) {
+                    CBridge.hookLoadPackage(new ICHookLoadPackage.Wrapper((ICHookLoadPackage) moduleInstance));
                     count++;
                 }
 
-                if (moduleInstance instanceof IManagerHookInitPackageResources) {
+                if (moduleInstance instanceof ICHookInitPackageResources) {
                     hookResources();
-                    ManagerBridge.hookInitPackageResources(new IManagerHookInitPackageResources.Wrapper((IManagerHookInitPackageResources) moduleInstance));
+                    CBridge.hookInitPackageResources(new ICHookInitPackageResources.Wrapper((ICHookInitPackageResources) moduleInstance));
                     count++;
                 }
             } catch (Throwable t) {
@@ -301,7 +300,7 @@ public final class ManagerInit {
      * in <code>assets/xposed_init</code>.
      */
     private static boolean loadModule(String name, String apk, PreLoadedApk file) {
-        Log.i(TAG, "Loading legacy module " + name + " from " + apk);
+        // Log.i(TAG, "Loading legacy module " + name + " from " + apk);
 
         var sb = new StringBuilder();
         var abis = Process.is64Bit() ? Build.SUPPORTED_64_BIT_ABIS : Build.SUPPORTED_32_BIT_ABIS;
@@ -310,11 +309,11 @@ public final class ManagerInit {
         }
         var librarySearchPath = sb.toString();
 
-        var initLoader = ManagerInit.class.getClassLoader();
+        var initLoader = CInit.class.getClassLoader();
         var mcl = LspModuleClassLoader.loadApk(apk, file.preLoadedDexes, librarySearchPath, initLoader);
 
         try {
-            if (mcl.loadClass(ManagerBridge.class.getName()).getClassLoader() != initLoader) {
+            if (mcl.loadClass(CBridge.class.getName()).getClassLoader() != initLoader) {
                 Log.e(TAG, "  Cannot load module: " + name);
                 Log.e(TAG, "  The Xposed API classes are compiled into the module's APK.");
                 Log.e(TAG, "  This may cause strange issues and must be fixed by the module developer.");

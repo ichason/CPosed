@@ -203,7 +203,7 @@ public abstract class XC_MethodHook extends XCallback {
         @SuppressWarnings("deprecation")
         @Override
         public void unhook() {
-            ManagerBridge.unhookMethod(hookMethod, XC_MethodHook.this);
+            CBridge.unhookMethod(hookMethod, XC_MethodHook.this);
         }
 
     }

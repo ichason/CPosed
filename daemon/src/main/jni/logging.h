@@ -25,7 +25,7 @@
 #include <errno.h>
 
 #ifndef LOG_TAG
-#define LOG_TAG    "CPosed"
+#define LOG_TAG    "SPosed"
 #endif
 
 #ifdef LOG_DISABLED

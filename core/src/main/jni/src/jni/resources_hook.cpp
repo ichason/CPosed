@@ -26,7 +26,7 @@
 #include "resources_hook.h"
 #include "config_bridge.h"
 
-using namespace clant;
+using namespace splant;
 
 namespace lspd {
     using TYPE_GET_ATTR_NAME_ID = int32_t (*)(void *, int);
@@ -111,7 +111,7 @@ namespace lspd {
 
     // @ApiSensitive(Level.MIDDLE)
     LSP_DEF_NATIVE_METHOD(jboolean, ResourcesHook, makeInheritable, jclass target_class) {
-        if (clant::MakeClassInheritable(env, target_class)) {
+        if (splant::MakeClassInheritable(env, target_class)) {
             return JNI_TRUE;
         }
         return JNI_FALSE;
