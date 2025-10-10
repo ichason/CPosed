@@ -4,12 +4,12 @@ package oc.os.lz.secure;
  * Hook the initialization of Zygote process(es), from which all the apps are forked.
  *
  * <p>Implement this interface in your module's main class in order to be notified when Android is
- * starting up. In {@link }, you can modify objects and place hooks that should
+ * starting up. In {@link ICHookZygoteInit}, you can modify objects and place hooks that should
  * be applied for every app. Only the Android framework/system classes are available at that point
- * in time. Use {@code null} as class loader for {@link #findAndHookMethod(String, ClassLoader, String, Object...)}
+ * in time. Use {@code null} as class loader for {@link CHelpers#findAndHookMethod(String, ClassLoader, String, Object...)}
  * and its variants.
  *
- * <p>If you want to hook one/multiple specific apps, use {@link } instead.
+ * <p>If you want to hook one/multiple specific apps, use {@link ICHookLoadPackage} instead.
  */
 public interface ICHookZygoteInit extends ICMod {
     /**

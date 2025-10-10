@@ -108,7 +108,7 @@ public class App extends Application {
         });
     }
 
-    public static final String TAG = "CManager";
+    public static final String TAG = "LSPosedManager";
     private static final String ACTION_USER_ADDED = "android.intent.action.USER_ADDED";
     private static final String ACTION_USER_REMOVED = "android.intent.action.USER_REMOVED";
     private static final String ACTION_USER_INFO_CHANGED = "android.intent.action.USER_INFO_CHANGED";

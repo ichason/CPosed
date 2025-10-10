@@ -26,11 +26,11 @@
 #include "utils/jni_helper.hpp"
 #include "../native_api.h"
 
-using namespace clant;
+using namespace splant;
 
 namespace lspd {
     LSP_DEF_NATIVE_METHOD(void, NativeAPI, recordNativeEntrypoint, jstring jstr) {
-        clant::JUTFString str(env, jstr);
+        splant::JUTFString str(env, jstr);
         RegisterNativeLib(str);
     }
 

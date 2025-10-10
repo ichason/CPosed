@@ -45,17 +45,17 @@ namespace lspd {
         public:
             Service* service_;
             JNIEnv *env_;
-            clant::ScopedLocalRef<jobject> data;
-            clant::ScopedLocalRef<jobject> reply;
+            splant::ScopedLocalRef<jobject> data;
+            splant::ScopedLocalRef<jobject> reply;
 
             Wrapper(JNIEnv *env, Service* service) :
             service_(service),
             env_(env),
-            data(clant::JNI_CallStaticObjectMethod(env, service->parcel_class_, service->obtain_method_)),
-            reply(clant::JNI_CallStaticObjectMethod(env, service->parcel_class_, service->obtain_method_))
+            data(splant::JNI_CallStaticObjectMethod(env, service->parcel_class_, service->obtain_method_)),
+            reply(splant::JNI_CallStaticObjectMethod(env, service->parcel_class_, service->obtain_method_))
             {}
 
-            inline bool transact(const clant::ScopedLocalRef<jobject> &binder, jint transaction_code) {
+            inline bool transact(const splant::ScopedLocalRef<jobject> &binder, jint transaction_code) {
                 return JNI_CallBooleanMethod(env_, binder, service_->transact_method_,transaction_code,
                                       data, reply, 0);
             }
@@ -78,15 +78,15 @@ namespace lspd {
         void InitService(JNIEnv *env);
 
         void HookBridge(const Context& context, JNIEnv *env);
-        clant::ScopedLocalRef<jobject> RequestBinder(JNIEnv *env, jstring nice_name);
+        splant::ScopedLocalRef<jobject> RequestBinder(JNIEnv *env, jstring nice_name);
 
-        clant::ScopedLocalRef<jobject> RequestSystemServerBinder(JNIEnv *env);
+        splant::ScopedLocalRef<jobject> RequestSystemServerBinder(JNIEnv *env);
 
-        clant::ScopedLocalRef<jobject> RequestApplicationBinderFromSystemServer(JNIEnv *env, const clant::ScopedLocalRef<jobject> &system_server_binder);
+        splant::ScopedLocalRef<jobject> RequestApplicationBinderFromSystemServer(JNIEnv *env, const splant::ScopedLocalRef<jobject> &system_server_binder);
 
-        std::tuple<int, size_t> RequestLSPDex(JNIEnv *env, const clant::ScopedLocalRef<jobject> &binder);
+        std::tuple<int, size_t> RequestLSPDex(JNIEnv *env, const splant::ScopedLocalRef<jobject> &binder);
 
-        std::map<std::string, std::string> RequestObfuscationMap(JNIEnv *env, const clant::ScopedLocalRef<jobject> &binder);
+        std::map<std::string, std::string> RequestObfuscationMap(JNIEnv *env, const splant::ScopedLocalRef<jobject> &binder);
 
     private:
         static std::unique_ptr<Service> instance_;

@@ -18,7 +18,7 @@
  * Copyright (C) 2021 - 2022 LSPosed Contributors
  */
 
-package androidc.os.content.secure;
+package oc.os.lz.secure;
 
 import android.app.ActivityThread;
 import android.content.res.Resources;
@@ -42,27 +42,29 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 
-import androidc.os.content.secure.callbacks.XC_InitPackageResources;
-import androidc.os.content.secure.callbacks.XC_LoadPackage;
+import oc.os.lz.secure.callbacks.XC_InitPackageResources;
+import oc.os.lz.secure.callbacks.XC_LoadPackage;
 import io.github.libxposed.api.XposedInterface;
 
 /**
- * This class contains most of Xposed's central logic, such as initialization and callbacks used by
+ * This class contains most of Xposed's central logic, such as initialization
+ * and callbacks used by
  * the native side. It also includes methods to add new hooks.
  */
-public final class ManagerBridge {
+public final class CBridge {
     /**
-     * The system class loader which can be used to locate Android framework classes.
+     * The system class loader which can be used to locate Android framework
+     * classes.
      * Application classes cannot be retrieved from it.
      *
      * @see ClassLoader#getSystemClassLoader
      */
-    public static final ClassLoader BOOTCLASSLOADER = ManagerBridge.class.getClassLoader();
+    public static final ClassLoader BOOTCLASSLOADER = CBridge.class.getClassLoader();
 
     /**
      * @hide
      */
-    public static final String TAG = "Manager-Bridge";
+    public static final String TAG = "SPosed-Bridge";
 
     /**
      * @deprecated Use {@link #getXposedVersion()} instead.
@@ -74,9 +76,9 @@ public final class ManagerBridge {
 
     // built-in handlers
     public static final CopyOnWriteArraySet<XC_LoadPackage> sLoadedPackageCallbacks = new CopyOnWriteArraySet<>();
-    /*package*/ static final CopyOnWriteArraySet<XC_InitPackageResources> sInitPackageResourcesCallbacks = new CopyOnWriteArraySet<>();
+    /* package */ static final CopyOnWriteArraySet<XC_InitPackageResources> sInitPackageResourcesCallbacks = new CopyOnWriteArraySet<>();
 
-    private ManagerBridge() {
+    private CBridge() {
     }
 
     public static volatile ClassLoader dummyClassLoader = null;
@@ -101,31 +103,32 @@ public final class ManagerBridge {
                     // ActivityThread for now and the call will throw an NPE. Luckily they check the
                     // nullability of the result configuration. So we hereby set a dummy
                     // ActivityThread to bypass such a situation.
-                    var fake = ManagerHelpers.newInstance(ActivityThread.class);
-                    ManagerHelpers.setStaticObjectField(ActivityThread.class, "sCurrentActivityThread", fake);
+                    var fake = CHelpers.newInstance(ActivityThread.class);
+                    CHelpers.setStaticObjectField(ActivityThread.class, "sCurrentActivityThread", fake);
                     try {
                         TypedArray ta = res.obtainTypedArray(res.getIdentifier(
                                 "preloaded_drawables", "array", "android"));
                         taClass = ta.getClass();
                         ta.recycle();
                     } finally {
-                        ManagerHelpers.setStaticObjectField(ActivityThread.class, "sCurrentActivityThread", null);
+                        CHelpers.setStaticObjectField(ActivityThread.class, "sCurrentActivityThread", null);
                     }
                 }
             } catch (Resources.NotFoundException nfe) {
-                ManagerBridge.log(nfe);
+                CBridge.log(nfe);
             }
             ResourcesHook.makeInheritable(resClass);
             ResourcesHook.makeInheritable(taClass);
-            ClassLoader myCL = ManagerBridge.class.getClassLoader();
+            ClassLoader myCL = CBridge.class.getClassLoader();
             assert myCL != null;
-            dummyClassLoader = ResourcesHook.buildDummyClassLoader(myCL.getParent(), resClass.getName(), taClass.getName());
+            dummyClassLoader = ResourcesHook.buildDummyClassLoader(myCL.getParent(), resClass.getName(),
+                    taClass.getName());
             dummyClassLoader.loadClass("xposed.dummy.XResourcesSuperClass");
             dummyClassLoader.loadClass("xposed.dummy.XTypedArraySuperClass");
-            ManagerHelpers.setObjectField(myCL, "parent", dummyClassLoader);
+            CHelpers.setObjectField(myCL, "parent", dummyClassLoader);
         } catch (Throwable throwable) {
-            ManagerBridge.log(throwable);
-            ManagerInit.disableResources = true;
+            CBridge.log(throwable);
+            CInit.disableResources = true;
         }
     }
 
@@ -139,7 +142,8 @@ public final class ManagerBridge {
     /**
      * Writes a message to the Xposed modules log.
      *
-     * <p class="warning"><b>DON'T FLOOD THE LOG!!!</b> This is only meant for error logging.
+     * <p class="warning">
+     * <b>DON'T FLOOD THE LOG!!!</b> This is only meant for error logging.
      * If you want to write information/debug messages, use logcat.
      *
      * @param text The log message.
@@ -151,7 +155,8 @@ public final class ManagerBridge {
     /**
      * Logs a stack trace to the Xposed modules log.
      *
-     * <p class="warning"><b>DON'T FLOOD THE LOG!!!</b> This is only meant for error logging.
+     * <p class="warning">
+     * <b>DON'T FLOOD THE LOG!!!</b> This is only meant for error logging.
      * If you want to write information/debug messages, use logcat.
      *
      * @param t The Throwable object for the stack trace.
@@ -164,12 +169,14 @@ public final class ManagerBridge {
     /**
      * Deoptimize a method to avoid callee being inlined.
      *
-     * @param deoptimizedMethod The method to deoptmize. Generally it should be a caller of a method
+     * @param deoptimizedMethod The method to deoptmize. Generally it should be a
+     *                          caller of a method
      *                          that is inlined.
      */
     public static void deoptimizeMethod(Member deoptimizedMethod) {
         if (!(deoptimizedMethod instanceof Executable)) {
-            throw new IllegalArgumentException("Only methods and constructors can be deoptimized: " + deoptimizedMethod);
+            throw new IllegalArgumentException(
+                    "Only methods and constructors can be deoptimized: " + deoptimizedMethod);
         } else if (Modifier.isAbstract(deoptimizedMethod.getModifiers())) {
             throw new IllegalArgumentException("Cannot deoptimize abstract methods: " + deoptimizedMethod);
         } else if (Proxy.isProxyClass(deoptimizedMethod.getDeclaringClass())) {
@@ -179,17 +186,19 @@ public final class ManagerBridge {
     }
 
     /**
-     * Hook any method (or constructor) with the specified callback. See below for some wrappers
+     * Hook any method (or constructor) with the specified callback. See below for
+     * some wrappers
      * that make it easier to find a method/constructor in one step.
      *
      * @param hookMethod The method to be hooked.
-     * @param callback   The callback to be executed when the hooked method is called.
+     * @param callback   The callback to be executed when the hooked method is
+     *                   called.
      * @return An object that can be used to remove the hook.
-     * @see ManagerHelpers#findAndHookMethod(String, ClassLoader, String, Object...)
-     * @see ManagerHelpers#findAndHookMethod(Class, String, Object...)
+     * @see CHelpers#findAndHookMethod(String, ClassLoader, String, Object...)
+     * @see CHelpers#findAndHookMethod(Class, String, Object...)
      * @see #hookAllMethods
-     * @see ManagerHelpers#findAndHookConstructor(String, ClassLoader, Object...)
-     * @see ManagerHelpers#findAndHookConstructor(Class, Object...)
+     * @see CHelpers#findAndHookConstructor(String, ClassLoader, Object...)
+     * @see CHelpers#findAndHookConstructor(Class, Object...)
      * @see #hookAllConstructors
      */
     public static XC_MethodHook.Unhook hookMethod(Member hookMethod, XC_MethodHook callback) {
@@ -197,7 +206,7 @@ public final class ManagerBridge {
             throw new IllegalArgumentException("Only methods and constructors can be hooked: " + hookMethod);
         } else if (Modifier.isAbstract(hookMethod.getModifiers())) {
             throw new IllegalArgumentException("Cannot hook abstract methods: " + hookMethod);
-        } else if (hookMethod.getDeclaringClass().getClassLoader() == ManagerBridge.class.getClassLoader()) {
+        } else if (hookMethod.getDeclaringClass().getClassLoader() == CBridge.class.getClassLoader()) {
             throw new IllegalArgumentException("Do not allow hooking inner methods");
         } else if (hookMethod.getDeclaringClass() == Method.class && hookMethod.getName().equals("invoke")) {
             throw new IllegalArgumentException("Cannot hook Method.invoke");
@@ -207,7 +216,8 @@ public final class ManagerBridge {
             throw new IllegalArgumentException("callback should not be null!");
         }
 
-        if (!HookBridge.hookMethod(false, (Executable) hookMethod, LSPosedBridge.NativeHooker.class, callback.priority, callback)) {
+        if (!HookBridge.hookMethod(false, (Executable) hookMethod, LSPosedBridge.NativeHooker.class, callback.priority,
+                callback)) {
             log("Failed to hook " + hookMethod);
             return null;
         }
@@ -219,9 +229,11 @@ public final class ManagerBridge {
      * Removes the callback for a hooked method/constructor.
      *
      * @param hookMethod The method for which the callback should be removed.
-     * @param callback   The reference to the callback as specified in {@link #hookMethod}.
-     * @deprecated Use {@link XC_MethodHook.Unhook#unhook} instead. An instance of the {@code Unhook}
-     * class is returned when you hook the method.
+     * @param callback   The reference to the callback as specified in
+     *                   {@link #hookMethod}.
+     * @deprecated Use {@link XC_MethodHook.Unhook#unhook} instead. An instance of
+     *             the {@code Unhook}
+     *             class is returned when you hook the method.
      */
     @Deprecated
     public static void unhookMethod(Member hookMethod, XC_MethodHook callback) {
@@ -231,17 +243,21 @@ public final class ManagerBridge {
     }
 
     /**
-     * Hooks all methods with a certain name that were declared in the specified class. Inherited
+     * Hooks all methods with a certain name that were declared in the specified
+     * class. Inherited
      * methods and constructors are not considered. For constructors, use
      * {@link #hookAllConstructors} instead.
      *
      * @param hookClass  The class to check for declared methods.
      * @param methodName The name of the method(s) to hook.
-     * @param callback   The callback to be executed when the hooked methods are called.
-     * @return A set containing one object for each found method which can be used to unhook it.
+     * @param callback   The callback to be executed when the hooked methods are
+     *                   called.
+     * @return A set containing one object for each found method which can be used
+     *         to unhook it.
      */
     @SuppressWarnings("UnusedReturnValue")
-    public static Set<XC_MethodHook.Unhook> hookAllMethods(Class<?> hookClass, String methodName, XC_MethodHook callback) {
+    public static Set<XC_MethodHook.Unhook> hookAllMethods(Class<?> hookClass, String methodName,
+            XC_MethodHook callback) {
         Set<XC_MethodHook.Unhook> unhooks = new HashSet<>();
         for (Member method : hookClass.getDeclaredMethods())
             if (method.getName().equals(methodName))
@@ -253,8 +269,10 @@ public final class ManagerBridge {
      * Hook all constructors of the specified class.
      *
      * @param hookClass The class to check for constructors.
-     * @param callback  The callback to be executed when the hooked constructors are called.
-     * @return A set containing one object for each found constructor which can be used to unhook it.
+     * @param callback  The callback to be executed when the hooked constructors are
+     *                  called.
+     * @return A set containing one object for each found constructor which can be
+     *         used to unhook it.
      */
     @SuppressWarnings("UnusedReturnValue")
     public static Set<XC_MethodHook.Unhook> hookAllConstructors(Class<?> hookClass, XC_MethodHook callback) {
@@ -267,8 +285,11 @@ public final class ManagerBridge {
     /**
      * Adds a callback to be executed when an app ("Android package") is loaded.
      *
-     * <p class="note">You probably don't need to call this. Simply implement {@link IManagerHookLoadPackage}
-     * in your module class and Xposed will take care of registering it as a callback.
+     * <p class="note">
+     * You probably don't need to call this. Simply implement
+     * {@link ICHookLoadPackage}
+     * in your module class and Xposed will take care of registering it as a
+     * callback.
      *
      * @param callback The callback to be executed.
      * @hide
@@ -282,8 +303,11 @@ public final class ManagerBridge {
     /**
      * Adds a callback to be executed when the resources for an app are initialized.
      *
-     * <p class="note">You probably don't need to call this. Simply implement {@link IManagerHookInitPackageResources}
-     * in your module class and Xposed will take care of registering it as a callback.
+     * <p class="note">
+     * You probably don't need to call this. Simply implement
+     * {@link ICHookInitPackageResources}
+     * in your module class and Xposed will take care of registering it as a
+     * callback.
      *
      * @param callback The callback to be executed.
      * @hide
@@ -296,24 +320,36 @@ public final class ManagerBridge {
 
     /**
      * Basically the same as {@link Method#invoke}, but calls the original method
-     * as it was before the interception by Xposed. Also, access permissions are not checked.
+     * as it was before the interception by Xposed. Also, access permissions are not
+     * checked.
      *
-     * <p class="caution">There are very few cases where this method is needed. A common mistake is
-     * to replace a method and then invoke the original one based on dynamic conditions. This
-     * creates overhead and skips further hooks by other modules. Instead, just hook (don't replace)
-     * the method and call {@code param.setResult(null)} in {@link XC_MethodHook#beforeHookedMethod}
+     * <p class="caution">
+     * There are very few cases where this method is needed. A common mistake is
+     * to replace a method and then invoke the original one based on dynamic
+     * conditions. This
+     * creates overhead and skips further hooks by other modules. Instead, just hook
+     * (don't replace)
+     * the method and call {@code param.setResult(null)} in
+     * {@link XC_MethodHook#beforeHookedMethod}
      * if the original method should be skipped.
      *
      * @param method     The method to be called.
-     * @param thisObject For non-static calls, the "this" pointer, otherwise {@code null}.
+     * @param thisObject For non-static calls, the "this" pointer, otherwise
+     *                   {@code null}.
      * @param args       Arguments for the method call as Object[] array.
      * @return The result returned from the invoked method.
-     * @throws NullPointerException      if {@code receiver == null} for a non-static method
-     * @throws IllegalAccessException    if this method is not accessible (see {@link AccessibleObject})
-     * @throws IllegalArgumentException  if the number of arguments doesn't match the number of parameters, the receiver
-     *                                   is incompatible with the declaring class, or an argument could not be unboxed
-     *                                   or converted by a widening conversion to the corresponding parameter type
-     * @throws InvocationTargetException if an exception was thrown by the invoked method
+     * @throws NullPointerException      if {@code receiver == null} for a
+     *                                   non-static method
+     * @throws IllegalAccessException    if this method is not accessible (see
+     *                                   {@link AccessibleObject})
+     * @throws IllegalArgumentException  if the number of arguments doesn't match
+     *                                   the number of parameters, the receiver
+     *                                   is incompatible with the declaring class,
+     *                                   or an argument could not be unboxed
+     *                                   or converted by a widening conversion to
+     *                                   the corresponding parameter type
+     * @throws InvocationTargetException if an exception was thrown by the invoked
+     *                                   method
      */
     public static Object invokeOriginalMethod(Member method, Object thisObject, Object[] args)
             throws Throwable {
@@ -403,7 +439,7 @@ public final class ManagerBridge {
                     var cb = (XC_MethodHook) snapshot[beforeIdx];
                     cb.beforeHookedMethod(param);
                 } catch (Throwable t) {
-                    ManagerBridge.log(t);
+                    CBridge.log(t);
 
                     // reset result (ignoring what the unexpectedly exiting callback did)
                     param.setResult(null);
@@ -429,7 +465,7 @@ public final class ManagerBridge {
                     var cb = (XC_MethodHook) snapshot[afterIdx];
                     cb.afterHookedMethod(param);
                 } catch (Throwable t) {
-                    ManagerBridge.log(t);
+                    CBridge.log(t);
 
                     // reset to last result (ignoring what the unexpectedly exiting callback did)
                     if (lastThrowable == null) {
@@ -442,7 +478,8 @@ public final class ManagerBridge {
             syncronizeApi(param, callback, false);
         }
 
-        private void syncronizeApi(XC_MethodHook.MethodHookParam<T> param, LSPosedHookCallback<T> callback, boolean forward) {
+        private void syncronizeApi(XC_MethodHook.MethodHookParam<T> param, LSPosedHookCallback<T> callback,
+                boolean forward) {
             if (forward) {
                 param.method = callback.method;
                 param.thisObject = callback.thisObject;

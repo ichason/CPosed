@@ -36,7 +36,7 @@
 #include "obfuscation.h"
 #include "logging.h"
 
-using namespace clant;
+using namespace splant;
 namespace {
 std::mutex init_lock{};
 std::map<const std::string, std::string> signatures = {

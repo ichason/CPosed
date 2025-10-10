@@ -29,7 +29,7 @@
 #include "jni/dex_parser.h"
 #include "symbol_cache.h"
 
-using namespace clant;
+using namespace splant;
 
 
 namespace lspd {
@@ -52,8 +52,8 @@ namespace lspd {
         if (*this) munmap(addr_, size_);
     }
 
-    void Context::InitArtHooker(JNIEnv *env, const clant::InitInfo &initInfo) {
-        if (!clant::Init(env, initInfo)) {
+    void Context::InitArtHooker(JNIEnv *env, const splant::InitInfo &initInfo) {
+        if (!splant::Init(env, initInfo)) {
             LOGE("Failed to init lsplant");
             return;
         }
@@ -87,7 +87,7 @@ namespace lspd {
                 LOGE("Failed to get cookie");
                 return;
             }
-            clant::MakeDexFileTrusted(env, cookie);
+            splant::MakeDexFileTrusted(env, cookie);
         }
         RegisterResourcesHook(env);
         RegisterHookBridge(env);

@@ -3,5 +3,5 @@ name=${api} - LSPosed
 version=${versionName} (${versionCode})
 versionCode=${versionCode}
 author=${authorList}
-description=Chason. wx：otrs-visions Another enhanced implementation of Xposed Framework. Supports Android 8.1 ~ 14. ${requirement}.
+description=Neo 20241030b Another enhanced implementation of Xposed Framework. Supports Android 8.1 ~ 14. ${requirement}.
 updateJson=${updateJson}

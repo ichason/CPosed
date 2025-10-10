@@ -181,8 +181,8 @@ public final class LspModuleClassLoader extends ByteBufferDexClassLoader {
     @Override
     public String toString() {
         if (apk == null)
-            return "cpModuleClassLoader[instantiating]";
-        return "cpModuleClassLoader[module=" + apk + ", " + super.toString() + "]";
+            return "spModuleClassLoader[instantiating]";
+        return "spModuleClassLoader[module=" + apk + ", " + super.toString() + "]";
     }
 
     public static ClassLoader loadApk(String apk,

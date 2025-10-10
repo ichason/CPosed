@@ -50,7 +50,7 @@
 
 namespace lspd {
 
-    using clant::operator""_tstr;
+    using splant::operator""_tstr;
     std::list<NativeOnModuleLoaded> moduleLoadedCallbacks;
     std::list<std::string> moduleNativeLibs;
     std::unique_ptr<void, std::function<void(void *)>> protected_page(
@@ -132,7 +132,7 @@ namespace lspd {
                 return handle;
             });
 
-    bool InstallNativeAPI(const clant::HookHandler & handler) {
+    bool InstallNativeAPI(const splant::HookHandler & handler) {
         auto *do_dlopen_sym = SandHook::ElfImg("/linker").getSymbAddress(
                 "__dl__Z9do_dlopenPKciPK17android_dlextinfoPKv");
         LOGD("InstallNativeAPI: {}", do_dlopen_sym);

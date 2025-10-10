@@ -20,7 +20,7 @@ import io.github.libxposed.api.errors.HookFailedError;
 
 public class LSPosedBridge {
 
-    private static final String TAG = "LSPosed-Bridge";
+    private static final String TAG = "SPosed-Bridge";
 
     private static final String castException = "Return value's type from hook callback does not match the hooked method";
 
@@ -73,14 +73,15 @@ public class LSPosedBridge {
             } else {
                 returnType = null;
             }
-            params = new Object[]{
+            params = new Object[] {
                     method,
                     returnType,
                     isStatic,
             };
         }
 
-        // This method is quite critical. We should try not to use system methods to avoid
+        // This method is quite critical. We should try not to use system methods to
+        // avoid
         // endless recursive
         public Object callback(Object[] args) throws Throwable {
             LSPosedHookCallback<T> callback = new LSPosedHookCallback<>();
@@ -99,7 +100,7 @@ public class LSPosedBridge {
             } else {
                 callback.thisObject = args[0];
                 callback.args = new Object[args.length - 1];
-                //noinspection ManualArrayCopy
+                // noinspection ManualArrayCopy
                 for (int i = 0; i < args.length - 1; ++i) {
                     callback.args[i] = args[i + 1];
                 }
@@ -209,8 +210,8 @@ public class LSPosedBridge {
     public static void dummyCallback() {
     }
 
-    public static <T extends Executable> XposedInterface.MethodUnhooker<T>
-    doHook(T hookMethod, int priority, Class<? extends XposedInterface.Hooker> hooker) {
+    public static <T extends Executable> XposedInterface.MethodUnhooker<T> doHook(T hookMethod, int priority,
+            Class<? extends XposedInterface.Hooker> hooker) {
         if (Modifier.isAbstract(hookMethod.getModifiers())) {
             throw new IllegalArgumentException("Cannot hook abstract methods: " + hookMethod);
         } else if (hookMethod.getDeclaringClass().getClassLoader() == LSPosedContext.class.getClassLoader()) {

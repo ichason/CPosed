@@ -37,7 +37,6 @@ import org.lsposed.lspd.hooker.OpenDexFileHooker;
 import org.lsposed.lspd.impl.LSPosedContext;
 import org.lsposed.lspd.impl.LSPosedHelper;
 import org.lsposed.lspd.service.ILSPApplicationService;
-import org.lsposed.lspd.util.ExpirationManager;
 import org.lsposed.lspd.util.Utils;
 
 import java.util.List;
@@ -51,7 +50,8 @@ public class Startup {
         Utils.logD("startBootstrapHook starts: isSystem = " + isSystem);
         LSPosedHelper.hookMethod(CrashDumpHooker.class, Thread.class, "dispatchUncaughtException", Throwable.class);
         if (isSystem) {
-            LSPosedHelper.hookAllMethods(HandleSystemServerProcessHooker.class, ZygoteInit.class, "handleSystemServerProcess");
+            LSPosedHelper.hookAllMethods(HandleSystemServerProcessHooker.class, ZygoteInit.class,
+                    "handleSystemServerProcess");
         } else {
             LSPosedHelper.hookAllMethods(OpenDexFileHooker.class, DexFile.class, "openDexFile");
             LSPosedHelper.hookAllMethods(OpenDexFileHooker.class, DexFile.class, "openInMemoryDexFile");
@@ -60,7 +60,8 @@ public class Startup {
         LSPosedHelper.hookConstructor(LoadedApkCtorHooker.class, LoadedApk.class,
                 ActivityThread.class, ApplicationInfo.class, CompatibilityInfo.class,
                 ClassLoader.class, boolean.class, boolean.class, boolean.class);
-        LSPosedHelper.hookMethod(LoadedApkCreateCLHooker.class, LoadedApk.class, "createOrUpdateClassLoaderLocked", List.class);
+        LSPosedHelper.hookMethod(LoadedApkCreateCLHooker.class, LoadedApk.class, "createOrUpdateClassLoaderLocked",
+                List.class);
         LSPosedHelper.hookAllMethods(AttachHooker.class, ActivityThread.class, "attach");
     }
 

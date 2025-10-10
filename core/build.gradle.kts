@@ -56,7 +56,7 @@ copy {
 }
 
 dependencies {
-    // api(libs.libxposed.api) 将本地 api 注释
+    // api(libs.libxposed.api)
     implementation(libs.commons.lang3)
     implementation(libs.axml)
     implementation(projects.hiddenapi.bridge)
