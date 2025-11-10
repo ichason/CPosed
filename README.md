@@ -1,8 +1,17 @@
 
 
-Because there are so many publicly disclosed monitoring points, making them easy for manufacturers to detect, we've decided to stop disclosing the modification points. Those interested can add me on Telegram: @pangpangacc
+Because there are so many publicly disclosed monitoring points, making them easy for manufacturers to detect, 
+we've decided to stop disclosing the modification points. Those interested can add me on
+  Telegram: @pangpangacc
+  Wechat  : otrs-visions
+
+
+
 
 ---
+
+
+
 
 
 
@@ -39,7 +48,7 @@ Cposed is an enhanced version based on the [LSPosed](https://github.com/LSPosed/
 ## Usage Instructions
 
 > **Notice**: This project is for learning and research purposes only. Please comply with relevant laws and regulations.
-> **Contact**: For project collaboration or feature suggestions, please contact 7641436@qq.com
+> **Contact**: For project collaboration or feature suggestions, please contact Telegram(@pangpangacc) or wechat(otrs-visions)
 
 ## Disclaimer
 
