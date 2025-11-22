@@ -3,7 +3,7 @@
 Because there are so many publicly disclosed monitoring points, making them easy for manufacturers to detect, 
 we've decided to stop disclosing the modification points. Those interested can add me on
   Telegram: @pangpangacc
-  Wechat  : otrs-visions
+
 
 
 
