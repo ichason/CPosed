@@ -48,7 +48,7 @@ Cposed is an enhanced version based on the [LSPosed](https://github.com/LSPosed/
 ## Usage Instructions
 
 > **Notice**: This project is for learning and research purposes only. Please comply with relevant laws and regulations.
-> **Contact**: For project collaboration or feature suggestions, please contact Telegram(@pangpangacc) or wechat(otrs-visions)
+> **Contact**: For project collaboration or feature suggestions, please contact Telegram(@pangpangacc) 
 
 ## Disclaimer
 
