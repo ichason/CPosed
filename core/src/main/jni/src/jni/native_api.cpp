@@ -26,11 +26,11 @@
 #include "utils/jni_helper.hpp"
 #include "../native_api.h"
 
-using namespace splant;
+using namespace lsplant;
 
 namespace lspd {
     LSP_DEF_NATIVE_METHOD(void, NativeAPI, recordNativeEntrypoint, jstring jstr) {
-        splant::JUTFString str(env, jstr);
+        lsplant::JUTFString str(env, jstr);
         RegisterNativeLib(str);
     }
 

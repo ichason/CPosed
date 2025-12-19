@@ -57,7 +57,7 @@
     <string name="selinux_policy_not_loaded_summary">لم يتم تحميل SEPolicy بشكل صحيح</string>
     <string name="selinux_policy_not_loaded"><![CDATA[لن تعمل الوحدات النمطية التي تربط إطار عمل النظام.<br/>الرجاء الإبلاغ عن هذا إلى <a href="https://github.com/topjohnwu/Magisk/issues"><b>ماجيسك</b></a> مطور النظام.]]></string>
     <string name="system_inject_fail_summary">فشل حقن إطار عمل النظام</string>
-    <string name="system_inject_fail"><![CDATA[هذا نادر وقد يكون بسبب <b>Magisk</b> أو بعض وحدات Magisk منخفضة الجودة.<br/>الرجاء محاولة تعطيل وحدات Magisk خلاف Riru وLSPosed أو إرسال سجل كامل للمطورين.]]></string>
+    <string name="system_inject_fail"><![CDATA[هذا نادر وقد يكون بسبب <b>Magisk</b> أو بعض وحدات Magisk منخفضة الجودة.<br/>الرجاء محاولة تعطيل وحدات Magisk خلاف Zygisk وLSPosed أو إرسال سجل كامل للمطورين.]]></string>
     <string name="system_prop_incorrect_summary">نظام prop غير صحيح</string>
     <string name="system_prop_incorrect"><![CDATA[بعض خصائص النظام الضرورية تم حذفها أو تعديلها.<br/>قد تبطل الوحدات أحيانا.]]></string>
     <string name="need_update">تحتاج إلى التحديث</string>
@@ -81,14 +81,6 @@
     <string name="update_lsposed">تحديث LSPosed</string>
     <string name="update_lsposed_msg">تأكيد تحديث LSPosed؟ سيتم إعـادة تشغيل هذا الجهاز بعد اكتمال التحديث</string>
     <string name="info_copied">تم النسخ إلى الحافظة</string>
-    <!-- WelcomeDialog -->
-    <string name="parasitic_welcome">مرحباً بك في LSPosed</string>
-    <string name="parasitic_welcome_summary">أنت تستخدم مدير الطفيليات، الذي يمكنه إنشاء اختصار أو لا يزال مفتوحا من الإشعارات.</string>
-    <string name="parasitic_welcome_summary_no_shortcut_support">أنت تستخدم المدير الطفيلي، الذي يمكن فتحه من الإشعار.</string>
-    <string name="create_shortcut">إنشاء إختصار</string>
-    <string name="never_show">لا تظهر أبداً</string>
-    <string name="app_welcome">مدير طفيلي موصي به</string>
-    <string name="app_welcome_summary">يدعم LSPosed الآن تطهير النظام لتجنب الكشف، يمكنك فتح مدير الطفيليات من الإشعار. من المستحسن إلغاء تثبيت التطبيق الحالي.</string>
     <!-- LogsActivity -->
     <string name="menuSaveToSd">احفظ</string>
     <string name="nav_item_logs_verbose">سجلات مفصّلة</string>
@@ -197,12 +189,8 @@
     <string name="settings_translation_contributors">المساهمون بالترجمة</string>
     <string name="settings_translation">المشاركة في الترجمة</string>
     <string name="settings_translation_summary">ساعدنا في ترجمة %s إلى لغتك</string>
-    <string name="settings_create_shortcut_summary">إنشاء اختصار يمكنه فتح مدير الطفيليات</string>
-    <string name="settings_shortcut_pinned_hint">تم تثبيت الاختصار</string>
-    <string name="settings_unsupported_pin_shortcut_summary">المشغل الافتراضي الحالي لا يدعم اختصارات الدبوس</string>
     <string name="settings_enable_status_notification">إشعارات الحالة</string>
     <string name="settings_enable_status_notification_summary">إظهار إشعار يمكنه فتح مدير الطفيليات</string>
-    <string name="disable_status_notification_error">لا يوجد اختصار، لا يمكن تعطيل الإشعار</string>
     <string name="settings_update_channel">قناة التحديث</string>
     <string name="update_channel_stable">مستقر</string>
     <string name="update_channel_bate">تجريبي</string>

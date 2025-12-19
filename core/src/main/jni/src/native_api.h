@@ -45,7 +45,7 @@ typedef struct {
 typedef NativeOnModuleLoaded (*NativeInit)(const NativeAPIEntries *entries);
 
 namespace lspd {
-    bool InstallNativeAPI(const splant::HookHandler& handler);
+    bool InstallNativeAPI(const lsplant::HookHandler &handler);
 
     void RegisterNativeLib(const std::string &library_name);
 }

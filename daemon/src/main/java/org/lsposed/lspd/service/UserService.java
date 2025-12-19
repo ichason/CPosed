@@ -71,7 +71,8 @@ public class UserService {
         IUserManager um = getUserManager();
         List<UserInfo> users = new LinkedList<>();
         if (um == null) return users;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R &&
+                Build.VERSION.SDK_INT < Build.VERSION_CODES.BAKLAVA) {
             users = um.getUsers(true, true, true);
         } else {
             try {

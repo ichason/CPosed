@@ -49,7 +49,7 @@
     <string name="selinux_policy_not_loaded_summary">SEPolicy düzgün yüklenmemiş</string>
     <string name="selinux_policy_not_loaded"><![CDATA[Bazı özellikler çalışmayacaktır.<br/>Lütfen bunu <a href="https://github.com/topjohnwu/Magisk/issues"><b>Magisk</b></a> geliştiricisine bildirin.]]></string>
     <string name="system_inject_fail_summary">Sistem Çerçevesi enjeksiyonu başarısız oldu</string>
-    <string name="system_inject_fail"><![CDATA[Bu nadiren yaşanır ve <b>Magisk</b> veya düşük kaliteli modüller yüzünden olabilir.<br/>Lütfen Riru ve LSPosed dışında bütün modülleri devre dışı bırakmayı deneyin veya geliştiricilere tam bir hata kaydı gönderin.]]></string>
+    <string name="system_inject_fail"><![CDATA[Bu nadiren yaşanır ve <b>Magisk</b> veya düşük kaliteli modüller yüzünden olabilir.<br/>Lütfen Zygisk ve LSPosed dışında bütün modülleri devre dışı bırakmayı deneyin veya geliştiricilere tam bir hata kaydı gönderin.]]></string>
     <string name="system_prop_incorrect_summary">Sistem desteği yanlış</string>
     <string name="system_prop_incorrect"><![CDATA[Bazı gerekli sistem özellikleri silindi veya değiştirildi.<br/>Modüller zaman zaman düzgün çalışmayabilir.]]></string>
     <string name="need_update">Güncelleme gerekiyor</string>
@@ -73,14 +73,6 @@
     <string name="update_lsposed">LSPosed\'ı güncelle</string>
     <string name="update_lsposed_msg">LSPosed\'ı güncellemek istediğinize emin misiniz? Bu cihaz güncelleme tamamlandıktan sonra yeniden başlatılacak</string>
     <string name="info_copied">Panoya kopyalandı</string>
-    <!-- WelcomeDialog -->
-    <string name="parasitic_welcome">LSPosed\'a hoş geldiniz</string>
-    <string name="parasitic_welcome_summary">Parazit yöneticiyi kullanıyorsunuz, bu da kısayol oluşturabileceğinizi veya hala bildirimden açabileceğinizi gösterir.</string>
-    <string name="parasitic_welcome_summary_no_shortcut_support">Parazit yöneticiyi kullanıyorsunuz ve bu da hala bildirimden açabileceğinizi gösterir.</string>
-    <string name="create_shortcut">Kısayol oluştur</string>
-    <string name="never_show">Asla gösterme</string>
-    <string name="app_welcome">Parazit Yönetici Önerilir</string>
-    <string name="app_welcome_summary">LSPosed tespit edilmeyi önlemek için sistem parazitlemeyi destekliyor, parazit yöneticiyi bildirimden açabilirsiniz. Şu anki uygulamayı kaldırmanız önerilir.</string>
     <!-- LogsActivity -->
     <string name="menuSaveToSd">Kaydet</string>
     <string name="nav_item_logs_verbose">Ayrıntılı Günlükler</string>
@@ -189,12 +181,8 @@
     <string name="settings_translation_contributors">Çeviri katılımcıları</string>
     <string name="settings_translation">Çeviriye katılın</string>
     <string name="settings_translation_summary">%s yazılımını çevirmemize yardım edin</string>
-    <string name="settings_create_shortcut_summary">Parazit yöneticiyi açmak için bir kısayol oluşturun</string>
-    <string name="settings_shortcut_pinned_hint">Ayarlar_kestirme_sabitlenmis</string>
-    <string name="settings_unsupported_pin_shortcut_summary">Geçerli varsayılan başlatıcı, pin kısayollarını desteklemiyor</string>
     <string name="settings_enable_status_notification">Durum Bildirimi</string>
     <string name="settings_enable_status_notification_summary">Parazit yöneticiyi açabilmek için bir bildirim göster</string>
-    <string name="disable_status_notification_error">Kısayol yok, bildirim devre dışı bırakılamaz</string>
     <string name="settings_update_channel">Güncelleme kanalı</string>
     <string name="update_channel_stable">Stabil</string>
     <string name="update_channel_bate">Beta</string>

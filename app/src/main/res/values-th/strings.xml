@@ -48,7 +48,7 @@
     <string name="selinux_policy_not_loaded_summary">การโหลด SEPolicy ไม่ถูกต้อง</string>
     <string name="selinux_policy_not_loaded"><![CDATA[หากฟีเจอร์บางอย่างไม่ทำงาน<br/>โปรดรายงานที่<a href="https://github.com/topjohnwu/Magisk/issues"><b>Magisk</b></a> developer.]]></string>
     <string name="system_inject_fail_summary">Injection ระบบ Framework ล้มเหลว</string>
-    <string name="system_inject_fail"><![CDATA[สิ่งนี้เกิดขึ้นได้ยากและอาจเกิดจาก <b>Magisk</b> หรือโมดูล Magisk ที่มีคุณภาพต่ำบางตัว<br/>โปรดลองปิดการใช้งานโมดูล Magisk อื่นที่ไม่ใช่ Riru และ LSPosed หรือส่งบันทึกแบบเต็มไปยังนักพัฒนา]]></string>
+    <string name="system_inject_fail"><![CDATA[สิ่งนี้เกิดขึ้นได้ยากและอาจเกิดจาก <b>Magisk</b> หรือโมดูล Magisk ที่มีคุณภาพต่ำบางตัว<br/>โปรดลองปิดการใช้งานโมดูล Magisk อื่นที่ไม่ใช่ Zygisk และ LSPosed หรือส่งบันทึกแบบเต็มไปยังนักพัฒนา]]></string>
     <string name="system_prop_incorrect_summary">System prop ไม่ถูกต้อง</string>
     <string name="system_prop_incorrect"><![CDATA[คุณสมบัติระบบที่จำเป็นบางอย่างถูกลบหรือแก้ไข<br/>โมดูลอาจใช้ไม่ได้ในบางครั้ง]]></string>
     <string name="need_update">จำเป็นต้องอัพเดท</string>
@@ -72,14 +72,6 @@
     <string name="update_lsposed">อัพเดท LSPosed</string>
     <string name="update_lsposed_msg">ยืนยันการอัปเดต LSPosed? อุปกรณ์นี้จะรีบูตหลังจากอัปเดตเสร็จสิ้น</string>
     <string name="info_copied">คัดลอกไปยังคลิปบอร์ดแล้ว</string>
-    <!-- WelcomeDialog -->
-    <string name="parasitic_welcome">ยินดีต้อนรับสู่ LSPosed</string>
-    <string name="parasitic_welcome_summary">คุณกำลังใช้ Lsposed ซึ่งสามารถสร้างทางลัดหรือยังคงเปิดจากการแจ้งเตือน</string>
-    <string name="parasitic_welcome_summary_no_shortcut_support">คุณกำลังใช้ตัวจัดการ Lsposed ซึ่งสามารถเปิดได้จากการแจ้งเตือน</string>
-    <string name="create_shortcut">สร้างทางลัด</string>
-    <string name="never_show">ไม่ต้องแสดง</string>
-    <string name="app_welcome">แนะนำ กำจัดไวรัส</string>
-    <string name="app_welcome_summary">LSPosed รองรับการปรสิตของระบบเพื่อหลีกเลี่ยงการตรวจจับ คุณสามารถเปิดโปรแกรมจัดการปรสิตได้จากการแจ้งเตือน ขอแนะนำให้ถอนการติดตั้งแอปพลิเคชันปัจจุบัน</string>
     <!-- LogsActivity -->
     <string name="menuSaveToSd">บันทึก</string>
     <string name="nav_item_logs_verbose">บันทึกอย่างละเอียด</string>
@@ -188,12 +180,8 @@
     <string name="settings_translation_contributors">ผู้ร่วมแปล</string>
     <string name="settings_translation">มีส่วนร่วมในการแปล</string>
     <string name="settings_translation_summary">ช่วยเราแปล %s เป็นภาษาของคุณ</string>
-    <string name="settings_create_shortcut_summary">สร้างทางลัดที่สามารถเปิดตัวจัดการปรสิต</string>
-    <string name="settings_shortcut_pinned_hint">ตรึงทางลัดแล้ว</string>
-    <string name="settings_unsupported_pin_shortcut_summary">Launcher เริ่มต้นปัจจุบันไม่รองรับทางลัด PIN</string>
     <string name="settings_enable_status_notification">การแจ้งเตือนสถานะ</string>
     <string name="settings_enable_status_notification_summary">แสดงการแจ้งเตือนที่สามารถเปิดตัวจัดการปรสิต</string>
-    <string name="disable_status_notification_error">ไม่มีทางลัด ไม่สามารถปิดการแจ้งเตือนได้</string>
     <string name="settings_update_channel">อัพเดทช่อง</string>
     <string name="update_channel_stable">มั่นคง</string>
     <string name="update_channel_bate">เบต้า</string>

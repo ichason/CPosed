@@ -9,18 +9,26 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           submodules: 'recursive'
+          ssh-key: ${{ secrets.SSH_KEY }}
           fetch-depth: 0
       - name: Set up JDK 17
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
-          distribution: 'zulu'
+          distribution: 'temurin'
           java-version: '17'
           cache: 'gradle'
+      - uses: seanmiddleditch/gha-setup-ninja@master
+        with:
+          version: 1.12.0
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
       - name: Build with Gradle
-        run: ./gradlew :lsplant:publish
+        run: |
+          rm -rf $ANDROID_HOME/cmake
+          ./gradlew :lsplant:publish
         env:
           ORG_GRADLE_PROJECT_signingKey: ${{ secrets.maven_pgp_signingKey }}
           ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.maven_pgp_signingPassword }}

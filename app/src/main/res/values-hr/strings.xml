@@ -51,7 +51,7 @@
     <string name="selinux_policy_not_loaded_summary">SEPolicy nije pravilno učitan</string>
     <string name="selinux_policy_not_loaded"><![CDATA[Neke značajke neće raditi.<br/>Prijavite ovo <a href="https://github.com/topjohnwu/Magisk/issues"><b>Magisk</b></a> programeru.]]></string>
     <string name="system_inject_fail_summary">Injektiranje u System Framework nije uspjelo</string>
-    <string name="system_inject_fail"><![CDATA[Ovo je rijetko i može biti uzrokovano aplikacijom <b>Magisk</b> ili nekim Magisk modulima niske kvalitete.<br/>Pokušajte onemogućiti Magisk module koji nisu Riru i LSPosed ili pošaljite cijeli zapis programerima.]]></string>
+    <string name="system_inject_fail"><![CDATA[Ovo je rijetko i može biti uzrokovano aplikacijom <b>Magisk</b> ili nekim Magisk modulima niske kvalitete.<br/>Pokušajte onemogućiti Magisk module koji nisu Zygisk i LSPosed ili pošaljite cijeli zapis programerima.]]></string>
     <string name="system_prop_incorrect_summary">Svojstva sustava nisu ispravna</string>
     <string name="system_prop_incorrect"><![CDATA[Neka od potrebnih svojstva sustava su izbrisana ili izmijenjena.<br/>Moduli povremeno mogu biti nedostupni.]]></string>
     <string name="need_update">Treba ažurirati</string>
@@ -75,14 +75,6 @@
     <string name="update_lsposed">Ažurirajte LSPosed</string>
     <string name="update_lsposed_msg">Potvrditi ažuriranje LSPosed? Ovaj će se uređaj ponovno pokrenuti nakon završetka ažuriranja</string>
     <string name="info_copied">Kopirano u međuspremnik</string>
-    <!-- WelcomeDialog -->
-    <string name="parasitic_welcome">Dobrodošli u LSPosed</string>
-    <string name="parasitic_welcome_summary">Koristite parazitski upravitelj, koji može stvoriti prečac ili još uvijek otvoriti iz obavijesti.</string>
-    <string name="parasitic_welcome_summary_no_shortcut_support">Koristite parazitski upravitelj koji se može otvoriti iz obavijesti.</string>
-    <string name="create_shortcut">Napravi prečac</string>
-    <string name="never_show">Nikad ne pokazuj</string>
-    <string name="app_welcome">Parazitski Manager Preporučen</string>
-    <string name="app_welcome_summary">LSPosed sada podržava parazitizaciju sustava kako bi se izbjeglo otkrivanje, možete otvoriti parazitski upravitelj iz obavijesti. Preporuča se deinstalirati trenutnu aplikaciju.</string>
     <!-- LogsActivity -->
     <string name="menuSaveToSd">Sačuvaj</string>
     <string name="nav_item_logs_verbose">Opširni zapisi</string>
@@ -191,12 +183,8 @@
     <string name="settings_translation_contributors">Suradnici prijevoda</string>
     <string name="settings_translation">Sudjelujte u prevođenju</string>
     <string name="settings_translation_summary">Pomozite nam prevesti %s na vaš jezik</string>
-    <string name="settings_create_shortcut_summary">Napravite prečac koji može otvoriti parazitski upravitelj</string>
-    <string name="settings_shortcut_pinned_hint">Prečac prikvačen</string>
-    <string name="settings_unsupported_pin_shortcut_summary">Trenutačni zadani pokretač ne podržava prečace pribadače</string>
     <string name="settings_enable_status_notification">Obavijest o statusu</string>
     <string name="settings_enable_status_notification_summary">Prikaži obavijest koja može otvoriti parazitski upravitelj</string>
-    <string name="disable_status_notification_error">Nema prečaca, nije moguće onemogućiti obavijest</string>
     <string name="settings_update_channel">Ažurirajte kanal</string>
     <string name="update_channel_stable">Stabilan</string>
     <string name="update_channel_bate">Beta</string>

@@ -1,0 +1,13 @@
+*.o
+*.ko
+*.mod.c
+*.cmd
+.tmp_versions
+Module.markers
+Module.symvers
+modules.order
+.gdb_history
+xzminidec
+buftest
+boottest
+bytetest

@@ -20,12 +20,12 @@
 
 package android.app;
 
-import static oc.os.lz.secure.CHelpers.findClass;
-import static oc.os.lz.secure.CHelpers.findFieldIfExists;
-import static oc.os.lz.secure.CHelpers.findMethodExactIfExists;
-import static oc.os.lz.secure.CHelpers.getObjectField;
-import static oc.os.lz.secure.CHelpers.newInstance;
-import static oc.os.lz.secure.CHelpers.setFloatField;
+import static de.robv.android.xposed.XposedHelpers.findClass;
+import static de.robv.android.xposed.XposedHelpers.findFieldIfExists;
+import static de.robv.android.xposed.XposedHelpers.findMethodExactIfExists;
+import static de.robv.android.xposed.XposedHelpers.getObjectField;
+import static de.robv.android.xposed.XposedHelpers.newInstance;
+import static de.robv.android.xposed.XposedHelpers.setFloatField;
 
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
@@ -37,8 +37,8 @@ import android.view.Display;
 import java.lang.ref.WeakReference;
 import java.util.Map;
 
-import oc.os.lz.secure.XSharedPreferences;
-import oc.os.lz.secure.CBridge;
+import de.robv.android.xposed.XSharedPreferences;
+import de.robv.android.xposed.XposedBridge;
 
 /**
  * Contains various methods for information about the current app.
@@ -71,7 +71,7 @@ public final class AndroidAppHelper {
 		try {
 			return newInstance(CLASS_RESOURCES_KEY, resDir, splitResDirs, overlayDirs, libDirs, displayId, overrideConfiguration, compatInfo);
 		} catch (Throwable t) {
-			CBridge.log(t);
+			XposedBridge.log(t);
 			return null;
 		}
 	}

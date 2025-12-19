@@ -49,7 +49,7 @@
     <string name="selinux_policy_not_loaded_summary">Selinux policy no está cargado correctamente</string>
     <string name="selinux_policy_not_loaded"><![CDATA[Algunas funciones no funcionarán.<br/>Informa de ello al desarrollador de <a href="https://github.com/topjohnwu/Magisk/issues"><b>Magisk</b></a> .]]></string>
     <string name="system_inject_fail_summary">System Framework injection failed</string>
-    <string name="system_inject_fail"><![CDATA[This is rare and may be caused by <b>Magisk</b> or some low-quality Magisk modules.<br/>Please try to disable Magisk modules other than Riru and LSPosed or submit full log to developers.]]></string>
+    <string name="system_inject_fail"><![CDATA[This is rare and may be caused by <b>Magisk</b> or some low-quality Magisk modules.<br/>Please try to disable Magisk modules other than Zygisk and LSPosed or submit full log to developers.]]></string>
     <string name="system_prop_incorrect_summary">System prop incorrect</string>
     <string name="system_prop_incorrect"><![CDATA[Some necessary system properties deleted or modified.<br/>Modules may invalidate occasionally.]]></string>
     <string name="need_update">Need to update</string>
@@ -73,14 +73,6 @@
     <string name="update_lsposed">Actualizar LSPosed</string>
     <string name="update_lsposed_msg">¿Confirmar para actualizar LSPose? Este dispositivo se reiniciará después de completar la actualización</string>
     <string name="info_copied">Información copiada al portapapeles</string>
-    <!-- WelcomeDialog -->
-    <string name="parasitic_welcome">Bienvenido a LSPosed</string>
-    <string name="parasitic_welcome_summary">Usted está utilizando el gestor de parásitos, que puede crear acceso directo o todavía abierta de notificación.</string>
-    <string name="parasitic_welcome_summary_no_shortcut_support">Estás usando el gestor de parásitos, que se puede abrir desde la notificación.</string>
-    <string name="create_shortcut">Crear acceso directo</string>
-    <string name="never_show">Nunca mostrar</string>
-    <string name="app_welcome">Se recomienda Parasitic Manager</string>
-    <string name="app_welcome_summary">LSPosed ahora soporta la parasitación del sistema para evitar la detección, puede abrir el gestor de parásitos desde la notificación. Se recomienda desinstalar la aplicación actual.</string>
     <!-- LogsActivity -->
     <string name="menuSaveToSd">Guardar</string>
     <string name="nav_item_logs_verbose">Registros detallados</string>
@@ -189,12 +181,8 @@
     <string name="settings_translation_contributors">Colaboradores de traducción</string>
     <string name="settings_translation">Participar en la traducción</string>
     <string name="settings_translation_summary">Ayúdanos a traducir %s a tu idioma</string>
-    <string name="settings_create_shortcut_summary">Crear un acceso directo que pueda abrir el gestor de parásitos</string>
-    <string name="settings_shortcut_pinned_hint">Acceso directo anclado</string>
-    <string name="settings_unsupported_pin_shortcut_summary">El actual lanzador por defecto no admite accesos directos a pines</string>
     <string name="settings_enable_status_notification">Notificación de estado</string>
     <string name="settings_enable_status_notification_summary">Mostrar una notificación que puede abrir el gestor de parásitos</string>
-    <string name="disable_status_notification_error">No hay acceso directo, no se puede desactivar la notificación</string>
     <string name="settings_update_channel">Actualizar canal</string>
     <string name="update_channel_stable">Estable</string>
     <string name="update_channel_bate">Beta</string>

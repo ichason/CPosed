@@ -49,7 +49,7 @@
     <string name="selinux_policy_not_loaded_summary">SEPolicy no s\'ha carregat correctament</string>
     <string name="selinux_policy_not_loaded"><![CDATA[Algunes funcions no funcionaran.<br/>Informeu-ho al desenvolupador <a href="https://github.com/topjohnwu/Magisk/issues"><b>Magisk</b></a>.]]></string>
     <string name="system_inject_fail_summary">La injecció del marc del sistema ha fallat</string>
-    <string name="system_inject_fail"><![CDATA[Això és poc comú i podria ser causat per <b>Magisk</b> o algún Mòdul de baixa qualitat<br/>Si us plau, prova a desactivar els demés mòduls de magisk excepte Riru i LSPosed o envia un informe complet als desarrolladors.]]></string>
+    <string name="system_inject_fail"><![CDATA[Això és poc comú i podria ser causat per <b>Magisk</b> o algún Mòdul de baixa qualitat<br/>Si us plau, prova a desactivar els demés mòduls de magisk excepte Zygisk i LSPosed o envia un informe complet als desarrolladors.]]></string>
     <string name="system_prop_incorrect_summary">Prop del sistema incorrecte</string>
     <string name="system_prop_incorrect"><![CDATA[S\'han suprimit o modificat algunes propietats necessàries del sistema.<br/>Els mòduls poden invalidar-se ocasionalment.]]></string>
     <string name="need_update">Cal actualitzar</string>
@@ -73,14 +73,6 @@
     <string name="update_lsposed">Actualització LSPosed</string>
     <string name="update_lsposed_msg">Confirmeu per actualitzar LSPosed? Aquest dispositiu es reiniciarà un cop finalitzada l\'actualització</string>
     <string name="info_copied">S\'ha copiat al porta-retalls</string>
-    <!-- WelcomeDialog -->
-    <string name="parasitic_welcome">Benvingut a LSPosed</string>
-    <string name="parasitic_welcome_summary">Esteu utilitzant el gestor de paràsits, que pot crear dreceres o encara obrir-se des de la notificació.</string>
-    <string name="parasitic_welcome_summary_no_shortcut_support">Esteu utilitzant el gestor de paràsits, que es pot obrir des de la notificació.</string>
-    <string name="create_shortcut">Crear accès directe</string>
-    <string name="never_show">No mostris mai</string>
-    <string name="app_welcome">Administrador de paràsits recomanat</string>
-    <string name="app_welcome_summary">LSPosed ara admet la parasitització del sistema per evitar la detecció, podeu obrir el gestor de paràsits des de la notificació. Es recomana desinstal·lar l\'aplicació actual.</string>
     <!-- LogsActivity -->
     <string name="menuSaveToSd">Desa</string>
     <string name="nav_item_logs_verbose">Registres detallats</string>
@@ -189,12 +181,8 @@
     <string name="settings_translation_contributors">Col·laboradors de traducció</string>
     <string name="settings_translation">Participar en la traducció</string>
     <string name="settings_translation_summary">Ajuda\'ns a traduir %s al teu idioma</string>
-    <string name="settings_create_shortcut_summary">Creeu una drecera que pugui obrir el gestor de paràsits</string>
-    <string name="settings_shortcut_pinned_hint">Drecera fixada</string>
-    <string name="settings_unsupported_pin_shortcut_summary">El llançador predeterminat actual no admet dreceres de pin</string>
     <string name="settings_enable_status_notification">Notificació d\'estat</string>
     <string name="settings_enable_status_notification_summary">Mostra una notificació que pugui obrir el gestor de paràsits</string>
-    <string name="disable_status_notification_error">Sense drecera, no es pot desactivar la notificació</string>
     <string name="settings_update_channel">Actualitza el canal</string>
     <string name="update_channel_stable">Estable</string>
     <string name="update_channel_bate">Beta</string>

@@ -24,6 +24,7 @@
 
 #include "native_api.h"
 #include "logging.h"
+#include "symbol_cache.h"
 #include "utils/hook_helper.hpp"
 #include <sys/mman.h>
 #include <dobby.h>
@@ -48,9 +49,11 @@
  *      callback will not work.
  */
 
+using lsplant::operator""_sym;
+
 namespace lspd {
 
-    using splant::operator""_tstr;
+    using lsplant::Hooker;
     std::list<NativeOnModuleLoaded> moduleLoadedCallbacks;
     std::list<std::string> moduleNativeLibs;
     std::unique_ptr<void, std::function<void(void *)>> protected_page(
@@ -70,11 +73,14 @@ namespace lspd {
 
     void RegisterNativeLib(const std::string &library_name) {
         static bool initialized = []() {
-            return InstallNativeAPI({
+            return InstallNativeAPI(lsplant::InitInfo{
                 .inline_hooker = [](auto t, auto r) {
                     void* bk = nullptr;
                     return HookFunction(t, r, &bk) == RS_SUCCESS ? bk : nullptr;
                 },
+                .art_symbol_resolver = [](auto symbol) {
+                    return SandHook::ElfImg("/linker").getSymbAddress(symbol);},.art_symbol_prefix_resolver = [](auto symbol) {
+                    return SandHook::ElfImg("/linker").getSymbPrefixFirstAddress(symbol);},
             });
         }();
         if (!initialized) [[unlikely]] return;
@@ -90,11 +96,10 @@ namespace lspd {
         return false;
     }
 
-    CREATE_HOOK_STUB_ENTRY(
-            "__dl__Z9do_dlopenPKciPK17android_dlextinfoPKv",
-            void*, do_dlopen, (const char* name, int flags, const void* extinfo,
-                    const void* caller_addr), {
-                auto *handle = backup(name, flags, extinfo, caller_addr);
+    inline static auto do_dlopen_ = "__dl__Z9do_dlopenPKciPK17android_dlextinfoPKv"_sym.hook->*[]
+            <lsplant::Backup auto backup>
+            (const char* name, int flags, const void* extinfo, const void* caller_addr) static -> void* {
+            void *handle = backup(name, flags, extinfo, caller_addr);
                 std::string ns;
                 if (name) {
                     ns = std::string(name);
@@ -130,14 +135,14 @@ namespace lspd {
                     callback(name, handle);
                 }
                 return handle;
-            });
+            };
 
-    bool InstallNativeAPI(const splant::HookHandler & handler) {
+    bool InstallNativeAPI(const lsplant::HookHandler &handler) {
         auto *do_dlopen_sym = SandHook::ElfImg("/linker").getSymbAddress(
                 "__dl__Z9do_dlopenPKciPK17android_dlextinfoPKv");
         LOGD("InstallNativeAPI: {}", do_dlopen_sym);
         if (do_dlopen_sym) [[likely]] {
-            HookSymNoHandle(handler, do_dlopen_sym, do_dlopen);
+            handler(do_dlopen_);
             return true;
         }
         return false;

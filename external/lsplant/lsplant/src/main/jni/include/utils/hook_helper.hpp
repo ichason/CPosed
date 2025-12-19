@@ -1,207 +1,223 @@
 #pragma once
 
+#include <android/log.h>
+
 #include <concepts>
 
-#include "jni_helper.hpp"
 #include "lsplant.hpp"
+#include "type_traits.hpp"
 
-#if defined(__LP64__)
-#define LP_SELECT(lp32, lp64) lp64
-#else
-#define LP_SELECT(lp32, lp64) lp32
-#endif
+namespace lsplant {
 
-#define CONCATENATE(a, b) a##b
-
-#define CREATE_HOOK_STUB_ENTRY(SYM, RET, FUNC, PARAMS, DEF)                                        \
-    inline static struct : public clant::Hooker<RET PARAMS, decltype(CONCATENATE(SYM, _tstr))>{  \
-                               inline static RET replace PARAMS DEF} FUNC
-
-#define CREATE_MEM_HOOK_STUB_ENTRY(SYM, RET, FUNC, PARAMS, DEF)                                    \
-    inline static struct : public clant::MemHooker<RET PARAMS,                                   \
-                                                     decltype(CONCATENATE(SYM, _tstr))>{           \
-                               inline static RET replace PARAMS DEF} FUNC
-
-#define RETRIEVE_FUNC_SYMBOL(name, ...)                                                            \
-    (name##Sym = reinterpret_cast<name##Type>(clant::Dlsym(handler, __VA_ARGS__)))
-
-#define RETRIEVE_MEM_FUNC_SYMBOL(name, ...)                                                        \
-    (name##Sym = reinterpret_cast<name##Type::FunType>(clant::Dlsym(handler, __VA_ARGS__)))
-
-#define RETRIEVE_FIELD_SYMBOL(name, ...)                                                           \
-    (name = reinterpret_cast<decltype(name)>(clant::Dlsym(handler, __VA_ARGS__)))
-
-#define CREATE_FUNC_SYMBOL_ENTRY(ret, func, ...)                                                   \
-    typedef ret (*func##Type)(__VA_ARGS__);                                                        \
-    inline static ret (*func##Sym)(__VA_ARGS__);                                                   \
-    inline static ret func(__VA_ARGS__)
-
-#define CREATE_MEM_FUNC_SYMBOL_ENTRY(ret, func, thiz, ...)                                         \
-    using func##Type = clant::MemberFunction<ret(__VA_ARGS__)>;                                  \
-    inline static func##Type func##Sym;                                                            \
-    inline static ret func(thiz, ##__VA_ARGS__)
-
-namespace clant {
-
-using HookHandler = InitInfo;
-
-template <char... chars>
-struct tstring : public std::integer_sequence<char, chars...> {
-    inline constexpr static const char *c_str() { return str_; }
-
-    inline constexpr operator std::string_view() const { return {c_str(), sizeof...(chars)}; }
-
-private:
-    inline static constexpr char str_[]{chars..., '\0'};
+template <size_t N>
+struct FixedString {
+    consteval FixedString(const char (&str)[N]) { std::copy_n(str, N, data); }
+    char data[N] = {};
 };
 
-template <typename T, T... chars>
-inline constexpr tstring<chars...> operator""_tstr() {
-    return {};
-}
+template<typename T>
+concept FuncType = std::is_function_v<T> || std::is_member_function_pointer_v<T>;
 
-template <char... as, char... bs>
-inline constexpr tstring<as..., bs...> operator+(const tstring<as...> &, const tstring<bs...> &) {
-    return {};
-}
+template <FixedString, FuncType>
+struct Function;
 
-template <char... as>
-inline constexpr auto operator+(const std::string &a, const tstring<as...> &) {
-    char b[]{as..., '\0'};
-    return a + b;
-}
-
-template <char... as>
-inline constexpr auto operator+(const tstring<as...> &, const std::string &b) {
-    char a[]{as..., '\0'};
-    return a + b;
-}
-
-inline void *Dlsym(const HookHandler &handle, const char *name, bool match_prefix = false) {
-    if (auto match = handle.art_symbol_resolver(name); match) {
-        return match;
-    } else if (match_prefix && handle.art_symbol_prefix_resolver) {
-        return handle.art_symbol_prefix_resolver(name);
+template <FixedString Sym, typename Ret, typename... Args>
+struct Function<Sym, Ret(Args...)> {
+    [[gnu::always_inline]] static Ret operator()(Args... args) {
+        return inner_.function_(args...);
     }
-    return nullptr;
-}
+    [[gnu::always_inline]] operator bool() { return inner_.raw_function_; }
+    [[gnu::always_inline]] auto operator&() const { return inner_.function_; }
+    [[gnu::always_inline]] Function &operator=(void *function) {
+        inner_.raw_function_ = function;
+        return *this;
+    }
 
-template <typename Class, typename Return, typename T, typename... Args>
-requires(std::is_same_v<T, void> ||
-         std::is_same_v<Class, T>) inline static auto memfun_cast(Return (*func)(T *, Args...)) {
-    union {
-        Return (Class::*f)(Args...);
+private:
+    inline static union {
+        Ret (*function_)(Args...);
+        void *raw_function_ = nullptr;
+    } inner_;
+
+    static_assert(sizeof(inner_.function_) == sizeof(inner_.raw_function_));
+};
+
+template <FixedString Sym, class This, typename Ret, typename... Args>
+struct Function<Sym, Ret(This::*)(Args...)> {
+    [[gnu::always_inline]] static Ret operator()(This *thiz, Args... args) {
+        return (reinterpret_cast<ThisType *>(thiz)->*inner_.function_)(args...);
+    }
+    [[gnu::always_inline]] operator bool() { return inner_.raw_function_; }
+    [[gnu::always_inline]] auto operator&() const { return inner_.function_; }
+    [[gnu::always_inline]] Function &operator=(void *function) {
+        inner_.raw_function_ = function;
+        return *this;
+    }
+
+private:
+    using ThisType = std::conditional_t<std::is_same_v<This, void>, Function, This>;
+    inline static union {
+        Ret (ThisType::*function_)(Args...) const;
 
         struct {
-            decltype(func) p;
-            std::ptrdiff_t adj;
-        } data;
-    } u{.data = {func, 0}};
-    static_assert(sizeof(u.f) == sizeof(u.data), "Try different T");
-    return u.f;
-}
+            void *raw_function_ = nullptr;
+            [[maybe_unused]] std::ptrdiff_t adj = 0;
+        };
+    } inner_;
 
-template <std::same_as<void> T, typename Return, typename... Args>
-inline auto memfun_cast(Return (*func)(T *, Args...)) {
-    return memfun_cast<T>(func);
-}
-
-template <typename, typename = void>
-class MemberFunction;
-
-template <typename This, typename Return, typename... Args>
-class MemberFunction<Return(Args...), This> {
-    using SelfType = MemberFunction<Return(This *, Args...), This>;
-    using ThisType = std::conditional_t<std::is_same_v<This, void>, SelfType, This>;
-    using MemFunType = Return (ThisType::*)(Args...);
-
-public:
-    using FunType = Return (*)(This *, Args...);
-
-private:
-    MemFunType f_ = nullptr;
-
-public:
-    MemberFunction() = default;
-
-    MemberFunction(FunType f) : f_(memfun_cast<ThisType>(f)) {}
-
-    MemberFunction(MemFunType f) : f_(f) {}
-
-    Return operator()(This *thiz, Args... args) {
-        return (reinterpret_cast<ThisType *>(thiz)->*f_)(std::forward<Args>(args)...);
-    }
-
-    inline operator bool() { return f_ != nullptr; }
+    static_assert(sizeof(inner_.function_) == sizeof(inner_.raw_function_) + sizeof(inner_.adj));
 };
 
-// deduction guide
-template <typename This, typename Return, typename... Args>
-MemberFunction(Return (*f)(This *, Args...)) -> MemberFunction<Return(Args...), This>;
+template <FixedString, typename T>
+struct Field {
+    [[gnu::always_inline]] T *operator->() { return inner_.field_; }
+    [[gnu::always_inline]] T &operator*() { return *inner_.field_; }
+    [[gnu::always_inline]] operator bool() { return inner_.raw_field_ != nullptr; }
+    [[gnu::always_inline]] Field &operator=(void *field) {
+        inner_.raw_field_ = field;
+        return *this;
+    }
+private:
+    inline static union {
+        void *raw_field_ = nullptr;
+        T *field_;
+    } inner_;
 
-template <typename This, typename Return, typename... Args>
-MemberFunction(Return (This::*f)(Args...)) -> MemberFunction<Return(Args...), This>;
+    static_assert(sizeof(inner_.field_) == sizeof(inner_.raw_field_));
+};
 
-template <typename, typename>
+template <FixedString, FuncType>
 struct Hooker;
 
-template <typename Ret, typename... Args, char... cs>
-struct Hooker<Ret(Args...), tstring<cs...>> {
-    inline static Ret (*backup)(Args...) = nullptr;
-
-    inline static constexpr std::string_view sym = tstring<cs...>{};
+template <FixedString Sym, typename Ret, typename... Args>
+struct Hooker<Sym, Ret(Args...)> : Function<Sym, Ret(Args...)> {
+    [[gnu::always_inline]] Hooker &operator=(void *function) {
+        Function<Sym, Ret(Args...)>::operator=(function);
+        return *this;
+    }
+private:
+    [[gnu::always_inline]] constexpr Hooker(Ret (*replace)(Args...)) {
+        replace_ = replace;
+    };
+    friend struct HookHandler;
+    template<FixedString S>
+    friend struct Symbol;
+    inline static Ret (*replace_)(Args...) = nullptr;
 };
 
-template <typename, typename>
-struct MemHooker;
-template <typename Ret, typename This, typename... Args, char... cs>
-struct MemHooker<Ret(This, Args...), tstring<cs...>> {
-    inline static MemberFunction<Ret(Args...)> backup;
-    inline static constexpr std::string_view sym = tstring<cs...>{};
+template <FixedString Sym, class This, typename Ret, typename... Args>
+struct Hooker<Sym, Ret(This::*)(Args...)> : Function<Sym, Ret(This::*)(Args...)> {
+    [[gnu::always_inline]] Hooker &operator=(void *function) {
+        Function<Sym, Ret(This::*)(Args...)>::operator=(function);
+        return *this;
+    }
+private:
+    [[gnu::always_inline]] constexpr Hooker(Ret (*replace)(This *, Args...)) {
+        replace_ = replace;
+    };
+    friend struct HookHandler;
+    template<FixedString S>
+    friend struct Symbol;
+    inline static Ret (*replace_)(This *, Args...) = nullptr;
 };
 
-template <typename T>
-concept HookerType = requires(T a) {
-    a.backup;
-    a.replace;
-};
+struct HookHandler {
+    HookHandler(const InitInfo &info) : info_(info) {}
 
-template <HookerType T>
-inline static bool HookSymNoHandle(const HookHandler &handler, void *original, T &arg) {
-    if (original) {
-        if constexpr (is_instance_v<decltype(arg.backup), MemberFunction>) {
-            void *backup = handler.inline_hooker(original, reinterpret_cast<void *>(arg.replace));
-            arg.backup = reinterpret_cast<typename decltype(arg.backup)::FunType>(backup);
-        } else {
-            arg.backup = reinterpret_cast<decltype(arg.backup)>(
-                handler.inline_hooker(original, reinterpret_cast<void *>(arg.replace)));
+    template <typename T>
+    [[gnu::always_inline]] bool operator()(T &&arg) const {
+        return handle(std::forward<T>(arg), false);
+    }
+
+    template <typename T1, typename T2, typename... U>
+    [[gnu::always_inline]] bool operator()(T1 &&arg1, T2 &&arg2, U &&...args) const {
+        if constexpr(std::is_same_v<T2, bool>)
+            return handle(std::forward<T1>(arg1), std::forward<T2>(arg2)) || this->operator()(std::forward<U>(args)...);
+        else
+            return handle(std::forward<T1>(arg1), false) || this->operator()(std::forward<T2>(arg2), std::forward<U>(args)...);
+    }
+
+private:
+    [[gnu::always_inline]] bool operator()() const {
+        return false;
+    }
+
+    const InitInfo &info_;
+    template<FixedString Sym, typename ...Us, template<FixedString, typename...> typename T>
+    requires(!requires { T<Sym, Us...>::replace_; })
+    [[gnu::always_inline]] bool handle(T<Sym, Us...> &target, bool match_prefix) const {
+        return target = dlsym<Sym>(match_prefix);
+    }
+
+    template<FixedString Sym, typename ...Us, template<FixedString, typename...> typename T>
+    requires(requires { T<Sym, Us...>::replace_; })
+    [[gnu::always_inline]] bool handle(T<Sym, Us...> &hooker, bool match_prefix) const {
+        return hooker = hook(dlsym<Sym>(match_prefix), reinterpret_cast<void *>(hooker.replace_));
+    }
+
+    template <FixedString Sym>
+    [[gnu::always_inline]] void *dlsym(bool match_prefix = false) const {
+        if (auto match = info_.art_symbol_resolver(Sym.data); match) {
+            return match;
         }
-        return true;
-    } else {
-        return false;
+        if (match_prefix && info_.art_symbol_prefix_resolver) [[likely]] {
+            return info_.art_symbol_prefix_resolver(Sym.data);
+        }
+        return nullptr;
     }
+
+    [[gnu::always_inline]] void *hook(void *original, void *replace) const {
+        if (original) [[likely]] {
+            return info_.inline_hooker(original, replace);
+        }
+        return nullptr;
+    }
+};
+
+template<typename F>
+concept Backup = std::is_function_v<std::remove_pointer_t<F>>;
+
+template<typename F>
+concept MemBackup = std::is_member_function_pointer_v<std::remove_pointer_t<F>> || Backup<F>;
+
+template<FixedString S>
+struct Symbol {
+    template<typename T>
+    inline static decltype([]{
+        if constexpr (FuncType<T>) {
+            return Function<S, T>{};
+        } else {
+            return Field<S, T>{};
+        }
+    }()) as{};
+
+    [[no_unique_address]] struct Hook {
+        template<typename F>
+        auto operator->*(F&&) const {
+            using Signature = decltype(F::template operator()<&decltype([] static {})::operator()>);
+            if constexpr (requires { F::template operator()<&decltype([] {})::operator()>; }) {
+                using HookerType = Hooker<S, decltype([]<class This, typename Ret, typename... Args>(Ret(*)(This*, Args...)) -> Ret(This::*)(Args...) {
+                    return {};
+                }.template operator()(std::declval<Signature>()))>;
+                return HookerType{static_cast<decltype(HookerType::replace_)>(&F::template operator()<HookerType::operator()>)};
+            } else {
+                using HookerType = Hooker<S, Signature>;
+                return HookerType{static_cast<decltype(HookerType::replace_)>(&F::template operator()<HookerType::operator()>)};
+            }
+        };
+    } hook;
+};
+
+template <FixedString S> constexpr Symbol<S> operator""_sym() {
+    return {};
 }
 
-template <HookerType T>
-inline static bool HookSym(const HookHandler &handler, T &arg) {
-    auto original = handler.art_symbol_resolver(arg.sym);
-    return HookSymNoHandle(handler, original, arg);
-}
-
-template <HookerType T, HookerType... Args>
-inline static bool HookSyms(const HookHandler &handle, T &first, Args &...rest) {
-    if (!(HookSym(handle, first) || ... || HookSym(handle, rest))) {
-        __android_log_print(ANDROID_LOG_ERROR,
-#ifdef LOG_TAG
-                            LOG_TAG,
+template<FixedString S, FixedString P>
+consteval auto operator|([[maybe_unused]] Symbol<S> a, [[maybe_unused]] Symbol<P> b) {
+#if defined(__LP64__)
+    return b;
 #else
-                            "HookHelper",
+    return a;
 #endif
-                            "Hook Fails: %*s", static_cast<int>(first.sym.size()),
-                            first.sym.data());
-        return false;
-    }
-    return true;
 }
-
 }  // namespace lsplant

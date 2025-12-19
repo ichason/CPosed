@@ -37,100 +37,100 @@ typedef int32_t s4;
 typedef int64_t s8;
 
 // General constants
-constexpr u4 kEndianConstant = 0x12345678;
-constexpr u4 kNoIndex = 0xffffffff;
-constexpr u4 kSHA1DigestLen = 20;
+constexpr inline u4 kEndianConstant = 0x12345678;
+constexpr inline u4 kNoIndex = 0xffffffff;
+constexpr inline u4 kSHA1DigestLen = 20;
 
 // Annotation visibility
-constexpr u1 kVisibilityBuild   = 0x00;
-constexpr u1 kVisibilityRuntime = 0x01;
-constexpr u1 kVisibilitySystem  = 0x02;
+constexpr inline u1 kVisibilityBuild   = 0x00;
+constexpr inline u1 kVisibilityRuntime = 0x01;
+constexpr inline u1 kVisibilitySystem  = 0x02;
 
 // Special visibility: encoded_annotation, not annotation_item
-constexpr u1 kVisibilityEncoded = 0xff;
+constexpr inline u1 kVisibilityEncoded = 0xff;
 
 // encoded_value types
-constexpr u1 kEncodedByte           = 0x00;
-constexpr u1 kEncodedShort          = 0x02;
-constexpr u1 kEncodedChar           = 0x03;
-constexpr u1 kEncodedInt            = 0x04;
-constexpr u1 kEncodedLong           = 0x06;
-constexpr u1 kEncodedFloat          = 0x10;
-constexpr u1 kEncodedDouble         = 0x11;
-constexpr u1 kEncodedMethodHandle   = 0x15;
-constexpr u1 kEncodedMethodType     = 0x16;
-constexpr u1 kEncodedString         = 0x17;
-constexpr u1 kEncodedType           = 0x18;
-constexpr u1 kEncodedField          = 0x19;
-constexpr u1 kEncodedMethod         = 0x1a;
-constexpr u1 kEncodedEnum           = 0x1b;
-constexpr u1 kEncodedArray          = 0x1c;
-constexpr u1 kEncodedAnnotation     = 0x1d;
-constexpr u1 kEncodedNull           = 0x1e;
-constexpr u1 kEncodedBoolean        = 0x1f;
+constexpr inline u1 kEncodedByte           = 0x00;
+constexpr inline u1 kEncodedShort          = 0x02;
+constexpr inline u1 kEncodedChar           = 0x03;
+constexpr inline u1 kEncodedInt            = 0x04;
+constexpr inline u1 kEncodedLong           = 0x06;
+constexpr inline u1 kEncodedFloat          = 0x10;
+constexpr inline u1 kEncodedDouble         = 0x11;
+constexpr inline u1 kEncodedMethodHandle   = 0x15;
+constexpr inline u1 kEncodedMethodType     = 0x16;
+constexpr inline u1 kEncodedString         = 0x17;
+constexpr inline u1 kEncodedType           = 0x18;
+constexpr inline u1 kEncodedField          = 0x19;
+constexpr inline u1 kEncodedMethod         = 0x1a;
+constexpr inline u1 kEncodedEnum           = 0x1b;
+constexpr inline u1 kEncodedArray          = 0x1c;
+constexpr inline u1 kEncodedAnnotation     = 0x1d;
+constexpr inline u1 kEncodedNull           = 0x1e;
+constexpr inline u1 kEncodedBoolean        = 0x1f;
 
 // encoded_value header
-constexpr u1 kEncodedValueTypeMask  = 0x1f;
-constexpr u1 kEncodedValueArgShift  = 5;
+constexpr inline u1 kEncodedValueTypeMask  = 0x1f;
+constexpr inline u1 kEncodedValueArgShift  = 5;
 
 // access_flags
-constexpr u4 kAccPublic                 = 0x0001;     // class, field, method, ic
-constexpr u4 kAccPrivate                = 0x0002;     // field, method, ic
-constexpr u4 kAccProtected              = 0x0004;     // field, method, ic
-constexpr u4 kAccStatic                 = 0x0008;     // field, method, ic
-constexpr u4 kAccFinal                  = 0x0010;     // class, field, method, ic
-constexpr u4 kAccSynchronized           = 0x0020;     // method (only allowed on natives)
-constexpr u4 kAccSuper                  = 0x0020;     // class (not used in dex)
-constexpr u4 kAccVolatile               = 0x0040;     // field
-constexpr u4 kAccBridge                 = 0x0040;     // method
-constexpr u4 kAccTransient              = 0x0080;     // field
-constexpr u4 kAccVarargs                = 0x0080;     // method
-constexpr u4 kAccNative                 = 0x0100;     // method
-constexpr u4 kAccInterface              = 0x0200;     // class, ic
-constexpr u4 kAccAbstract               = 0x0400;     // class, method, ic
-constexpr u4 kAccStrict                 = 0x0800;     // method
-constexpr u4 kAccSynthetic              = 0x1000;     // class, field, method, ic
-constexpr u4 kAccAnnotation             = 0x2000;     // class, ic
-constexpr u4 kAccEnum                   = 0x4000;     // class, field, ic
-constexpr u4 kAccConstructor            = 0x00010000; // method (dex only) <(cl)init>
-constexpr u4 kAccDeclaredSynchronized   = 0x00020000; // method (dex only)
+constexpr inline u4 kAccPublic                 = 0x0001;     // class, field, method, ic
+constexpr inline u4 kAccPrivate                = 0x0002;     // field, method, ic
+constexpr inline u4 kAccProtected              = 0x0004;     // field, method, ic
+constexpr inline u4 kAccStatic                 = 0x0008;     // field, method, ic
+constexpr inline u4 kAccFinal                  = 0x0010;     // class, field, method, ic
+constexpr inline u4 kAccSynchronized           = 0x0020;     // method (only allowed on natives)
+constexpr inline u4 kAccSuper                  = 0x0020;     // class (not used in dex)
+constexpr inline u4 kAccVolatile               = 0x0040;     // field
+constexpr inline u4 kAccBridge                 = 0x0040;     // method
+constexpr inline u4 kAccTransient              = 0x0080;     // field
+constexpr inline u4 kAccVarargs                = 0x0080;     // method
+constexpr inline u4 kAccNative                 = 0x0100;     // method
+constexpr inline u4 kAccInterface              = 0x0200;     // class, ic
+constexpr inline u4 kAccAbstract               = 0x0400;     // class, method, ic
+constexpr inline u4 kAccStrict                 = 0x0800;     // method
+constexpr inline u4 kAccSynthetic              = 0x1000;     // class, field, method, ic
+constexpr inline u4 kAccAnnotation             = 0x2000;     // class, ic
+constexpr inline u4 kAccEnum                   = 0x4000;     // class, field, ic
+constexpr inline u4 kAccConstructor            = 0x00010000; // method (dex only) <(cl)init>
+constexpr inline u4 kAccDeclaredSynchronized   = 0x00020000; // method (dex only)
 
 // map_item type codes
-constexpr u2 kHeaderItem                = 0x0000;
-constexpr u2 kStringIdItem              = 0x0001;
-constexpr u2 kTypeIdItem                = 0x0002;
-constexpr u2 kProtoIdItem               = 0x0003;
-constexpr u2 kFieldIdItem               = 0x0004;
-constexpr u2 kMethodIdItem              = 0x0005;
-constexpr u2 kClassDefItem              = 0x0006;
-constexpr u2 kMapList                   = 0x1000;
-constexpr u2 kTypeList                  = 0x1001;
-constexpr u2 kAnnotationSetRefList      = 0x1002;
-constexpr u2 kAnnotationSetItem         = 0x1003;
-constexpr u2 kClassDataItem             = 0x2000;
-constexpr u2 kCodeItem                  = 0x2001;
-constexpr u2 kStringDataItem            = 0x2002;
-constexpr u2 kDebugInfoItem             = 0x2003;
-constexpr u2 kAnnotationItem            = 0x2004;
-constexpr u2 kEncodedArrayItem          = 0x2005;
-constexpr u2 kAnnotationsDirectoryItem  = 0x2006;
+constexpr inline u2 kHeaderItem                = 0x0000;
+constexpr inline u2 kStringIdItem              = 0x0001;
+constexpr inline u2 kTypeIdItem                = 0x0002;
+constexpr inline u2 kProtoIdItem               = 0x0003;
+constexpr inline u2 kFieldIdItem               = 0x0004;
+constexpr inline u2 kMethodIdItem              = 0x0005;
+constexpr inline u2 kClassDefItem              = 0x0006;
+constexpr inline u2 kMapList                   = 0x1000;
+constexpr inline u2 kTypeList                  = 0x1001;
+constexpr inline u2 kAnnotationSetRefList      = 0x1002;
+constexpr inline u2 kAnnotationSetItem         = 0x1003;
+constexpr inline u2 kClassDataItem             = 0x2000;
+constexpr inline u2 kCodeItem                  = 0x2001;
+constexpr inline u2 kStringDataItem            = 0x2002;
+constexpr inline u2 kDebugInfoItem             = 0x2003;
+constexpr inline u2 kAnnotationItem            = 0x2004;
+constexpr inline u2 kEncodedArrayItem          = 0x2005;
+constexpr inline u2 kAnnotationsDirectoryItem  = 0x2006;
 
 // debug info opcodes
-constexpr u1 DBG_END_SEQUENCE           = 0x00;
-constexpr u1 DBG_ADVANCE_PC             = 0x01;
-constexpr u1 DBG_ADVANCE_LINE           = 0x02;
-constexpr u1 DBG_START_LOCAL            = 0x03;
-constexpr u1 DBG_START_LOCAL_EXTENDED   = 0x04;
-constexpr u1 DBG_END_LOCAL              = 0x05;
-constexpr u1 DBG_RESTART_LOCAL          = 0x06;
-constexpr u1 DBG_SET_PROLOGUE_END       = 0x07;
-constexpr u1 DBG_SET_EPILOGUE_BEGIN     = 0x08;
-constexpr u1 DBG_SET_FILE               = 0x09;
-constexpr u1 DBG_FIRST_SPECIAL          = 0x0a;
+constexpr inline u1 DBG_END_SEQUENCE           = 0x00;
+constexpr inline u1 DBG_ADVANCE_PC             = 0x01;
+constexpr inline u1 DBG_ADVANCE_LINE           = 0x02;
+constexpr inline u1 DBG_START_LOCAL            = 0x03;
+constexpr inline u1 DBG_START_LOCAL_EXTENDED   = 0x04;
+constexpr inline u1 DBG_END_LOCAL              = 0x05;
+constexpr inline u1 DBG_RESTART_LOCAL          = 0x06;
+constexpr inline u1 DBG_SET_PROLOGUE_END       = 0x07;
+constexpr inline u1 DBG_SET_EPILOGUE_BEGIN     = 0x08;
+constexpr inline u1 DBG_SET_FILE               = 0x09;
+constexpr inline u1 DBG_FIRST_SPECIAL          = 0x0a;
 
 // special debug info values
-constexpr int DBG_LINE_BASE = -4;
-constexpr int DBG_LINE_RANGE = 15;
+constexpr inline int DBG_LINE_BASE = -4;
+constexpr inline int DBG_LINE_RANGE = 15;
 
 // "header_item"
 struct Header {

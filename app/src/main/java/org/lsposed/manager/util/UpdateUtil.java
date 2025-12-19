@@ -46,7 +46,7 @@ import okio.Okio;
 public class UpdateUtil {
     public static void loadRemoteVersion() {
         var request = new Request.Builder()
-                .url("https://api.github.com/repos/LSPosed/LSPosed/releases/latest")
+                .url("https://api.github.com/repos/re-zero001/LSPosed-Irena/releases/latest")
                 .addHeader("Accept", "application/vnd.github.v3+json")
                 .build();
         var callback = new Callback() {
@@ -55,7 +55,7 @@ public class UpdateUtil {
                 if (!response.isSuccessful()) return;
                 var body = response.body();
                 if (body == null) return;
-                String api = ConfigManager.isBinderAlive() ? ConfigManager.getApi() : "riru";
+                String api = ConfigManager.isBinderAlive() ? ConfigManager.getApi() : "zygisk";
                 try {
                     var info = JsonParser.parseReader(body.charStream()).getAsJsonObject();
                     var notes = info.get("body").getAsString();
@@ -107,19 +107,7 @@ public class UpdateUtil {
     }
 
     public static boolean needUpdate() {
-        var pref = App.getPreferences();
-        if (!pref.getBoolean("checked", false)) return false;
-        var now = Instant.now();
-        var buildTime = Instant.ofEpochSecond(BuildConfig.BUILD_TIME);
-        var check = pref.getLong("latest_check", 0);
-        if (check > 0) {
-            var checkTime = Instant.ofEpochSecond(check);
-            if (checkTime.atOffset(ZoneOffset.UTC).plusDays(30).toInstant().isBefore(now))
-                return true;
-            var code = pref.getInt("latest_version", 0);
-            return code > BuildConfig.VERSION_CODE;
-        }
-        return buildTime.atOffset(ZoneOffset.UTC).plusDays(30).toInstant().isBefore(now);
+        return false;
     }
 
     @Nullable

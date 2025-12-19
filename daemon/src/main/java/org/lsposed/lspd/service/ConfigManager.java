@@ -60,6 +60,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
@@ -91,6 +92,9 @@ import hidden.HiddenApiBridge;
 
 public class ConfigManager {
     private static ConfigManager instance = null;
+    private final SharedMemory accessMatrixMemory;
+    // appid bitmap
+    private final ByteBuffer accessMatrix;
 
     private final SQLiteDatabase db = openDb();
 
@@ -202,9 +206,11 @@ public class ConfigManager {
             Log.e(TAG, "skip injecting into android because sepolicy was not loaded properly");
             return true; // skip
         }
+        /*
         try (Cursor cursor = db.query("scope INNER JOIN modules ON scope.mid = modules.mid", new String[]{"modules.mid"}, "app_pkg_name=? AND enabled=1", new String[]{"system"}, null, null, null)) {
             return cursor == null || !cursor.moveToNext();
-        }
+        }*/
+        return false;
     }
 
     @SuppressLint("BlockedPrivateApi")
@@ -263,15 +269,8 @@ public class ConfigManager {
 
         Object bool = config.get("enable_verbose_log");
         verboseLog = bool == null || (boolean) bool;
-
         bool = config.get("enable_dex_obfuscate");
         dexObfuscate = bool == null || (boolean) bool;
-
-        bool = config.get("enable_auto_add_shortcut");
-        if (bool != null) {
-            // TODO: remove
-            updateModulePrefs("lspd", 0, "config", "enable_auto_add_shortcut", null);
-        }
 
         bool = config.get("enable_status_notification");
         enableStatusNotification = bool == null || (boolean) bool;
@@ -290,7 +289,7 @@ public class ConfigManager {
         try {
             var perms = PosixFilePermissions.fromString("rwx--x--x");
             Files.createDirectories(miscPath, PosixFilePermissions.asFileAttribute(perms));
-            walkFileTree(miscPath, f -> SELinux.setFileContext(f.toString(), "u:object_r:magisk_file:s0"));
+            walkFileTree(miscPath, f -> SELinux.setFileContext(f.toString(), "u:object_r:lsposed_file:s0"));
         } catch (IOException e) {
             Log.e(TAG, Log.getStackTraceString(e));
         }
@@ -302,14 +301,15 @@ public class ConfigManager {
 
     public synchronized void updateManager(boolean uninstalled) {
         if (uninstalled) {
+            setAccessMatrixAppId(managerUid, false);
             managerUid = -1;
-            return;
         }
         if (!PackageService.isAlive()) return;
         try {
             PackageInfo info = PackageService.getPackageInfo(BuildConfig.DEFAULT_MANAGER_PACKAGE_NAME, 0, 0);
             if (info != null) {
                 managerUid = info.applicationInfo.uid;
+                setAccessMatrixAppId(managerUid, true);
             } else {
                 managerUid = -1;
                 Log.i(TAG, "manager is not installed");
@@ -340,6 +340,12 @@ public class ConfigManager {
         HandlerThread cacheThread = new HandlerThread("cache");
         cacheThread.start();
         cacheHandler = new Handler(cacheThread.getLooper());
+        try {
+            accessMatrixMemory = SharedMemory.create("access", 1250);
+            accessMatrix = accessMatrixMemory.mapReadWrite();
+        } catch (ErrnoException e) {
+            throw new RuntimeException(e);
+        }
 
         initDB();
         updateConfig();
@@ -524,6 +530,23 @@ public class ConfigManager {
         }
         cachedModule.clear();
         cachedScope.clear();
+        clearAccessMatrix();
+    }
+
+    private synchronized void clearAccessMatrix() {
+        for (var i = 0; i < accessMatrix.capacity(); i++) {
+            accessMatrix.put(i, (byte) 0);
+        }
+    }
+
+    private synchronized void setAccessMatrixAppId(int appId, boolean set) {
+        if (appId < 10000 || appId > 19999) return;
+        int idx = (appId - 10000) >> 3;
+        byte bit = (byte) (1 << ((appId - 10000) & 7));
+        if (set)
+            accessMatrix.put(idx, (byte) (accessMatrix.get(idx) | bit));
+        else
+            accessMatrix.put(idx, (byte) (accessMatrix.get(idx) & ~bit));
     }
 
     private synchronized void cacheModules() {
@@ -639,6 +662,7 @@ public class ConfigManager {
             else lastScopeCacheTime = SystemClock.elapsedRealtime();
         }
         cachedScope.clear();
+        clearAccessMatrix();
         try (Cursor cursor = db.query("scope INNER JOIN modules ON scope.mid = modules.mid", new String[]{"app_pkg_name", "module_pkg_name", "user_id"},
                 "enabled = 1", null, null, null, null)) {
             int appPkgNameIdx = cursor.getColumnIndex("app_pkg_name");
@@ -732,7 +756,14 @@ public class ConfigManager {
         cachedScope.forEach((ps, modules) -> {
             Log.d(TAG, ps.processName + "/" + ps.uid);
             modules.forEach(module -> Log.d(TAG, "\t" + module.packageName));
+            var appId = ps.uid % PER_USER_RANGE;
+            if (appId >= 10000 && appId <= 19999) {
+                setAccessMatrixAppId(appId, true);
+            }
         });
+        if (managerUid != -1) {
+            setAccessMatrixAppId(managerUid, true);
+        }
     }
 
     // This is called when a new process created, use the cached result
@@ -919,6 +950,7 @@ public class ConfigManager {
     private boolean removeModuleWithoutCache(String packageName) {
         if (packageName.equals("lspd")) return false;
         boolean res = executeInTransaction(() -> db.delete("modules", "module_pkg_name = ?", new String[]{packageName}) > 0);
+        removeBlockedScopeRequest(packageName);
         try {
             for (var user : UserService.getUsers()) {
                 removeModulePrefs(user.id, packageName);
@@ -1088,8 +1120,13 @@ public class ConfigManager {
         return uid == managerUid;
     }
 
-    public boolean isManagerInstalled() {
-        return managerUid != -1;
+    public static boolean isManagerInstalled() {
+        PackageInfo info = null;
+        try {
+            info = PackageService.getPackageInfo(BuildConfig.DEFAULT_MANAGER_PACKAGE_NAME, 0, 0);
+        } catch (RemoteException ignored) {
+        }
+        return info != null;
     }
 
     public String getPrefsPath(String packageName, int uid) {
@@ -1201,5 +1238,9 @@ public class ConfigManager {
 
     synchronized SharedMemory getPreloadDex() {
         return ConfigFileManager.getPreloadDex(dexObfuscate);
+    }
+
+    SharedMemory getAccessMatrixMemory() {
+        return accessMatrixMemory;
     }
 }

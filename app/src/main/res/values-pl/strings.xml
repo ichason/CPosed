@@ -53,7 +53,7 @@
     <string name="selinux_policy_not_loaded_summary">SEPolicy nie jest prawidłowo załadowane</string>
     <string name="selinux_policy_not_loaded"><![CDATA[Niektóre funkcje nie będą działać.<br/>Proszę to zgłosić do twórcy <a href="https://github.com/topjohnwu/Magisk/issues"><b>Magiska</b></a>.]]></string>
     <string name="system_inject_fail_summary">Wstrzyknięcie Frameworku Systemowego nie powiodło się</string>
-    <string name="system_inject_fail"><![CDATA[Jest to rzadkie i może być spowodowane przez <b>Magiska</b> lub niektóre moduły Magisk niskiej jakości.<br/>Spróbuj wyłączyć moduły Magisk inne niż Riru i LSPosed lub przesłać pełny log programistom.]]></string>
+    <string name="system_inject_fail"><![CDATA[Jest to rzadkie i może być spowodowane przez <b>Magiska</b> lub niektóre moduły Magisk niskiej jakości.<br/>Spróbuj wyłączyć moduły Magisk inne niż Zygisk i LSPosed lub przesłać pełny log programistom.]]></string>
     <string name="system_prop_incorrect_summary">Nieprawidłowy system prop</string>
     <string name="system_prop_incorrect"><![CDATA[Niektóre niezbędne właściwości systemowe zostały usunięte lub zmienione.<br/>Moduły mogą czasami działać niepoprawnie.]]></string>
     <string name="need_update">Konieczna aktualizacja</string>
@@ -77,14 +77,6 @@
     <string name="update_lsposed">Zaktualizuj LSPosed</string>
     <string name="update_lsposed_msg">Czy chcesz zatwierdzić aktualizację LSPosed? Urządzenie zostanie uruchomione ponownie po zakończeniu aktualizacji</string>
     <string name="info_copied">Skopiowane do schowka</string>
-    <!-- WelcomeDialog -->
-    <string name="parasitic_welcome">Witamy w LSPosed</string>
-    <string name="parasitic_welcome_summary">Używasz menedżera pasożytów, który może utworzyć skrót na ekranie głównym lub nadal być otwieranym z powiadomienia.</string>
-    <string name="parasitic_welcome_summary_no_shortcut_support">Używasz menedżera pasożytów, który może być otwierany z powiadomienia.</string>
-    <string name="create_shortcut">Utwórz skrót</string>
-    <string name="never_show">Nigdy nie pokazuj</string>
-    <string name="app_welcome">Zalecany Menedżer Pasożytowy</string>
-    <string name="app_welcome_summary">LSPosed teraz obsługuje pasożytowanie systemowe by uniknąć wykrycia, możesz otworzyć menedżera pasożytów z okna powiadomień. Zalecane jest odinstalowanie obecnej aplikacji.</string>
     <!-- LogsActivity -->
     <string name="menuSaveToSd">Zapisz</string>
     <string name="nav_item_logs_verbose">Logi verbose</string>
@@ -193,12 +185,8 @@
     <string name="settings_translation_contributors">Tłumacze</string>
     <string name="settings_translation">Weź udział w tłumaczeniu</string>
     <string name="settings_translation_summary">Pomóż nam przetłumaczyć %s na Twój język</string>
-    <string name="settings_create_shortcut_summary">Utwórz skrót, za pomocą którego otworzysz menadżera \"pasożytów\"</string>
-    <string name="settings_shortcut_pinned_hint">Skrót przypięty</string>
-    <string name="settings_unsupported_pin_shortcut_summary">Bieżący domyślny launcher nie wspiera skrótów pinezkowych</string>
     <string name="settings_enable_status_notification">Status powiadomień</string>
     <string name="settings_enable_status_notification_summary">Pokazuj powiadomienie, za pomocą którego otworzysz menadżera pasożytów</string>
-    <string name="disable_status_notification_error">Brak skrótu, nie można wyłączyć powiadomienia</string>
     <string name="settings_update_channel">Kanał aktualizacji</string>
     <string name="update_channel_stable">Stabilny</string>
     <string name="update_channel_bate">Beta</string>

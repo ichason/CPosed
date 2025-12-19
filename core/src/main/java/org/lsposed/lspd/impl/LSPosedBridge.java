@@ -6,21 +6,21 @@ import androidx.annotation.NonNull;
 
 import org.lsposed.lspd.nativebridge.HookBridge;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Executable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
-import oc.os.lz.secure.CBridge;
+import de.robv.android.xposed.XposedBridge;
 import io.github.libxposed.api.XposedInterface;
 import io.github.libxposed.api.annotations.AfterInvocation;
 import io.github.libxposed.api.annotations.BeforeInvocation;
-import io.github.libxposed.api.annotations.XposedHooker;
 import io.github.libxposed.api.errors.HookFailedError;
 
 public class LSPosedBridge {
 
-    private static final String TAG = "SPosed-Bridge";
+    private static final String TAG = "LSPosed-Bridge";
 
     private static final String castException = "Return value's type from hook callback does not match the hooked method";
 
@@ -73,15 +73,14 @@ public class LSPosedBridge {
             } else {
                 returnType = null;
             }
-            params = new Object[] {
+            params = new Object[]{
                     method,
                     returnType,
                     isStatic,
             };
         }
 
-        // This method is quite critical. We should try not to use system methods to
-        // avoid
+        // This method is quite critical. We should try not to use system methods to avoid
         // endless recursive
         public Object callback(Object[] args) throws Throwable {
             LSPosedHookCallback<T> callback = new LSPosedHookCallback<>();
@@ -100,7 +99,7 @@ public class LSPosedBridge {
             } else {
                 callback.thisObject = args[0];
                 callback.args = new Object[args.length - 1];
-                // noinspection ManualArrayCopy
+                //noinspection ManualArrayCopy
                 for (int i = 0; i < args.length - 1; ++i) {
                     callback.args[i] = args[i + 1];
                 }
@@ -119,7 +118,7 @@ public class LSPosedBridge {
             }
 
             Object[] ctxArray = new Object[modernSnapshot.length];
-            CBridge.LegacyApiSupport<T> legacy = null;
+            XposedBridge.LegacyApiSupport<T> legacy = null;
 
             // call "before method" callbacks
             int beforeIdx;
@@ -149,7 +148,7 @@ public class LSPosedBridge {
 
             if (!callback.isSkipped && legacySnapshot.length != 0) {
                 // TODO: Separate classloader
-                legacy = new CBridge.LegacyApiSupport<>(callback, legacySnapshot);
+                legacy = new XposedBridge.LegacyApiSupport<>(callback, legacySnapshot);
                 legacy.handleBefore();
             }
 
@@ -210,8 +209,8 @@ public class LSPosedBridge {
     public static void dummyCallback() {
     }
 
-    public static <T extends Executable> XposedInterface.MethodUnhooker<T> doHook(T hookMethod, int priority,
-            Class<? extends XposedInterface.Hooker> hooker) {
+    public static <T extends Executable> XposedInterface.MethodUnhooker<T>
+    doHook(T hookMethod, int priority, Class<? extends XposedInterface.Hooker> hooker) {
         if (Modifier.isAbstract(hookMethod.getModifiers())) {
             throw new IllegalArgumentException("Cannot hook abstract methods: " + hookMethod);
         } else if (hookMethod.getDeclaringClass().getClassLoader() == LSPosedContext.class.getClassLoader()) {
@@ -220,49 +219,38 @@ public class LSPosedBridge {
             throw new IllegalArgumentException("Cannot hook Method.invoke");
         } else if (hooker == null) {
             throw new IllegalArgumentException("hooker should not be null!");
-        } else if (hooker.getAnnotation(XposedHooker.class) == null) {
-            throw new IllegalArgumentException("Hooker should be annotated with @XposedHooker");
         }
 
         Method beforeInvocation = null, afterInvocation = null;
         var modifiers = Modifier.PUBLIC | Modifier.STATIC;
         for (var method : hooker.getDeclaredMethods()) {
-            if (method.getAnnotation(BeforeInvocation.class) != null) {
-                if (beforeInvocation != null) {
-                    throw new IllegalArgumentException("More than one method annotated with @BeforeInvocation");
-                }
-                boolean valid = (method.getModifiers() & modifiers) == modifiers;
+
+            if ((method.getName().equals("before") || method.getAnnotation(BeforeInvocation.class) != null)
+                    && ((method.getModifiers() & modifiers) == modifiers)) {
                 var params = method.getParameterTypes();
-                if (params.length == 1) {
-                    valid &= params[0].equals(XposedInterface.BeforeHookCallback.class);
-                } else if (params.length != 0) {
-                    valid = false;
+                if (params.length == 0 || params.length == 1
+                        && params[0].equals(XposedInterface.BeforeHookCallback.class)) {
+                    if (beforeInvocation != null) {
+                        throw new IllegalArgumentException("More than one valid callback methods named before");
+                    }
+                    beforeInvocation = method;
                 }
-                if (!valid) {
-                    throw new IllegalArgumentException("BeforeInvocation method format is invalid");
-                }
-                beforeInvocation = method;
             }
-            if (method.getAnnotation(AfterInvocation.class) != null) {
-                if (afterInvocation != null) {
-                    throw new IllegalArgumentException("More than one method annotated with @AfterInvocation");
-                }
-                boolean valid = (method.getModifiers() & modifiers) == modifiers;
-                valid &= method.getReturnType().equals(void.class);
+
+            if ((method.getName().equals("after") || method.getAnnotation(AfterInvocation.class) != null)
+                    && ((method.getModifiers() & modifiers) == modifiers) && method.getReturnType().equals(void.class)) {
                 var params = method.getParameterTypes();
-                if (params.length == 1 || params.length == 2) {
-                    valid &= params[0].equals(XposedInterface.AfterHookCallback.class);
-                } else if (params.length != 0) {
-                    valid = false;
+                if (params.length == 0 ||
+                        ((params.length == 1 || params.length == 2) && params[0].equals(XposedInterface.AfterHookCallback.class))) {
+                    if (afterInvocation != null) {
+                        throw new IllegalArgumentException("More than one valid callback methods named after");
+                    }
+                    afterInvocation = method;
                 }
-                if (!valid) {
-                    throw new IllegalArgumentException("AfterInvocation method format is invalid");
-                }
-                afterInvocation = method;
             }
         }
         if (beforeInvocation == null && afterInvocation == null) {
-            throw new IllegalArgumentException("No method annotated with @BeforeInvocation or @AfterInvocation");
+            throw new IllegalArgumentException("No method annotated named before or after");
         }
         try {
             if (beforeInvocation == null) {
@@ -273,7 +261,7 @@ public class LSPosedBridge {
                 var ret = beforeInvocation.getReturnType();
                 var params = afterInvocation.getParameterTypes();
                 if (ret != void.class && params.length == 2 && !ret.equals(params[1])) {
-                    throw new IllegalArgumentException("BeforeInvocation and AfterInvocation method format is invalid");
+                    throw new IllegalArgumentException("before and after method format is invalid");
                 }
             }
         } catch (NoSuchMethodException e) {
@@ -296,5 +284,19 @@ public class LSPosedBridge {
             };
         }
         throw new HookFailedError("Cannot hook " + hookMethod);
+    }
+
+    public static <T> XposedInterface.MethodUnhooker<Constructor<T>>
+    doHookClassInitializer(Class<T> clazz, int priority, Class<? extends XposedInterface.Hooker> hooker) {
+        if (clazz.getClassLoader() == LSPosedContext.class.getClassLoader()) {
+            throw new IllegalArgumentException("Do not allow hooking inner classes");
+        }
+        synchronized (clazz) {
+            Constructor<T> classInitializerConstructor = HookBridge.findClassInitializer(clazz);
+            if (classInitializerConstructor == null) {
+                throw new IllegalArgumentException("Cannot find class initializer for " + clazz);
+            }
+            return doHook(classInitializerConstructor, priority, hooker);
+        }
     }
 }

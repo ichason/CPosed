@@ -49,7 +49,7 @@
     <string name="selinux_policy_not_loaded_summary">SEPolicy ठीक से लोड नहीं है</string>
     <string name="selinux_policy_not_loaded"><![CDATA[कुछ सुविधाएँ काम नहीं करेंगी।<br/>कृपया इसकी सूचना <a href="https://github.com/topjohnwu/Magisk/issues"><b>मैजिक</b></a> डेवलपर को दें।]]></string>
     <string name="system_inject_fail_summary">सिस्टम फ्रेमवर्क इंजेक्शन विफल</string>
-    <string name="system_inject_fail"><![CDATA[यह दुर्लभ है और <b>Magisk</b> या कुछ निम्न-गुणवत्ता वाले Magisk मॉड्यूल के कारण हो सकता है।<br/>कृपया Riru और LSPosed के अलावा अन्य Magisk मॉड्यूल को अक्षम करने का प्रयास करें या डेवलपर्स को पूर्ण लॉग सबमिट करें।]]></string>
+    <string name="system_inject_fail"><![CDATA[यह दुर्लभ है और <b>Magisk</b> या कुछ निम्न-गुणवत्ता वाले Magisk मॉड्यूल के कारण हो सकता है।<br/>कृपया Zygisk और LSPosed के अलावा अन्य Magisk मॉड्यूल को अक्षम करने का प्रयास करें या डेवलपर्स को पूर्ण लॉग सबमिट करें।]]></string>
     <string name="system_prop_incorrect_summary">सिस्टम प्रोप गलत</string>
     <string name="system_prop_incorrect"><![CDATA[कुछ आवश्यक सिस्टम गुण हटा दिए गए या संशोधित किए गए।<br/>मॉड्यूल कभी-कभी अमान्य हो सकते हैं।]]></string>
     <string name="need_update">अद्यतन करने की आवश्यकता है</string>
@@ -73,14 +73,6 @@
     <string name="update_lsposed">अद्यतन LSPosed</string>
     <string name="update_lsposed_msg">LSPosed को अपडेट करने की पुष्टि करें? अपडेट पूरा होने के बाद यह डिवाइस रीबूट हो जाएगा</string>
     <string name="info_copied">क्लिपबोर्ड पर नकल</string>
-    <!-- WelcomeDialog -->
-    <string name="parasitic_welcome">LSPosed में आपका स्वागत है</string>
-    <string name="parasitic_welcome_summary">आप परजीवी प्रबंधक का उपयोग कर रहे हैं, जो शॉर्टकट बना सकता है या सूचना से अभी भी खुला हो सकता है।</string>
-    <string name="parasitic_welcome_summary_no_shortcut_support">आप परजीवी प्रबंधक का उपयोग कर रहे हैं, जो सूचना से खुल सकता है।</string>
-    <string name="create_shortcut">शॉर्टकट बनाएं</string>
-    <string name="never_show">कभी भी न दिखाओ</string>
-    <string name="app_welcome">परजीवी प्रबंधक की सिफारिश की</string>
-    <string name="app_welcome_summary">LSPosed अब पता लगाने से बचने के लिए सिस्टम परजीवीकरण का समर्थन करता है, आप अधिसूचना से परजीवी प्रबंधक खोल सकते हैं। वर्तमान एप्लिकेशन को अनइंस्टॉल करने की अनुशंसा की जाती है।</string>
     <!-- LogsActivity -->
     <string name="menuSaveToSd">बचाना</string>
     <string name="nav_item_logs_verbose">वर्बोज़ लॉग्स</string>
@@ -189,12 +181,8 @@
     <string name="settings_translation_contributors">अनुवाद योगदानकर्ता</string>
     <string name="settings_translation">अनुवाद में भाग लें</string>
     <string name="settings_translation_summary">%s को अपनी भाषा में अनुवाद करने में हमारी सहायता करें</string>
-    <string name="settings_create_shortcut_summary">एक शॉर्टकट बनाएं जो परजीवी प्रबंधक खोल सके</string>
-    <string name="settings_shortcut_pinned_hint">शॉर्टकट पिन किया गया</string>
-    <string name="settings_unsupported_pin_shortcut_summary">वर्तमान डिफ़ॉल्ट लांचर पिन शॉर्टकट का समर्थन नहीं करता</string>
     <string name="settings_enable_status_notification">स्थिति अधिसूचना</string>
     <string name="settings_enable_status_notification_summary">एक अधिसूचना दिखाएं जो परजीवी प्रबंधक खोल सकती है</string>
-    <string name="disable_status_notification_error">कोई शॉर्टकट नहीं, अधिसूचना अक्षम नहीं कर सकता</string>
     <string name="settings_update_channel">चैनल अपडेट करें</string>
     <string name="update_channel_stable">स्थिर</string>
     <string name="update_channel_bate">बीटा</string>

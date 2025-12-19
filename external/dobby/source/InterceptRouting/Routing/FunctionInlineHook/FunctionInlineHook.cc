@@ -3,7 +3,7 @@
 #include "Interceptor.h"
 #include "InterceptRouting/Routing/FunctionInlineHook/FunctionInlineHookRouting.h"
 
-PUBLIC int CobbyHook(void *address, dobby_dummy_func_t replace_func, dobby_dummy_func_t *origin_func) {
+PUBLIC int DobbyHook(void *address, dobby_dummy_func_t replace_func, dobby_dummy_func_t *origin_func) {
   if (!address) {
     ERROR_LOG("function address is 0x0");
     return RS_FAILED;
@@ -23,6 +23,7 @@ PUBLIC int CobbyHook(void *address, dobby_dummy_func_t replace_func, dobby_dummy
   }
 #endif
 
+  DLOG(0, "----- [DobbyHook:%p] -----", address);
 
   // check if already register
   auto entry = Interceptor::SharedInstance()->find((addr_t)address);

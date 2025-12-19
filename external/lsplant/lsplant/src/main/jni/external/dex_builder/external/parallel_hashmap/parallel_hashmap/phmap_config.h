@@ -18,7 +18,7 @@
 //
 // Includes work from abseil-cpp (https://github.com/abseil/abseil-cpp)
 // with modifications.
-// 
+//
 // Copyright 2018 The Abseil Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,9 +34,9 @@
 // limitations under the License.
 // ---------------------------------------------------------------------------
 
-#define PHMAP_VERSION_MAJOR 1
-#define PHMAP_VERSION_MINOR 3
-#define PHMAP_VERSION_PATCH 11
+#define PHMAP_VERSION_MAJOR 2
+#define PHMAP_VERSION_MINOR 0
+#define PHMAP_VERSION_PATCH 0
 
 // Included for the __GLIBC__ macro (or similar macros on other systems).
 #include <limits.h>
@@ -81,14 +81,14 @@
     #error "phmap requires __apple_build_version__ of 4211165 or higher."
 #endif
 
-// Enforce C++11 as the minimum. 
+// Enforce C++11 as the minimum.
 #if defined(__cplusplus) && !defined(_MSC_VER)
     #if __cplusplus < 201103L
         #error "C++ versions less than C++11 are not supported."
     #endif
 #endif
 
-// We have chosen glibc 2.12 as the minimum 
+// We have chosen glibc 2.12 as the minimum
 #if defined(__GLIBC__) && defined(__GLIBC_PREREQ)
     #if !__GLIBC_PREREQ(2, 12)
         #error "Minimum required version of glibc is 2.12."
@@ -103,7 +103,7 @@
     #warning "phmap assumes CHAR_BIT == 8."
 #endif
 
-// phmap currently assumes that an int is 4 bytes. 
+// phmap currently assumes that an int is 4 bytes.
 #if INT_MAX < 2147483647
     #error "phmap assumes that int is at least 4 bytes. "
 #endif
@@ -176,10 +176,10 @@
         #undef PHMAP_HAVE_TLS
         #undef PHMAP_HAVE_THREAD_LOCAL
     #endif
-#endif 
+#endif
 
 // ------------------------------------------------------------
-// Checks whether the __int128 compiler extension for a 128-bit 
+// Checks whether the __int128 compiler extension for a 128-bit
 // integral type is supported.
 // ------------------------------------------------------------
 #ifdef PHMAP_HAVE_INTRINSIC_INT128
@@ -197,7 +197,7 @@
 #endif
 
 // ------------------------------------------------------------------
-// Checks whether the compiler both supports and enables exceptions. 
+// Checks whether the compiler both supports and enables exceptions.
 // ------------------------------------------------------------------
 #ifdef PHMAP_HAVE_EXCEPTIONS
     #error PHMAP_HAVE_EXCEPTIONS cannot be directly set.
@@ -441,7 +441,9 @@
     #define PHMAP_ATTRIBUTE_NONNULL(...)
 #endif
 
-#if PHMAP_HAVE_ATTRIBUTE(noreturn) || (defined(__GNUC__) && !defined(__clang__))
+#if PHMAP_HAVE_ATTRIBUTE(noreturn)
+    #define PHMAP_ATTRIBUTE_NORETURN [[noreturn]]
+#elif defined(__GNUC__) && !defined(__clang__)
     #define PHMAP_ATTRIBUTE_NORETURN __attribute__((noreturn))
 #elif defined(_MSC_VER)
     #define PHMAP_ATTRIBUTE_NORETURN __declspec(noreturn)
@@ -646,8 +648,28 @@
 // ----------------------------------------------------------------------
 #if PHMAP_HAVE_CC17
     #define PHMAP_IF_CONSTEXPR(expr) if constexpr ((expr))
-#else 
+#else
     #define PHMAP_IF_CONSTEXPR(expr) if ((expr))
+#endif
+
+// ----------------------------------------------------------------------
+// builtin unreachable
+// ----------------------------------------------------------------------
+#if PHMAP_HAVE_BUILTIN(__builtin_unreachable)
+    #define PHMAP_BUILTIN_UNREACHABLE() __builtin_unreachable()
+#else
+    #define PHMAP_BUILTIN_UNREACHABLE() (void)0
+#endif
+
+// ----------------------------------------------------------------------
+// RESTRICT
+// ----------------------------------------------------------------------
+#if (defined(__GNUC__) && (__GNUC__ > 3)) || defined(__clang__)
+    #define PHMAP_RESTRICT __restrict__
+#elif defined(_MSC_VER) && _MSC_VER >= 1400
+    #define PHMAP_RESTRICT __restrict
+#else
+    #define PHMAP_RESTRICT
 #endif
 
 // ----------------------------------------------------------------------
@@ -671,8 +693,9 @@ namespace macros_internal {
 }  // namespace macros_internal
 }  // namespace phmap
 
-// TODO(zhangxy): Use c++17 standard [[fallthrough]] macro, when supported.
-#if defined(__clang__) && defined(__has_warning)
+#if PHMAP_HAVE_CPP_ATTRIBUTE(fallthrough)
+    #define PHMAP_FALLTHROUGH [[fallthrough]]
+#elif defined(__clang__) && defined(__has_warning)
     #if __has_feature(cxx_attributes) && __has_warning("-Wimplicit-fallthrough")
         #define PHMAP_FALLTHROUGH_INTENDED [[clang::fallthrough]]
     #endif

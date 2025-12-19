@@ -109,12 +109,12 @@ int fake_close(int fd) {
 
 #if 0
 __attribute__((constructor)) static void ctor() {
-  CobbyHook((void *)DobbySymbolResolver(NULL, "open"), (void *)fake_open, (void **)&orig_open);
+  DobbyHook((void *)DobbySymbolResolver(NULL, "open"), (void *)fake_open, (void **)&orig_open);
 
-  CobbyHook((void *)DobbySymbolResolver(NULL, "write"), (void *)fake_write, (void **)&orig_write);
+  DobbyHook((void *)DobbySymbolResolver(NULL, "write"), (void *)fake_write, (void **)&orig_write);
 
-  CobbyHook((void *)DobbySymbolResolver(NULL, "read"), (void *)fake_read, (void **)&orig_read);
+  DobbyHook((void *)DobbySymbolResolver(NULL, "read"), (void *)fake_read, (void **)&orig_read);
 
-  CobbyHook((void *)DobbySymbolResolver(NULL, "close"), (void *)fake_close, (void **)&orig_close);
+  DobbyHook((void *)DobbySymbolResolver(NULL, "close"), (void *)fake_close, (void **)&orig_close);
 }
 #endif

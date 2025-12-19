@@ -1,8 +1,10 @@
+#include <jni.h>
 #include <dobby.h>
-#include <lsplant.hpp>
 #include <sys/mman.h>
-#include "elf_util.h"
+#include <string_view>
 #include "logging.h"
+
+import lsplant;
 
 #define _uintval(p)               reinterpret_cast<uintptr_t>(p)
 #define _ptr(p)                   reinterpret_cast<void *>(p)
@@ -20,7 +22,7 @@ bool init_result;
 void* InlineHooker(void* target, void* hooker) {
     _make_rwx(target, _page_size);
     void* origin_call;
-    if (CobbyHook(target, hooker, &origin_call) == RS_SUCCESS) {
+    if (DobbyHook(target, hooker, &origin_call) == RS_SUCCESS) {
         return origin_call;
     } else {
         return nullptr;
@@ -28,7 +30,7 @@ void* InlineHooker(void* target, void* hooker) {
 }
 
 bool InlineUnhooker(void* func) {
-    return CobbyDestroy(func) == RT_SUCCESS;
+    return DobbyDestroy(func) == RT_SUCCESS;
 }
 
 extern "C"
@@ -40,13 +42,13 @@ Java_org_lsposed_lsplant_LSPTest_initHooker(JNIEnv*, jclass) {
 extern "C"
 JNIEXPORT jobject JNICALL
 Java_org_lsposed_lsplant_Hooker_doHook(JNIEnv* env, jobject thiz, jobject target, jobject callback) {
-    return clant::Hook(env, target, thiz, callback);
+    return lsplant::Hook(env, target, thiz, callback);
 }
 
 extern "C"
 JNIEXPORT jboolean JNICALL
 Java_org_lsposed_lsplant_Hooker_doUnhook(JNIEnv* env, jobject, jobject target) {
-    return clant::UnHook(env, target);
+    return lsplant::UnHook(env, target);
 }
 
 JNIEXPORT jint JNICALL
@@ -55,20 +57,16 @@ JNI_OnLoad(JavaVM* vm, void* reserved) {
     if (vm->GetEnv((void**) &env, JNI_VERSION_1_6) != JNI_OK) {
         return JNI_ERR;
     }
-    SandHook::ElfImg art("libart.so");
-#if !defined(__i386__)
-    dobby_enable_near_branch_trampoline();
-#endif
-    clant::InitInfo initInfo{
+    lsplant::InitInfo initInfo{
             .inline_hooker = InlineHooker,
             .inline_unhooker = InlineUnhooker,
             .art_symbol_resolver = [&art](std::string_view symbol) -> void* {
                 return art.getSymbAddress(symbol);
             },
             .art_symbol_prefix_resolver = [&art](auto symbol) {
-                return art.getSymbPrefixFirstOffset(symbol);
+                return art.getSymbPrefixFirstAddress(symbol);
             },
     };
-    init_result = clant::Init(env, initInfo);
+    init_result = lsplant::Init(env, initInfo);
     return JNI_VERSION_1_6;
 }

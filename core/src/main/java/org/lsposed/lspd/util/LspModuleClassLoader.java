@@ -1,6 +1,6 @@
 package org.lsposed.lspd.util;
 
-import static oc.os.lz.secure.CBridge.TAG;
+import static de.robv.android.xposed.XposedBridge.TAG;
 
 import android.os.Build;
 import android.os.SharedMemory;
@@ -31,14 +31,14 @@ import sun.misc.CompoundEnumeration;
 @SuppressWarnings("ConstantConditions")
 public final class LspModuleClassLoader extends ByteBufferDexClassLoader {
     private static final String zipSeparator = "!/";
-    private static final List<File> systemNativeLibraryDirs = splitPaths(System.getProperty("java.library.path"));
+    private static final List<File> systemNativeLibraryDirs =
+            splitPaths(System.getProperty("java.library.path"));
     private final String apk;
     private final List<File> nativeLibraryDirs = new ArrayList<>();
 
     private static List<File> splitPaths(String searchPath) {
         var result = new ArrayList<File>();
-        if (searchPath == null)
-            return result;
+        if (searchPath == null) return result;
         for (var path : searchPath.split(File.pathSeparator)) {
             result.add(new File(path));
         }
@@ -46,17 +46,17 @@ public final class LspModuleClassLoader extends ByteBufferDexClassLoader {
     }
 
     private LspModuleClassLoader(ByteBuffer[] dexBuffers,
-            ClassLoader parent,
-            String apk) {
+                                 ClassLoader parent,
+                                 String apk) {
         super(dexBuffers, parent);
         this.apk = apk;
     }
 
     @RequiresApi(Build.VERSION_CODES.Q)
     private LspModuleClassLoader(ByteBuffer[] dexBuffers,
-            String librarySearchPath,
-            ClassLoader parent,
-            String apk) {
+                                 String librarySearchPath,
+                                 ClassLoader parent,
+                                 String apk) {
         super(dexBuffers, librarySearchPath, parent);
         initNativeLibraryDirs(librarySearchPath);
         this.apk = apk;
@@ -150,45 +150,40 @@ public final class LspModuleClassLoader extends ByteBufferDexClassLoader {
     protected Enumeration<URL> findResources(String name) {
         var result = new ArrayList<URL>();
         var url = findResource(name);
-        if (url != null)
-            result.add(url);
+        if (url != null) result.add(url);
         return Collections.enumeration(result);
     }
 
     @Override
     public URL getResource(String name) {
         var resource = Object.class.getClassLoader().getResource(name);
-        if (resource != null)
-            return resource;
+        if (resource != null) return resource;
         resource = findResource(name);
-        if (resource != null)
-            return resource;
+        if (resource != null) return resource;
         final var cl = getParent();
         return (cl == null) ? null : cl.getResource(name);
     }
 
     @Override
     public Enumeration<URL> getResources(String name) throws IOException {
-        @SuppressWarnings("unchecked")
-        final var resources = (Enumeration<URL>[]) new Enumeration<?>[] {
+        @SuppressWarnings("unchecked") final var resources = (Enumeration<URL>[]) new Enumeration<?>[]{
                 Object.class.getClassLoader().getResources(name),
                 findResources(name),
-                getParent() == null ? null : getParent().getResources(name) };
+                getParent() == null ? null : getParent().getResources(name)};
         return new CompoundEnumeration<>(resources);
     }
 
     @NonNull
     @Override
     public String toString() {
-        if (apk == null)
-            return "spModuleClassLoader[instantiating]";
-        return "spModuleClassLoader[module=" + apk + ", " + super.toString() + "]";
+        if (apk == null) return "LspModuleClassLoader[instantiating]";
+        return "LspModuleClassLoader[module=" + apk + ", " + super.toString() + "]";
     }
 
     public static ClassLoader loadApk(String apk,
-            List<SharedMemory> dexes,
-            String librarySearchPath,
-            ClassLoader parent) {
+                                      List<SharedMemory> dexes,
+                                      String librarySearchPath,
+                                      ClassLoader parent) {
         var dexBuffers = dexes.stream().parallel().map(dex -> {
             try {
                 return dex.mapReadOnly();

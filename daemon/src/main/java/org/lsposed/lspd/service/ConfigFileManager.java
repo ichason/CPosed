@@ -102,6 +102,26 @@ public class ConfigFileManager {
             SELinux.setFileContext(basePath.toString(), "u:object_r:system_file:s0");
             Files.createDirectories(configDirPath);
             createLogDirPath();
+            Path path = modulePath;
+            if (Files.isDirectory(path)) {
+                Files.walkFileTree(path, new SimpleFileVisitor<>() {
+                    public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) {
+                        Path relative = path.relativize(dir);
+                        if (relative.getNameCount() >= 2) {
+                            SELinux.setFileContext(dir.toString(), "u:object_r:lsposed_file:s0");
+                        }
+                        return FileVisitResult.CONTINUE;
+                    }
+
+                    public FileVisitResult visitFile(Path file, BasicFileAttributes attrs){
+                        Path relative = path.relativize(file);
+                        if (relative.getNameCount() >= 2) {
+                            SELinux.setFileContext(file.toString(), "u:object_r:lsposed_file:s0");
+                        }
+                        return FileVisitResult.CONTINUE;
+                    }
+                });
+            }
         } catch (IOException e) {
             Log.e(TAG, Log.getStackTraceString(e));
         }
@@ -457,9 +477,9 @@ public class ConfigFileManager {
         if (uid != -1) {
             if (path.toFile().mkdirs()) {
                 try {
-                    SELinux.setFileContext(path.toString(), "u:object_r:magisk_file:s0");
+                    SELinux.setFileContext(path.toString(), "u:object_r:lsposed_file:s0");
                     Os.chown(path.toString(), uid, uid);
-                    Os.chmod(path.toString(), 0755);
+                    Os.chmod(path.toString(), 493);
                 } catch (ErrnoException e) {
                     throw new IOException(e);
                 }

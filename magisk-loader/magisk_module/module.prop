@@ -1,7 +1,7 @@
 id=${moduleId}
-name=${api} - LSPosed
+name=LSPosed - Irena
 version=${versionName} (${versionCode})
 versionCode=${versionCode}
 author=${authorList}
-description=Neo 20241030b Another enhanced implementation of Xposed Framework. Supports Android 8.1 ~ 14. ${requirement}.
+description=Another enhanced implementation of Xposed Framework. Supports Android 8.1 ~ 16. ${requirement}.
 updateJson=${updateJson}

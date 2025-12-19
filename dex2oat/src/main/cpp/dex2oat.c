@@ -24,6 +24,7 @@
 #include <errno.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #include <sys/socket.h>
 #include <sys/un.h>
 #include <unistd.h>
@@ -113,12 +114,36 @@ int main(int argc, char **argv) {
     int stock_fd = recv_fd(sock_fd);
     read_int(sock_fd);
     close(sock_fd);
-    LOGD("sock: %s %d", sock.sun_path + 1, stock_fd);
 
-    const char *new_argv[argc + 2];
+    sock_fd = socket(AF_UNIX, SOCK_STREAM, 0);
+    if (connect(sock_fd, (struct sockaddr *) &sock, len)) {
+        PLOGE("failed to connect to %s", sock.sun_path + 1);
+        return 1;
+    }
+    write_int(sock_fd, LP_SELECT(4, 5));
+    int preload_fd = recv_fd(sock_fd);
+    read_int(sock_fd);
+    close(sock_fd);
+
+    LOGD("sock path: %s, stock_fd: %d, preload_fd: %d", sock.sun_path + 1, stock_fd, preload_fd);
+
+    const char *new_argv[argc + 1];
     for (int i = 0; i < argc; i++) new_argv[i] = argv[i];
-    new_argv[argc] = "--inline-max-code-units=0";
-    new_argv[argc + 1] = NULL;
+    new_argv[argc] = nullptr;
+
+    if (getenv("LD_LIBRARY_PATH") == NULL) {
+        char const *libenv =
+                "LD_LIBRARY_PATH=/apex/com.android.art/lib64:/apex/com.android.art/lib"
+                ":/apex/com.android.os.statsd/lib64:/apex/com.android.os.statsd/lib";
+        putenv((char *)libenv);
+    }
+
+    int path_len = 50;
+    char env_str[path_len];
+    snprintf(env_str, path_len, "LD_PRELOAD=/proc/%d/fd/%d", getpid(), preload_fd);
+    putenv(env_str);
+    LOGD("set env %s", env_str);
+
     fexecve(stock_fd, (char **) new_argv, environ);
     PLOGE("fexecve failed");
     return 2;

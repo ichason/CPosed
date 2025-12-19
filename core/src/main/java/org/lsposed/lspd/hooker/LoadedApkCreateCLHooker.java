@@ -43,12 +43,12 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import oc.os.lz.secure.XC_MethodHook;
-import oc.os.lz.secure.XC_MethodReplacement;
-import oc.os.lz.secure.CBridge;
-import oc.os.lz.secure.CHelpers;
-import oc.os.lz.secure.CInit;
-import oc.os.lz.secure.callbacks.XC_LoadPackage;
+import de.robv.android.xposed.XC_MethodHook;
+import de.robv.android.xposed.XC_MethodReplacement;
+import de.robv.android.xposed.XposedBridge;
+import de.robv.android.xposed.XposedHelpers;
+import de.robv.android.xposed.XposedInit;
+import de.robv.android.xposed.callbacks.XC_LoadPackage;
 import io.github.libxposed.api.XposedInterface;
 import io.github.libxposed.api.XposedModuleInterface;
 import io.github.libxposed.api.annotations.AfterInvocation;
@@ -98,32 +98,32 @@ public class LoadedApkCreateCLHooker implements XposedInterface.Hooker {
                 packageName = "system";
             }
 
-            Object mAppDir = CHelpers.getObjectField(loadedApk, "mAppDir");
-            ClassLoader classLoader = (ClassLoader) CHelpers.getObjectField(loadedApk, "mClassLoader");
+            Object mAppDir = XposedHelpers.getObjectField(loadedApk, "mAppDir");
+            ClassLoader classLoader = (ClassLoader) XposedHelpers.getObjectField(loadedApk, "mClassLoader");
             Hookers.logD("LoadedApk#createClassLoader ends: " + mAppDir + " -> " + classLoader);
 
             if (classLoader == null) {
                 return;
             }
 
-            if (!isFirstPackage && !CHelpers.getBooleanField(loadedApk, "mIncludeCode")) {
+            if (!isFirstPackage && !XposedHelpers.getBooleanField(loadedApk, "mIncludeCode")) {
                 Hookers.logD("LoadedApk#<init> mIncludeCode == false: " + mAppDir);
                 return;
             }
 
-            if (!isFirstPackage && !CInit.getLoadedModules().getOrDefault(packageName, Optional.of("")).isPresent()) {
+            if (!isFirstPackage && !XposedInit.getLoadedModules().getOrDefault(packageName, Optional.of("")).isPresent()) {
                 return;
             }
 
             XC_LoadPackage.LoadPackageParam lpparam = new XC_LoadPackage.LoadPackageParam(
-                    CBridge.sLoadedPackageCallbacks);
+                    XposedBridge.sLoadedPackageCallbacks);
             lpparam.packageName = packageName;
             lpparam.processName = processName;
             lpparam.classLoader = classLoader;
             lpparam.appInfo = loadedApk.getApplicationInfo();
             lpparam.isFirstApplication = isFirstPackage;
 
-            if (isFirstPackage && CInit.getLoadedModules().getOrDefault(packageName, Optional.empty()).isPresent()) {
+            if (isFirstPackage && XposedInit.getLoadedModules().getOrDefault(packageName, Optional.empty()).isPresent()) {
                 hookNewXSP(lpparam);
             }
 
@@ -189,7 +189,7 @@ public class LoadedApkCreateCLHooker implements XposedInterface.Hooker {
 
         if (xposedminversion > 92 || xposedsharedprefs) {
             Utils.logI("New modules detected, hook preferences");
-            CHelpers.findAndHookMethod("android.app.ContextImpl", lpparam.classLoader, "checkMode", int.class, new XC_MethodHook() {
+            XposedHelpers.findAndHookMethod("android.app.ContextImpl", lpparam.classLoader, "checkMode", int.class, new XC_MethodHook() {
                 @Override
                 protected void afterHookedMethod(MethodHookParam param) {
                     if (((int) param.args[0] & 1/*Context.MODE_WORLD_READABLE*/) != 0) {
@@ -197,7 +197,7 @@ public class LoadedApkCreateCLHooker implements XposedInterface.Hooker {
                     }
                 }
             });
-            CHelpers.findAndHookMethod("android.app.ContextImpl", lpparam.classLoader, "getPreferencesDir", new XC_MethodReplacement() {
+            XposedHelpers.findAndHookMethod("android.app.ContextImpl", lpparam.classLoader, "getPreferencesDir", new XC_MethodReplacement() {
                 @Override
                 protected Object replaceHookedMethod(MethodHookParam param) {
                     return new File(serviceClient.getPrefsPath(lpparam.packageName));

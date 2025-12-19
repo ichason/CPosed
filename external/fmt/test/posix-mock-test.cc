@@ -72,12 +72,6 @@ int test::open(const char* path, int oflag, int mode) {
   EMULATE_EINTR(open, -1);
   return ::open(path, oflag, mode);
 }
-#else
-errno_t test::sopen_s(int* pfh, const char* filename, int oflag, int shflag,
-                      int pmode) {
-  EMULATE_EINTR(open, EINTR);
-  return _sopen_s(pfh, filename, oflag, shflag, pmode);
-}
 #endif
 
 #ifndef _WIN32
@@ -220,20 +214,19 @@ TEST(os_test, getpagesize) {
 }
 
 TEST(file_test, open_retry) {
+#  ifndef _WIN32
   write_file("temp", "there must be something here");
   std::unique_ptr<file> f{nullptr};
   EXPECT_RETRY(f.reset(new file("temp", file::RDONLY)), open,
                "cannot open file temp");
-#  ifndef _WIN32
   char c = 0;
   f->read(&c, 1);
 #  endif
 }
 
 TEST(file_test, close_no_retry_in_dtor) {
-  file read_end, write_end;
-  file::pipe(read_end, write_end);
-  std::unique_ptr<file> f(new file(std::move(read_end)));
+  auto pipe = fmt::pipe();
+  std::unique_ptr<file> f(new file(std::move(pipe.read_end)));
   int saved_close_count = 0;
   EXPECT_WRITE(
       stderr,
@@ -248,10 +241,9 @@ TEST(file_test, close_no_retry_in_dtor) {
 }
 
 TEST(file_test, close_no_retry) {
-  file read_end, write_end;
-  file::pipe(read_end, write_end);
+  auto pipe = fmt::pipe();
   close_count = 1;
-  EXPECT_SYSTEM_ERROR(read_end.close(), EINTR, "cannot close file");
+  EXPECT_SYSTEM_ERROR(pipe.read_end.close(), EINTR, "cannot close file");
   EXPECT_EQ(2, close_count);
   close_count = 0;
 }
@@ -289,30 +281,28 @@ TEST(file_test, max_size) {
 }
 
 TEST(file_test, read_retry) {
-  file read_end, write_end;
-  file::pipe(read_end, write_end);
+  auto pipe = fmt::pipe();
   enum { SIZE = 4 };
-  write_end.write("test", SIZE);
-  write_end.close();
+  pipe.write_end.write("test", SIZE);
+  pipe.write_end.close();
   char buffer[SIZE];
   size_t count = 0;
-  EXPECT_RETRY(count = read_end.read(buffer, SIZE), read,
+  EXPECT_RETRY(count = pipe.read_end.read(buffer, SIZE), read,
                "cannot read from file");
   EXPECT_EQ_POSIX(static_cast<std::streamsize>(SIZE), count);
 }
 
 TEST(file_test, write_retry) {
-  file read_end, write_end;
-  file::pipe(read_end, write_end);
+  auto pipe = fmt::pipe();
   enum { SIZE = 4 };
   size_t count = 0;
-  EXPECT_RETRY(count = write_end.write("test", SIZE), write,
+  EXPECT_RETRY(count = pipe.write_end.write("test", SIZE), write,
                "cannot write to file");
-  write_end.close();
+  pipe.write_end.close();
 #  ifndef _WIN32
   EXPECT_EQ(static_cast<std::streamsize>(SIZE), count);
   char buffer[SIZE + 1];
-  read_end.read(buffer, SIZE);
+  pipe.read_end.read(buffer, SIZE);
   buffer[SIZE] = '\0';
   EXPECT_STREQ("test", buffer);
 #  endif
@@ -320,27 +310,25 @@ TEST(file_test, write_retry) {
 
 #  ifdef _WIN32
 TEST(file_test, convert_read_count) {
-  file read_end, write_end;
-  file::pipe(read_end, write_end);
+  auto pipe = fmt::pipe();
   char c;
   size_t size = UINT_MAX;
   if (sizeof(unsigned) != sizeof(size_t)) ++size;
   read_count = 1;
   read_nbyte = 0;
-  EXPECT_THROW(read_end.read(&c, size), std::system_error);
+  EXPECT_THROW(pipe.read_end.read(&c, size), std::system_error);
   read_count = 0;
   EXPECT_EQ(UINT_MAX, read_nbyte);
 }
 
 TEST(file_test, convert_write_count) {
-  file read_end, write_end;
-  file::pipe(read_end, write_end);
+  auto pipe = fmt::pipe();
   char c;
   size_t size = UINT_MAX;
   if (sizeof(unsigned) != sizeof(size_t)) ++size;
   write_count = 1;
   write_nbyte = 0;
-  EXPECT_THROW(write_end.write(&c, size), std::system_error);
+  EXPECT_THROW(pipe.write_end.write(&c, size), std::system_error);
   write_count = 0;
   EXPECT_EQ(UINT_MAX, write_nbyte);
 }
@@ -378,18 +366,15 @@ TEST(file_test, dup2_no_except_retry) {
 }
 
 TEST(file_test, pipe_no_retry) {
-  file read_end, write_end;
   pipe_count = 1;
-  EXPECT_SYSTEM_ERROR(file::pipe(read_end, write_end), EINTR,
-                      "cannot create pipe");
+  EXPECT_SYSTEM_ERROR(fmt::pipe(), EINTR, "cannot create pipe");
   pipe_count = 0;
 }
 
 TEST(file_test, fdopen_no_retry) {
-  file read_end, write_end;
-  file::pipe(read_end, write_end);
+  auto pipe = fmt::pipe();
   fdopen_count = 1;
-  EXPECT_SYSTEM_ERROR(read_end.fdopen("r"), EINTR,
+  EXPECT_SYSTEM_ERROR(pipe.read_end.fdopen("r"), EINTR,
                       "cannot associate stream with file descriptor");
   fdopen_count = 0;
 }
@@ -407,9 +392,9 @@ TEST(buffered_file_test, open_retry) {
 }
 
 TEST(buffered_file_test, close_no_retry_in_dtor) {
-  file read_end, write_end;
-  file::pipe(read_end, write_end);
-  std::unique_ptr<buffered_file> f(new buffered_file(read_end.fdopen("r")));
+  auto pipe = fmt::pipe();
+  std::unique_ptr<buffered_file> f(
+      new buffered_file(pipe.read_end.fdopen("r")));
   int saved_fclose_count = 0;
   EXPECT_WRITE(
       stderr,
@@ -424,9 +409,8 @@ TEST(buffered_file_test, close_no_retry_in_dtor) {
 }
 
 TEST(buffered_file_test, close_no_retry) {
-  file read_end, write_end;
-  file::pipe(read_end, write_end);
-  buffered_file f = read_end.fdopen("r");
+  auto pipe = fmt::pipe();
+  buffered_file f = pipe.read_end.fdopen("r");
   fclose_count = 1;
   EXPECT_SYSTEM_ERROR(f.close(), EINTR, "cannot close file");
   EXPECT_EQ(2, fclose_count);
@@ -434,9 +418,8 @@ TEST(buffered_file_test, close_no_retry) {
 }
 
 TEST(buffered_file_test, fileno_no_retry) {
-  file read_end, write_end;
-  file::pipe(read_end, write_end);
-  buffered_file f = read_end.fdopen("r");
+  auto pipe = fmt::pipe();
+  buffered_file f = pipe.read_end.fdopen("r");
   fileno_count = 1;
   EXPECT_SYSTEM_ERROR((f.descriptor)(), EINTR, "cannot get file descriptor");
   EXPECT_EQ(2, fileno_count);
@@ -446,7 +429,7 @@ TEST(buffered_file_test, fileno_no_retry) {
 
 struct test_mock {
   static test_mock* instance;
-} * test_mock::instance;
+}* test_mock::instance;
 
 TEST(scoped_mock, scope) {
   {

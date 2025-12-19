@@ -47,7 +47,7 @@
     <string name="selinux_policy_not_loaded_summary">SEPolicyが正しく読み込まれていません</string>
     <string name="selinux_policy_not_loaded"><![CDATA[一部の機能が動作しない。<br/><a href="https://github.com/topjohnwu/Magisk/issues"><b>Magisk</b></a>開発者にご報告ください。]]></string>
     <string name="system_inject_fail_summary">システムフレームワークへのパッチに失敗しました</string>
-    <string name="system_inject_fail"><![CDATA[本現象はごく稀に発生し、<b>Magisk</b>もしくは低品質な Magiskモジュールが原因で発生します。<br/>RiruとLSPosed以外のMagiskモジュールを一時的に無効化してみるか、開発者へすべてのログを提出して下さい。]]></string>
+    <string name="system_inject_fail"><![CDATA[本現象はごく稀に発生し、<b>Magisk</b>もしくは低品質な Magiskモジュールが原因で発生します。<br/>ZygiskとLSPosed以外のMagiskモジュールを一時的に無効化してみるか、開発者へすべてのログを提出して下さい。]]></string>
     <string name="system_prop_incorrect_summary">システム設定が正しくありません</string>
     <string name="system_prop_incorrect"><![CDATA[必須のシステム設定が変更もしくは削除されています。<br/>モジュールが無効化される場合があります。]]></string>
     <string name="need_update">更新が必要です</string>
@@ -71,14 +71,6 @@
     <string name="update_lsposed">LSPossedをアップデート</string>
     <string name="update_lsposed_msg">LSPosedをアップデートしてもよろしいですか？アップデート完了後、このデバイスは再起動します</string>
     <string name="info_copied">クリップボードへコピーされました</string>
-    <!-- WelcomeDialog -->
-    <string name="parasitic_welcome">LSPosedへようこそ</string>
-    <string name="parasitic_welcome_summary">パラサイトマネージャーを使用しています。これにより、ショートカットを作成したり、通知から開いたりできます。</string>
-    <string name="parasitic_welcome_summary_no_shortcut_support">通知から開くことができるパラサイトマネージャーを使用しています。</string>
-    <string name="create_shortcut">ショートカットを作成</string>
-    <string name="never_show">表示しない</string>
-    <string name="app_welcome">パラサイトマネージャー推奨</string>
-    <string name="app_welcome_summary">LSPosedは検出を回避するためのシステムパラサイトに対応し、通知からパラサイトマネージャーを開くことができるようになりました。現在のアプリケーションをアンインストールすることをお勧めします。</string>
     <!-- LogsActivity -->
     <string name="menuSaveToSd">保存</string>
     <string name="nav_item_logs_verbose">詳細ログ</string>
@@ -187,12 +179,8 @@
     <string name="settings_translation_contributors">翻訳貢献者</string>
     <string name="settings_translation">翻訳に参加する</string>
     <string name="settings_translation_summary">%s をあなたの言語に翻訳するのを手伝ってください</string>
-    <string name="settings_create_shortcut_summary">パラサイトマネージャーを開くことができるショートカットを作成する</string>
-    <string name="settings_shortcut_pinned_hint">ショートカットのピン留め</string>
-    <string name="settings_unsupported_pin_shortcut_summary">現在のデフォルトのランチャーは、ピンショートカットに対応していません</string>
     <string name="settings_enable_status_notification">ステータス通知</string>
     <string name="settings_enable_status_notification_summary">パラサイトマネージャーを開くことができる通知を表示する</string>
-    <string name="disable_status_notification_error">ショートカットがありません、通知を無効化できません</string>
     <string name="settings_update_channel">更新チャンネル</string>
     <string name="update_channel_stable">安定版</string>
     <string name="update_channel_bate">ベータ版</string>

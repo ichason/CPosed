@@ -1,9 +1,13 @@
+cmake_minimum_required(VERSION 3.28)
 project(dex2oat)
-cmake_minimum_required(VERSION 3.4.1)
 
 add_executable(dex2oat dex2oat.c)
+add_library(preload SHARED preload.cpp)
+
+add_subdirectory(${EXTERNAL_ROOT} external/cxx)
 
 target_link_libraries(dex2oat log)
+target_link_libraries(preload log cxx)
 
 if (DEFINED DEBUG_SYMBOLS_PATH)
     message(STATUS "Debug symbols will be placed at ${DEBUG_SYMBOLS_PATH}")

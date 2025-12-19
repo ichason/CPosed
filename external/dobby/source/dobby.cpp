@@ -13,7 +13,7 @@ PUBLIC const char *DobbyGetVersion() {
   return __DOBBY_BUILD_VERSION__;
 }
 
-PUBLIC int CobbyDestroy(void *address) {
+PUBLIC int DobbyDestroy(void *address) {
 #if defined(TARGET_ARCH_ARM)
   if ((addr_t)address % 2) {
     address = (void *)((addr_t)address - 1);

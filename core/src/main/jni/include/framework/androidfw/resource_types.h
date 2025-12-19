@@ -24,6 +24,8 @@
 #include <cstdint>
 #include "utils/hook_helper.hpp"
 
+using lsplant::operator""_sym;
+
 // @ApiSensitive(Level.MIDDLE)
 namespace android {
 
@@ -142,16 +144,20 @@ namespace android {
 
         using stringAtRet = expected<StringPiece16, NullOrIOError>;
 
-        CREATE_MEM_FUNC_SYMBOL_ENTRY(stringAtRet, stringAtS, void *thiz, size_t idx) {
+        inline static auto stringAtSSym = ("_ZNK7android13ResStringPool8stringAtEjPj"_sym |
+                                         "_ZNK7android13ResStringPool8stringAtEmPm"_sym).as<stringAtRet (ResStringPool::*)(size_t)>;
+
+        inline static stringAtRet stringAtS(ResStringPool* thiz, size_t idx) {
             if (stringAtSSym) {
                 return stringAtSSym(thiz, idx);
             }
             return {.var_ = unexpected<NullOrIOError>{.val_ = std::nullopt}};
-
         };
 
-        CREATE_MEM_FUNC_SYMBOL_ENTRY(const char16_t*, stringAt, void *thiz, size_t idx,
-                                     size_t *u16len) {
+        inline static auto stringAtSym = ("_ZNK7android13ResStringPool8stringAtEj"_sym |
+                                        "_ZNK7android13ResStringPool8stringAtEm"_sym).as<const char16_t* (ResStringPool::*)(size_t, size_t *)>;
+
+    inline static const char16_t* stringAt(ResStringPool* thiz, size_t idx, size_t *u16len) {
             if (stringAtSym) {
                 return stringAtSym(thiz, idx, u16len);
             } else {
@@ -174,9 +180,7 @@ namespace android {
             return {nullptr, 0u};
         }
 
-        static bool setup(const splant::HookHandler &handler) {
-            RETRIEVE_MEM_FUNC_SYMBOL(stringAt, LP_SELECT("_ZNK7android13ResStringPool8stringAtEjPj", "_ZNK7android13ResStringPool8stringAtEmPm"));
-            RETRIEVE_MEM_FUNC_SYMBOL(stringAtS, LP_SELECT("_ZNK7android13ResStringPool8stringAtEj", "_ZNK7android13ResStringPool8stringAtEm"));
+        static bool setup(const lsplant::HookHandler &handler) {
             return !stringAtSym || !stringAtSSym;
         }
     };

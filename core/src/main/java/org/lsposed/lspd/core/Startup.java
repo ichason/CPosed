@@ -42,16 +42,15 @@ import org.lsposed.lspd.util.Utils;
 import java.util.List;
 
 import dalvik.system.DexFile;
-import oc.os.lz.secure.CBridge;
-import oc.os.lz.secure.CInit;
+import de.robv.android.xposed.XposedBridge;
+import de.robv.android.xposed.XposedInit;
 
 public class Startup {
     private static void startBootstrapHook(boolean isSystem) {
         Utils.logD("startBootstrapHook starts: isSystem = " + isSystem);
         LSPosedHelper.hookMethod(CrashDumpHooker.class, Thread.class, "dispatchUncaughtException", Throwable.class);
         if (isSystem) {
-            LSPosedHelper.hookAllMethods(HandleSystemServerProcessHooker.class, ZygoteInit.class,
-                    "handleSystemServerProcess");
+            LSPosedHelper.hookAllMethods(HandleSystemServerProcessHooker.class, ZygoteInit.class, "handleSystemServerProcess");
         } else {
             LSPosedHelper.hookAllMethods(OpenDexFileHooker.class, DexFile.class, "openDexFile");
             LSPosedHelper.hookAllMethods(OpenDexFileHooker.class, DexFile.class, "openInMemoryDexFile");
@@ -60,16 +59,15 @@ public class Startup {
         LSPosedHelper.hookConstructor(LoadedApkCtorHooker.class, LoadedApk.class,
                 ActivityThread.class, ApplicationInfo.class, CompatibilityInfo.class,
                 ClassLoader.class, boolean.class, boolean.class, boolean.class);
-        LSPosedHelper.hookMethod(LoadedApkCreateCLHooker.class, LoadedApk.class, "createOrUpdateClassLoaderLocked",
-                List.class);
+        LSPosedHelper.hookMethod(LoadedApkCreateCLHooker.class, LoadedApk.class, "createOrUpdateClassLoaderLocked", List.class);
         LSPosedHelper.hookAllMethods(AttachHooker.class, ActivityThread.class, "attach");
     }
 
     public static void bootstrapXposed() {
         // Initialize the Xposed framework
         try {
-            startBootstrapHook(CInit.startsSystemServer);
-            CInit.loadLegacyModules();
+            startBootstrapHook(XposedInit.startsSystemServer);
+            XposedInit.loadLegacyModules();
         } catch (Throwable t) {
             Utils.logE("error during Xposed initialization", t);
         }
@@ -78,8 +76,8 @@ public class Startup {
     public static void initXposed(boolean isSystem, String processName, String appDir, ILSPApplicationService service) {
         // init logger
         ApplicationServiceClient.Init(service, processName);
-        CBridge.initXResources();
-        CInit.startsSystemServer = isSystem;
+        XposedBridge.initXResources();
+        XposedInit.startsSystemServer = isSystem;
         LSPosedContext.isSystemServer = isSystem;
         LSPosedContext.appDir = appDir;
         LSPosedContext.processName = processName;

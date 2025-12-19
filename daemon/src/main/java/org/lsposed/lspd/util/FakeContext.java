@@ -11,6 +11,7 @@ import android.content.res.Resources;
 import android.os.UserHandle;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import org.lsposed.lspd.service.ConfigFileManager;
@@ -22,6 +23,7 @@ public class FakeContext extends ContextWrapper {
     static ApplicationInfo systemApplicationInfo = null;
     static Resources.Theme theme = null;
     private String packageName = "android";
+    public static boolean ContentResolver = true;
     public FakeContext() {
         super(null);
     }
@@ -41,6 +43,7 @@ public class FakeContext extends ContextWrapper {
         return ConfigFileManager.getResources();
     }
 
+    @NonNull
     @Override
     public String getOpPackageName() {
         return "android";
@@ -59,8 +62,10 @@ public class FakeContext extends ContextWrapper {
 
     @Override
     public ContentResolver getContentResolver() {
-        return new ContentResolver(this) {
-        };
+        if(ContentResolver) {
+            return new ContentResolver(this) {};
+        }
+        return null;
     }
 
     public int getUserId() {

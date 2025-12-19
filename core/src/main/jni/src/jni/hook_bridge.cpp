@@ -26,7 +26,7 @@
 #include <mutex>
 #include <set>
 
-using namespace splant;
+using namespace lsplant;
 
 namespace {
 struct ModuleCallback {
@@ -106,7 +106,7 @@ LSP_DEF_NATIVE_METHOD(jboolean, HookBridge, hookMethod, jboolean useModernApi, j
                                                                                "([Ljava/lang/Object;)Ljava/lang/Object;"),
                                                       false);
         auto hooker_object = env->NewObject(hooker, init, hookMethod);
-        hook_item->SetBackup(splant::Hook(env, hookMethod, hooker_object, callback_method));
+        hook_item->SetBackup(lsplant::Hook(env, hookMethod, hooker_object, callback_method));
         env->DeleteLocalRef(hooker_object);
     }
     jobject backup = hook_item->GetBackup();
@@ -122,8 +122,8 @@ LSP_DEF_NATIVE_METHOD(jboolean, HookBridge, hookMethod, jboolean useModernApi, j
         auto before_method = JNI_GetObjectField(env, callback, before_method_field);
         auto after_method = JNI_GetObjectField(env, callback, after_method_field);
         auto callback_type = ModuleCallback {
-                .before_method = env->FromReflectedMethod(before_method),
-                .after_method = env->FromReflectedMethod(after_method),
+                .before_method = env->FromReflectedMethod(before_method.get()),
+                .after_method = env->FromReflectedMethod(after_method.get()),
         };
         hook_item->modern_callbacks.emplace(priority, callback_type);
     } else {
@@ -144,7 +144,7 @@ LSP_DEF_NATIVE_METHOD(jboolean, HookBridge, unhookMethod, jboolean useModernApi,
     JNIMonitor monitor(env, backup);
     if (useModernApi) {
         auto before_method = JNI_GetObjectField(env, callback, before_method_field);
-        auto before = env->FromReflectedMethod(before_method);
+        auto before = env->FromReflectedMethod(before_method.get());
         for (auto i = hook_item->modern_callbacks.begin(); i != hook_item->modern_callbacks.end(); ++i) {
             if (before == i->second.before_method) {
                 hook_item->modern_callbacks.erase(i);
@@ -154,6 +154,7 @@ LSP_DEF_NATIVE_METHOD(jboolean, HookBridge, unhookMethod, jboolean useModernApi,
     } else {
         for (auto i = hook_item->legacy_callbacks.begin(); i != hook_item->legacy_callbacks.end(); ++i) {
             if (env->IsSameObject(i->second, callback)) {
+                env->DeleteGlobalRef(i->second);
                 hook_item->legacy_callbacks.erase(i);
                 return JNI_TRUE;
             }
@@ -164,7 +165,7 @@ LSP_DEF_NATIVE_METHOD(jboolean, HookBridge, unhookMethod, jboolean useModernApi,
 
 LSP_DEF_NATIVE_METHOD(jboolean, HookBridge, deoptimizeMethod, jobject hookMethod,
                       jclass hooker, jint priority, jobject callback) {
-    return splant::Deoptimize(env, hookMethod);
+    return lsplant::Deoptimize(env, hookMethod);
 }
 
 LSP_DEF_NATIVE_METHOD(jobject, HookBridge, invokeOriginalMethod, jobject hookMethod,
@@ -175,6 +176,11 @@ LSP_DEF_NATIVE_METHOD(jobject, HookBridge, invokeOriginalMethod, jobject hookMet
         hook_item = it.second.get();
     });
     return env->CallObjectMethod(hook_item ? hook_item->GetBackup() : hookMethod, invoke, thiz, args);
+}
+
+LSP_DEF_NATIVE_METHOD(jobject, HookBridge, findClassInitializer, jclass cls) {
+    auto clinit = env->GetStaticMethodID(cls, "<clinit>", "()V");
+    return env->ToReflectedMethod(cls, clinit, JNI_TRUE);
 }
 
 LSP_DEF_NATIVE_METHOD(jobject, HookBridge, allocateObject, jclass cls) {
@@ -291,7 +297,7 @@ LSP_DEF_NATIVE_METHOD(jboolean, HookBridge, instanceOf, jobject object, jclass e
 }
 
 LSP_DEF_NATIVE_METHOD(jboolean, HookBridge, setTrusted, jobject cookie) {
-    return splant::MakeDexFileTrusted(env, cookie);
+    return lsplant::MakeDexFileTrusted(env, cookie);
 }
 
 LSP_DEF_NATIVE_METHOD(jobjectArray, HookBridge, callbackSnapshot, jclass callback_class, jobject method) {
@@ -312,7 +318,7 @@ LSP_DEF_NATIVE_METHOD(jobjectArray, HookBridge, callbackSnapshot, jclass callbac
         auto before_method = JNI_ToReflectedMethod(env, clazz, callback.second.before_method, JNI_TRUE);
         auto after_method = JNI_ToReflectedMethod(env, clazz, callback.second.after_method, JNI_TRUE);
         auto callback_object = JNI_NewObject(env, callback_class, callback_ctor, before_method, after_method);
-        env->SetObjectArrayElement(modern, i++, env->NewLocalRef(callback_object));
+        env->SetObjectArrayElement(modern, i++, env->NewLocalRef(callback_object.get()));
     }
     for (jsize i = 0; auto callback: hook_item->legacy_callbacks) {
         env->SetObjectArrayElement(legacy, i++, env->NewLocalRef(callback.second));
@@ -322,10 +328,11 @@ LSP_DEF_NATIVE_METHOD(jobjectArray, HookBridge, callbackSnapshot, jclass callbac
     return res;
 }
 
-LSP_DEF_NATIVE_METHOD(void, HookBridge, restore) {
+LSP_DEF_NATIVE_METHOD(void, HookBridge, updateTrampolineToOnlyRead) {
     LOGE("called in native HookBridge restore");
-    splant::Restore();
+    lsplant::updateTrampolineToOnlyRead();
 }
+
 
 static JNINativeMethod gMethods[] = {
     LSP_NATIVE_METHOD(HookBridge, hookMethod, "(ZLjava/lang/reflect/Executable;Ljava/lang/Class;ILjava/lang/Object;)Z"),
@@ -337,7 +344,6 @@ static JNINativeMethod gMethods[] = {
     LSP_NATIVE_METHOD(HookBridge, instanceOf, "(Ljava/lang/Object;Ljava/lang/Class;)Z"),
     LSP_NATIVE_METHOD(HookBridge, setTrusted, "(Ljava/lang/Object;)Z"),
     LSP_NATIVE_METHOD(HookBridge, callbackSnapshot, "(Ljava/lang/Class;Ljava/lang/reflect/Executable;)[[Ljava/lang/Object;"),
-    LSP_NATIVE_METHOD(HookBridge, restore, "()V"),
 };
 
 void RegisterHookBridge(JNIEnv *env) {

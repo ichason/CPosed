@@ -49,7 +49,7 @@
     <string name="selinux_policy_not_loaded_summary">SePolicy ٹھیک سے آن نہیں ہے</string>
     <string name="selinux_policy_not_loaded"><![CDATA[<a href="https://github.com/topjohnwu/Magisk/issues"mggnteer.]]></string>
     <string name="system_inject_fail_summary">سسٹم فریم ورک انجکشن ناکام۔</string>
-    <string name="system_inject_fail"><![CDATA[یہ نایاب ہے اور یہ <b>Magisk</b> یا کچھ کم معیار کے Magisk ماڈیولز کی وجہ سے ہو سکتا ہے۔<br/>براہ کرم Riru اور LSPosed کے علاوہ Magisk ماڈیولز کو غیر فعال کرنے کی کوشش کریں یا مکمل لاگ ڈویلپرز کو جمع کرائیں۔]]></string>
+    <string name="system_inject_fail"><![CDATA[یہ نایاب ہے اور یہ <b>Magisk</b> یا کچھ کم معیار کے Magisk ماڈیولز کی وجہ سے ہو سکتا ہے۔<br/>براہ کرم Zygisk اور LSPosed کے علاوہ Magisk ماڈیولز کو غیر فعال کرنے کی کوشش کریں یا مکمل لاگ ڈویلپرز کو جمع کرائیں۔]]></string>
     <string name="system_prop_incorrect_summary">سسٹم پروپ غلط ہے۔</string>
     <string name="system_prop_incorrect"><![CDATA[سسٹم کی کچھ ضروری خصوصیات حذف یا ترمیم کی گئیں۔<br/>ماڈیول کبھی کبھار باطل ہو سکتے ہیں۔]]></string>
     <string name="need_update">اپ ڈیٹ درکار ہے۔</string>
@@ -73,14 +73,6 @@
     <string name="update_lsposed">LSPosed کو اپ ڈیٹ کریں۔</string>
     <string name="update_lsposed_msg">LSPosed کو اپ ڈیٹ کرنے کی تصدیق کریں؟ یہ آلہ اپ ڈیٹ مکمل ہونے کے بعد دوبارہ شروع ہو جائے گا۔</string>
     <string name="info_copied">کلپ بورڈ پر کاپی ہو گیا۔</string>
-    <!-- WelcomeDialog -->
-    <string name="parasitic_welcome">LSPosed میں خوش آمدید</string>
-    <string name="parasitic_welcome_summary">آپ پرجیوی مینیجر کا استعمال کر رہے ہیں، جو شارٹ کٹ بنا سکتا ہے یا پھر بھی اطلاع سے کھل سکتا ہے۔</string>
-    <string name="parasitic_welcome_summary_no_shortcut_support">آپ پرجیوی مینیجر استعمال کر رہے ہیں، جو اطلاع سے کھل سکتا ہے۔</string>
-    <string name="create_shortcut">شارٹ کٹ بنانا</string>
-    <string name="never_show">کبھی نہ دکھائیں۔</string>
-    <string name="app_welcome">پرجیوی مینیجر کی سفارش</string>
-    <string name="app_welcome_summary">LSPosed اب پتہ لگانے سے بچنے کے لیے سسٹم پرجیوی کی حمایت کرتا ہے، آپ نوٹیفکیشن سے پرجیوی مینیجر کو کھول سکتے ہیں۔ موجودہ ایپلیکیشن کو ان انسٹال کرنے کی سفارش کی جاتی ہے۔</string>
     <!-- LogsActivity -->
     <string name="menuSaveToSd">محفوظ کریں</string>
     <string name="nav_item_logs_verbose">وربوز لاگز</string>
@@ -189,12 +181,8 @@
     <string name="settings_translation_contributors">ترجمہ کرنے والے</string>
     <string name="settings_translation">ترجمہ میں حصہ لیں۔</string>
     <string name="settings_translation_summary">%s کا اپنی زبان میں ترجمہ کرنے میں ہماری مدد کریں۔</string>
-    <string name="settings_create_shortcut_summary">ایک شارٹ کٹ بنائیں جو پرجیوی مینیجر کو کھول سکے۔</string>
-    <string name="settings_shortcut_pinned_hint">شارٹ کٹ پن کر دیا گیا۔</string>
-    <string name="settings_unsupported_pin_shortcut_summary">موجودہ ڈیفالٹ لانچر پن شارٹ کٹس کو سپورٹ نہیں کرتا ہے۔</string>
     <string name="settings_enable_status_notification">اسٹیٹس کی اطلاع</string>
     <string name="settings_enable_status_notification_summary">ایک اطلاع دکھائیں جو پرجیوی مینیجر کو کھول سکے۔</string>
-    <string name="disable_status_notification_error">کوئی شارٹ کٹ نہیں، اطلاع کو غیر فعال نہیں کر سکتا</string>
     <string name="settings_update_channel">چینل کو اپ ڈیٹ کریں۔</string>
     <string name="update_channel_stable">مستحکم</string>
     <string name="update_channel_bate">بیٹا</string>

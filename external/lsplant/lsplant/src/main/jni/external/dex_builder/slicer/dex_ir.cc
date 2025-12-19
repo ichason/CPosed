@@ -25,6 +25,7 @@
 #include <memory>
 #include <vector>
 #include <functional>
+#include <cstdlib>
 
 namespace ir {
 

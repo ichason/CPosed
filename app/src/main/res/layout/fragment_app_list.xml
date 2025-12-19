@@ -80,7 +80,7 @@
         android:orientation="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        <org.lsposed.manager.ui.widget.MaterialSwipeRefreshLayout
             android:id="@+id/swipe_refresh_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -97,6 +97,6 @@
                 app:borderTopDrawable="@null"
                 app:borderTopVisibility="whenTop"
                 app:fitsSystemWindowsInsets="@integer/internal_fragment_bottom_insets" />
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+        </org.lsposed.manager.ui.widget.MaterialSwipeRefreshLayout>
     </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

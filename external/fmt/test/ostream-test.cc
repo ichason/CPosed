@@ -17,7 +17,7 @@ struct test {};
 // included after fmt/format.h.
 namespace fmt {
 template <> struct formatter<test> : formatter<int> {
-  auto format(const test&, format_context& ctx) -> decltype(ctx.out()) {
+  auto format(const test&, format_context& ctx) const -> decltype(ctx.out()) {
     return formatter<int>::format(42, ctx);
   }
 };
@@ -86,13 +86,13 @@ TEST(ostream_test, format_specs) {
   EXPECT_EQ(" def ", fmt::format("{0:^5}", test_string("def")));
   EXPECT_EQ("def**", fmt::format("{0:*<5}", test_string("def")));
   EXPECT_THROW_MSG((void)fmt::format(runtime("{0:+}"), test_string()),
-                   format_error, "format specifier requires numeric argument");
+                   format_error, "invalid format specifier");
   EXPECT_THROW_MSG((void)fmt::format(runtime("{0:-}"), test_string()),
-                   format_error, "format specifier requires numeric argument");
+                   format_error, "invalid format specifier");
   EXPECT_THROW_MSG((void)fmt::format(runtime("{0: }"), test_string()),
-                   format_error, "format specifier requires numeric argument");
+                   format_error, "invalid format specifier");
   EXPECT_THROW_MSG((void)fmt::format(runtime("{0:#}"), test_string()),
-                   format_error, "format specifier requires numeric argument");
+                   format_error, "invalid format specifier");
   EXPECT_THROW_MSG((void)fmt::format(runtime("{0:05}"), test_string()),
                    format_error, "format specifier requires numeric argument");
   EXPECT_EQ("test         ", fmt::format("{0:13}", test_string("test")));
@@ -106,9 +106,17 @@ TEST(ostream_test, empty_custom_output) {
 }
 
 TEST(ostream_test, print) {
-  std::ostringstream os;
-  fmt::print(os, "Don't {}!", "panic");
-  EXPECT_EQ("Don't panic!", os.str());
+  {
+    std::ostringstream os;
+    fmt::print(os, "Don't {}!", "panic");
+    EXPECT_EQ("Don't panic!", os.str());
+  }
+
+  {
+    std::ostringstream os;
+    fmt::println(os, "Don't {}!", "panic");
+    EXPECT_EQ("Don't panic!\n", os.str());
+  }
 }
 
 TEST(ostream_test, write_to_ostream) {
@@ -127,12 +135,12 @@ TEST(ostream_test, write_to_ostream_max_size) {
 
   struct test_buffer final : fmt::detail::buffer<char> {
     explicit test_buffer(size_t size)
-        : fmt::detail::buffer<char>(nullptr, size, size) {}
-    void grow(size_t) override {}
+        : fmt::detail::buffer<char>([](buffer<char>&, size_t) {}, nullptr, size,
+                                    size) {}
   } buffer(max_size);
 
   struct mock_streambuf : std::streambuf {
-    MOCK_METHOD2(xsputn, std::streamsize(const void* s, std::streamsize n));
+    MOCK_METHOD(std::streamsize, xsputn, (const void*, std::streamsize));
     auto xsputn(const char* s, std::streamsize n) -> std::streamsize override {
       const void* v = s;
       return xsputn(v, n);
@@ -193,7 +201,8 @@ auto operator<<(std::ostream& os, test_template<T>) -> std::ostream& {
 
 namespace fmt {
 template <typename T> struct formatter<test_template<T>> : formatter<int> {
-  auto format(test_template<T>, format_context& ctx) -> decltype(ctx.out()) {
+  auto format(test_template<T>, format_context& ctx) const
+      -> decltype(ctx.out()) {
     return formatter<int>::format(2, ctx);
   }
 };
@@ -216,45 +225,6 @@ TEST(ostream_test, format_to_n) {
   EXPECT_EQ(5u, result.size);
   EXPECT_EQ(buffer + 3, result.out);
   EXPECT_EQ("xabx", fmt::string_view(buffer, 4));
-}
-
-template <typename T> struct convertible {
-  T value;
-  explicit convertible(const T& val) : value(val) {}
-  operator T() const { return value; }
-};
-
-TEST(ostream_test, disable_builtin_ostream_operators) {
-  EXPECT_EQ("42", fmt::format("{:d}", convertible<unsigned short>(42)));
-  EXPECT_EQ("foo", fmt::format("{}", convertible<const char*>("foo")));
-}
-
-struct streamable_and_convertible_to_bool {
-  operator bool() const { return true; }
-};
-
-std::ostream& operator<<(std::ostream& os, streamable_and_convertible_to_bool) {
-  return os << "foo";
-}
-
-TEST(ostream_test, format_convertible_to_bool) {
-  // operator<< is intentionally not used because of potential ODR violations.
-  EXPECT_EQ(fmt::format("{}", streamable_and_convertible_to_bool()), "true");
-}
-
-struct streamable_and_convertible_to_string_view {
-  operator fmt::string_view() const { return "foo"; }
-};
-
-std::ostream& operator<<(std::ostream& os,
-                         streamable_and_convertible_to_string_view) {
-  return os << "bar";
-}
-
-TEST(ostream_test, format_convertible_to_string_vew) {
-  // operator<< is intentionally not used because of potential ODR violations.
-  EXPECT_EQ(fmt::format("{}", streamable_and_convertible_to_string_view()),
-            "foo");
 }
 
 struct copyfmt_test {};
@@ -319,4 +289,20 @@ TEST(ostream_test, streamed) {
 TEST(ostream_test, closed_ofstream) {
   std::ofstream ofs;
   fmt::print(ofs, "discard");
+}
+
+struct unlocalized {};
+
+auto operator<<(std::ostream& os, unlocalized) -> std::ostream& {
+  return os << 12345;
+}
+
+namespace fmt {
+template <> struct formatter<unlocalized> : ostream_formatter {};
+}  // namespace fmt
+
+TEST(ostream_test, unlocalized) {
+  auto loc = get_locale("en_US.UTF-8");
+  std::locale::global(loc);
+  EXPECT_EQ(fmt::format(loc, "{}", unlocalized()), "12345");
 }

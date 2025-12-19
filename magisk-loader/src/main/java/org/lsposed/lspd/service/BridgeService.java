@@ -26,9 +26,11 @@ import android.app.ActivityThread;
 import android.app.IApplicationThread;
 import android.content.Context;
 import android.os.Binder;
+import android.os.Build;
 import android.os.IBinder;
 import android.os.Parcel;
 import android.os.RemoteException;
+import android.os.SharedMemory;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -39,12 +41,13 @@ import org.lsposed.lspd.BuildConfig;
 public class BridgeService {
     private static final int TRANSACTION_CODE = ('_' << 24) | ('L' << 16) | ('S' << 8) | 'P';
     private static final String DESCRIPTOR = "LSPosed";
-    protected static final String TAG = "LSPosed Bridge";
+    protected static final String TAG = "LSPosed-Bridge";
 
     enum ACTION {
         ACTION_UNKNOWN,
         ACTION_SEND_BINDER,
         ACTION_GET_BINDER,
+        ACTION_ENABLE_MANAGER,
     }
 
     // for client
@@ -109,6 +112,19 @@ public class BridgeService {
                 case ACTION_SEND_BINDER: {
                     if (Binder.getCallingUid() == 0) {
                         receiveFromBridge(data.readStrongBinder());
+                        try {
+                            SharedMemory sm;
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                                sm = data.readParcelable(ClassLoader.getSystemClassLoader(), SharedMemory.class);
+                            } else {
+                                sm = data.readParcelable(ClassLoader.getSystemClassLoader());
+                            }
+                            assert sm != null;
+                            initializeAccessMatrix(sm);
+                            sm.close();
+                        } catch (Throwable t) {
+                            Log.e(TAG, "initialize shared memory", t);
+                        }
                         if (reply != null) {
                             reply.writeNoException();
                         }
@@ -134,57 +150,20 @@ public class BridgeService {
                     }
                     return false;
                 }
+                case ACTION_ENABLE_MANAGER: {
+                    var uid = Binder.getCallingUid();
+                    if ((uid == 0 || uid == 2000 || uid == 1000) && service != null) {
+                        var result = service.setManagerEnabled(data.readInt() == 1);
+                        if (reply != null) reply.writeInt(result ? 1 : 0);
+                        return true;
+                    }
+                    return false;
+                }
             }
         } catch (Throwable e) {
             Log.e(TAG, "onTransact", e);
         }
         return false;
-    }
-
-    @SuppressWarnings("unused")
-    public static boolean replaceShellCommand(IBinder obj, int code, long dataObj, long replyObj, int flags) {
-        Parcel data = ParcelUtils.fromNativePointer(dataObj);
-        Parcel reply = ParcelUtils.fromNativePointer(replyObj);
-
-        if (data == null || reply == null) {
-            Log.w(TAG, "Got transaction with null data or reply");
-            return false;
-        }
-
-        try {
-            String descriptor = obj.getInterfaceDescriptor();
-            if (!"android.app.IActivityManager".equals(descriptor) &&
-                    !"com.sonymobile.hookservice.HookActivityService".equals(descriptor)) {
-                return false;
-            }
-            return ActivityController.replaceShellCommand(obj, data, reply);
-        } catch (Throwable e) {
-            Log.e(TAG, "replace shell command", e);
-            return false;
-        } finally {
-            data.setDataPosition(0);
-        }
-    }
-
-    @SuppressWarnings("unused")
-    public static boolean replaceActivityController(IBinder obj, int code, long dataObj, long replyObj, int flags) {
-        Parcel data = ParcelUtils.fromNativePointer(dataObj);
-        Parcel reply = ParcelUtils.fromNativePointer(replyObj);
-
-        if (data == null || reply == null) {
-            Log.w(TAG, "Got transaction with null data or reply");
-            return false;
-        }
-
-        try {
-            if (!ParcelUtils.safeEnforceInterface(data, "android.app.IActivityManager") &&
-                    !ParcelUtils.safeEnforceInterface(data, "com.sonymobile.hookservice.HookActivityService")) {
-                return false;
-            }
-            return ActivityController.replaceActivityController(data);
-        } finally {
-            data.setDataPosition(0);
-        }
     }
 
     @SuppressWarnings("unused")
@@ -217,4 +196,6 @@ public class BridgeService {
             reply.recycle();
         }
     }
+
+    private static native void initializeAccessMatrix(SharedMemory sm);
 }

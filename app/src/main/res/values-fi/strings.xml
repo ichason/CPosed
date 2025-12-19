@@ -49,7 +49,7 @@
     <string name="selinux_policy_not_loaded_summary">SEPolicy ei ole ladattu oikein</string>
     <string name="selinux_policy_not_loaded"><![CDATA[Jotkin ominaisuudet eivät toimi.<br/>Ilmoita tästä <a href="https://github.com/topjohnwu/Magisk/issues"><b>Magisk</b></a> kehittäjälle.]]></string>
     <string name="system_inject_fail_summary">Järjestelmän kehysinjektointi epäonnistui</string>
-    <string name="system_inject_fail"><![CDATA[Tämä on harvinaista ja voi johtua <b>Magisk</b> tai joitakin heikkolaatuisia Magisk moduuleja.<br/>Yritä poistaa käytöstä muut Magisk moduulit kuin Riru ja LSPosed tai lähettää täysi loki kehittäjille.]]></string>
+    <string name="system_inject_fail"><![CDATA[Tämä on harvinaista ja voi johtua <b>Magisk</b> tai joitakin heikkolaatuisia Magisk moduuleja.<br/>Yritä poistaa käytöstä muut Magisk moduulit kuin Zygisk ja LSPosed tai lähettää täysi loki kehittäjille.]]></string>
     <string name="system_prop_incorrect_summary">Järjestelmän prop virheellinen</string>
     <string name="system_prop_incorrect"><![CDATA[Jotkut tarvittavat järjestelmän ominaisuudet poistettu tai muokattu.<br/>Moduulit voivat mitätöidä satunnaisesti.]]></string>
     <string name="need_update">Täytyy päivittää</string>
@@ -73,14 +73,6 @@
     <string name="update_lsposed">Päivitys LSPostettu</string>
     <string name="update_lsposed_msg">Vahvista LSPost-päivitys? Tämä laite käynnistyy uudelleen päivityksen jälkeen</string>
     <string name="info_copied">Kopioitu leikepöydälle</string>
-    <!-- WelcomeDialog -->
-    <string name="parasitic_welcome">Tervetuloa LSPosed</string>
-    <string name="parasitic_welcome_summary">Käytät loishallintaohjelmaa, joka voi luoda pikakuvakkeen tai silti avata ilmoituksen.</string>
-    <string name="parasitic_welcome_summary_no_shortcut_support">Käytät loishallintaohjelmaa, joka voidaan avata ilmoituksesta.</string>
-    <string name="create_shortcut">Luo pikakuvake</string>
-    <string name="never_show">Älä näytä koskaan</string>
-    <string name="app_welcome">Parasitic Manager Suositellaan</string>
-    <string name="app_welcome_summary">LSPosed tukee nyt järjestelmän loisimista havaitsemisen välttämiseksi, voit avata loishallinnan ilmoituksesta. On suositeltavaa poistaa nykyinen sovellus.</string>
     <!-- LogsActivity -->
     <string name="menuSaveToSd">Tallenna</string>
     <string name="nav_item_logs_verbose">Verbose Lokit</string>
@@ -189,12 +181,8 @@
     <string name="settings_translation_contributors">Käännöksen osallistujat</string>
     <string name="settings_translation">Osallistu käännökseen</string>
     <string name="settings_translation_summary">Auta meitä kääntämään %s kielellesi</string>
-    <string name="settings_create_shortcut_summary">Luo pikakuvake, joka voi avata loishallintaohjelman.</string>
-    <string name="settings_shortcut_pinned_hint">Pikakuvake kiinnitetty</string>
-    <string name="settings_unsupported_pin_shortcut_summary">Nykyinen oletuskäynnistin ei tue pin-pikakuvakkeita.</string>
     <string name="settings_enable_status_notification">Tilailmoitus</string>
     <string name="settings_enable_status_notification_summary">Näytä ilmoitus, joka voi avata loishallintaohjelman</string>
-    <string name="disable_status_notification_error">Ei pikakuvaketta, ilmoitusta ei voi poistaa käytöstä</string>
     <string name="settings_update_channel">Päivitä kanava</string>
     <string name="update_channel_stable">Vakaa</string>
     <string name="update_channel_bate">Beeta</string>

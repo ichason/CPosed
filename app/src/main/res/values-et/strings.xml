@@ -49,7 +49,7 @@
     <string name="selinux_policy_not_loaded_summary">SEPolicy ei ole korralikult laetud</string>
     <string name="selinux_policy_not_loaded"><![CDATA[Mõned funktsioonid ei tööta.<br/>Palun teatage sellest <a href="https://github.com/topjohnwu/Magisk/issues"><b>Magisk</b></a> arendajale.]]></string>
     <string name="system_inject_fail_summary">System Frameworki süstimine ebaõnnestus</string>
-    <string name="system_inject_fail"><![CDATA[Seda esineb harva ja selle põhjuseks võib olla <b>Magisk</b> või mõned madala kvaliteediga Magisk-moodulid.<br/>Palun proovige lülitada välja Magisk\'i moodulid peale Riru ja LSPosed või esitage täielik logi arendajatele.]]></string>
+    <string name="system_inject_fail"><![CDATA[Seda esineb harva ja selle põhjuseks võib olla <b>Magisk</b> või mõned madala kvaliteediga Magisk-moodulid.<br/>Palun proovige lülitada välja Magisk\'i moodulid peale Zygisk ja LSPosed või esitage täielik logi arendajatele.]]></string>
     <string name="system_prop_incorrect_summary">Süsteemi tugi vale</string>
     <string name="system_prop_incorrect"><![CDATA[Mõned vajalikud süsteemiomadused kustutatud või muudetud.<br/>Moodulid võivad aeg-ajalt kehtetuks muutuda.]]></string>
     <string name="need_update">Vaja uuendada</string>
@@ -73,14 +73,6 @@
     <string name="update_lsposed">LSPosedi uuendamine</string>
     <string name="update_lsposed_msg">Kas kinnitada LSPosed uuendamine? See seade taaskäivitub pärast uuendamise lõpetamist</string>
     <string name="info_copied">Kopeeritud lõikelauale</string>
-    <!-- WelcomeDialog -->
-    <string name="parasitic_welcome">Tere tulemast LSPosedisse</string>
-    <string name="parasitic_welcome_summary">Sa kasutad parasiitide haldurit, mis võib luua otsetee või ikka avada teateid.</string>
-    <string name="parasitic_welcome_summary_no_shortcut_support">Kasutate parasiitide haldurit, mida saab avada teatisest.</string>
-    <string name="create_shortcut">Loo otsetee</string>
-    <string name="never_show">Mitte kunagi ei näidata</string>
-    <string name="app_welcome">Parasiitide haldur Soovitatav</string>
-    <string name="app_welcome_summary">LSPosed toetab nüüd süsteemi parasiitide tuvastamise vältimiseks, saate avada parasiitide haldaja teatest. Praegune rakendus on soovitatav eemaldada.</string>
     <!-- LogsActivity -->
     <string name="menuSaveToSd">Salvesta</string>
     <string name="nav_item_logs_verbose">Põhjalikud logid</string>
@@ -189,12 +181,8 @@
     <string name="settings_translation_contributors">Tõlkimise toetajad</string>
     <string name="settings_translation">Osalege tõlkimises</string>
     <string name="settings_translation_summary">Aita meil tõlkida %s sinu keelde</string>
-    <string name="settings_create_shortcut_summary">Loo otsetee, mis võib avada parasiitide halduri</string>
-    <string name="settings_shortcut_pinned_hint">Otsetee kinnitatud</string>
-    <string name="settings_unsupported_pin_shortcut_summary">Praegune vaikekäivitusprogramm ei toeta nööpnõelte otseteid</string>
     <string name="settings_enable_status_notification">Staatuse teatamine</string>
     <string name="settings_enable_status_notification_summary">Kuva teatis, mis võib avada parasiitide halduri</string>
-    <string name="disable_status_notification_error">Otsetee puudub, teavitust ei saa keelata</string>
     <string name="settings_update_channel">Uuenduskanal</string>
     <string name="update_channel_stable">Stabiilne</string>
     <string name="update_channel_bate">Beeta</string>

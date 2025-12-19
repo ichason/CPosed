@@ -53,7 +53,7 @@
     <string name="selinux_policy_not_loaded_summary">SEPolicy není správně načten</string>
     <string name="selinux_policy_not_loaded"><![CDATA[Některé funkce nebudou fungovat.<br/>Nahlaste to prosím vývojáři <a href="https://github.com/topjohnwu/Magisk/issues"><b>Magisk</b></a>.]]></string>
     <string name="system_inject_fail_summary">Načtení System Framework se nezdařilo</string>
-    <string name="system_inject_fail"><![CDATA[Toto je vzácné a může to být způsobeno <b>Magisk</b>em nebo některými málo kvalitními moduly Magisku.<br/>Zkuste vypnout moduly Magisk jiné než Riru a LSPosed nebo odešlete kompletní log vývojářům.]]></string>
+    <string name="system_inject_fail"><![CDATA[Toto je vzácné a může to být způsobeno <b>Magisk</b>em nebo některými málo kvalitními moduly Magisku.<br/>Zkuste vypnout moduly Magisk jiné než Zygisk a LSPosed nebo odešlete kompletní log vývojářům.]]></string>
     <string name="system_prop_incorrect_summary">Nesprávné systémové prop</string>
     <string name="system_prop_incorrect"><![CDATA[Některé potřebné systémové vlastnosti byly odstraněny nebo změněny.<br/>Moduly mohou být někdy neplatné a tedy nefunkční.]]></string>
     <string name="need_update">Je třeba aktualizovat</string>
@@ -77,14 +77,6 @@
     <string name="update_lsposed">Aktualizovat LSPosed</string>
     <string name="update_lsposed_msg">Potvrdit aktualizaci LSPosed? Toto zařízení se restartuje po dokončení aktualizace</string>
     <string name="info_copied">Zkopírováno do schránky</string>
-    <!-- WelcomeDialog -->
-    <string name="parasitic_welcome">Vítejte v LSPosed</string>
-    <string name="parasitic_welcome_summary">Používáte parazitního správce, který může vytvořit zástupce nebo se stále otevírat z oznámení.</string>
-    <string name="parasitic_welcome_summary_no_shortcut_support">Používáte parazitního správce, který se může otevřít z oznámení.</string>
-    <string name="create_shortcut">Vytvořit zástupce</string>
-    <string name="never_show">Nikdy nezobrazovat</string>
-    <string name="app_welcome">Doporučený parazitický manažer</string>
-    <string name="app_welcome_summary">LSPosed nyní podporuje parazitování systému. K zabránění detekce můžete správce parazitů otevřít z oznámení. Doporučuje se odinstalovat aktuální aplikaci.</string>
     <!-- LogsActivity -->
     <string name="menuSaveToSd">Uložit</string>
     <string name="nav_item_logs_verbose">Podrobné protokoly</string>
@@ -193,12 +185,8 @@
     <string name="settings_translation_contributors">Přispěvatelé překladu</string>
     <string name="settings_translation">Účast na překladu</string>
     <string name="settings_translation_summary">Pomozte nám přeložit %s do vašeho jazyka</string>
-    <string name="settings_create_shortcut_summary">Vytvoření zástupce, který může otevřít parazitního správce</string>
-    <string name="settings_shortcut_pinned_hint">Připnutí zástupci</string>
-    <string name="settings_unsupported_pin_shortcut_summary">Současný výchozí spouštěč nepodporuje připnuté zkratky</string>
     <string name="settings_enable_status_notification">Oznámení o stavu</string>
     <string name="settings_enable_status_notification_summary">Zobrazení oznámení, které může otevřít parazitního správce</string>
-    <string name="disable_status_notification_error">Žádný zástupce, nelze zakázat oznámení</string>
     <string name="settings_update_channel">Kanál aktualizace</string>
     <string name="update_channel_stable">Stabilní</string>
     <string name="update_channel_bate">Beta</string>

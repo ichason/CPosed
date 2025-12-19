@@ -8,7 +8,7 @@
     FetchContent_Declare(
         parallel-hashmap
         GIT_REPOSITORY https://github.com/greg7mdp/parallel-hashmap.git
-        GIT_TAG        v1.3.8 # adjust tag/branch/commit as needed
+        GIT_TAG        v2.0.0    # adjust tag/branch/commit as needed
     )
     FetchContent_MakeAvailable(parallel-hashmap)
 
@@ -17,14 +17,11 @@
 
 #]===================================================================]
 
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 3.13)
 
 list (APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 include(DetectVersion)
-
-cmake_policy(SET CMP0048 NEW)             ## set VERSION as documented by the project() command.
-cmake_policy(SET CMP0076 NEW)             ## accept new policy
 
 if(NOT CMAKE_CXX_STANDARD)
     set(CMAKE_CXX_STANDARD 11)            ## compile with C++11 support
@@ -48,14 +45,14 @@ option(PHMAP_INSTALL "Enable installation" ${PHMAP_MASTER_PROJECT})
 
 
 set(PHMAP_DIR parallel_hashmap)
-set(PHMAP_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/${PHMAP_DIR}/phmap.h 
-                  ${CMAKE_CURRENT_SOURCE_DIR}/${PHMAP_DIR}/phmap_base.h 
-                  ${CMAKE_CURRENT_SOURCE_DIR}/${PHMAP_DIR}/phmap_bits.h 
+set(PHMAP_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/${PHMAP_DIR}/phmap.h
+                  ${CMAKE_CURRENT_SOURCE_DIR}/${PHMAP_DIR}/phmap_base.h
+                  ${CMAKE_CURRENT_SOURCE_DIR}/${PHMAP_DIR}/phmap_bits.h
                   ${CMAKE_CURRENT_SOURCE_DIR}/${PHMAP_DIR}/phmap_config.h
-                  ${CMAKE_CURRENT_SOURCE_DIR}/${PHMAP_DIR}/phmap_dump.h 
-                  ${CMAKE_CURRENT_SOURCE_DIR}/${PHMAP_DIR}/phmap_fwd_decl.h 
-                  ${CMAKE_CURRENT_SOURCE_DIR}/${PHMAP_DIR}/phmap_utils.h 
-                  ${CMAKE_CURRENT_SOURCE_DIR}/${PHMAP_DIR}/meminfo.h 
+                  ${CMAKE_CURRENT_SOURCE_DIR}/${PHMAP_DIR}/phmap_dump.h
+                  ${CMAKE_CURRENT_SOURCE_DIR}/${PHMAP_DIR}/phmap_fwd_decl.h
+                  ${CMAKE_CURRENT_SOURCE_DIR}/${PHMAP_DIR}/phmap_utils.h
+                  ${CMAKE_CURRENT_SOURCE_DIR}/${PHMAP_DIR}/meminfo.h
                   ${CMAKE_CURRENT_SOURCE_DIR}/${PHMAP_DIR}/btree.h)
 
 include(helpers)
@@ -72,14 +69,14 @@ target_include_directories(
 if(PHMAP_INSTALL)
     include(GNUInstallDirs)
     include(CMakePackageConfigHelpers)
-    
+
     install(
         DIRECTORY ${PROJECT_SOURCE_DIR}/${PHMAP_DIR}/
         DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${PHMAP_DIR})
-    
+
     install(TARGETS ${PROJECT_NAME}
             EXPORT ${PROJECT_NAME}-targets)
-    
+
     export(EXPORT ${PROJECT_NAME}-targets
            FILE "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Targets.cmake")
 endif()
@@ -89,16 +86,18 @@ option(PHMAP_BUILD_TESTS    "Whether or not to build the tests"    ${PHMAP_MASTE
 option(PHMAP_BUILD_EXAMPLES "Whether or not to build the examples" ${PHMAP_MASTER_PROJECT})
 
 if(MSVC)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /bigobj")
+    add_compile_options("$<$<COMPILE_LANGUAGE:CXX>:/bigobj>")
 endif()
 
-include_directories(${PROJECT_SOURCE_DIR})
+if (PHMAP_BUILD_TESTS OR PHMAP_BUILD_EXAMPLES)
+    include_directories(${PROJECT_SOURCE_DIR})
+endif()
 
 if (PHMAP_BUILD_TESTS)
 
     if (NOT PHMAP_GTEST_LIBS)
         include(cmake/DownloadGTest.cmake)
-    
+
         check_target(gtest)
         check_target(gtest_main)
         check_target(gmock)
@@ -167,12 +166,12 @@ endif()
 
 if (PHMAP_BUILD_EXAMPLES)
     if(NOT MSVC)
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic -Wall -Wextra -Wcast-align -Wcast-qual -Wdisabled-optimization -Winit-self -Wlogical-op -Wmissing-include-dirs -Woverloaded-virtual -Wredundant-decls -Wshadow -Wstrict-null-sentinel  -Wswitch-default -Wno-unused")
+        add_compile_options("$<$<COMPILE_LANGUAGE:CXX>:-pedantic;-Wall;-Wextra;-Wcast-align;-Wcast-qual;-Wdisabled-optimization;-Winit-self;-Wlogical-op;-Wmissing-include-dirs;-Woverloaded-virtual;-Wredundant-decls;-Wshadow;-Wstrict-null-sentinel;-Wswitch-default;-Wno-unused>")
         if (NOT CMAKE_COMPILER_IS_GNUCC OR CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 5.0)
-            set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-unknown-warning-option -Wno-gnu-zero-variadic-macro-arguments")
+            add_compile_options("$<$<COMPILE_LANGUAGE:CXX>:-Wno-unknown-warning-option;-Wno-gnu-zero-variadic-macro-arguments>")
         endif()
     else()
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4 /Zc:__cplusplus")
+        add_compile_options("$<$<COMPILE_LANGUAGE:CXX>:/W4;/Zc:__cplusplus>")
     endif()
 
     set(THREADS_PREFER_PTHREAD_FLAG ON)
@@ -198,8 +197,41 @@ if (PHMAP_BUILD_EXAMPLES)
     add_executable(ex_hash_bench examples/hash_bench.cc phmap.natvis)
     add_executable(ex_matt examples/matt.cc phmap.natvis)
     add_executable(ex_mt_word_counter examples/mt_word_counter.cc phmap.natvis)
+    add_executable(ex_p_bench examples/p_bench.cc phmap.natvis)
+
+    #set(Boost_INCLUDE_DIR /home/greg/dev/boost_1_82_0) # if boost installed in non-standard location
+    set(Boost_USE_STATIC_LIBS OFF)
+    set(Boost_USE_MULTITHREADED ON)
+    set(Boost_USE_STATIC_RUNTIME OFF)
+
+    # llil4map.cc - see https://www.perlmonks.com/?node_id=11149643
+    # -------------------------------------------------------------
+    find_package(OpenMP)
+    find_package(Boost 1.70.0)
+    if (OpenMP_FOUND AND Boost_FOUND AND "cxx_std_20" IN_LIST CMAKE_CXX_COMPILE_FEATURES)
+       add_executable(ex_llil4map examples/llil4map.cc phmap.natvis)
+       target_include_directories(ex_llil4map PRIVATE ${Boost_INCLUDE_DIRS})
+       target_compile_features(ex_llil4map PUBLIC cxx_std_20)
+       find_package(TBB COMPONENTS tbb)
+       if (TBB_FOUND)
+           target_link_libraries(ex_llil4map PRIVATE TBB::tbb)
+       endif()
+       target_link_libraries(ex_llil4map PRIVATE OpenMP::OpenMP_CXX)
+       target_compile_options(ex_llil4map PRIVATE "${OpenMP_CXX_FLAGS}")
+
+       file(COPY examples/llil_utils DESTINATION "${CMAKE_CURRENT_BINARY_DIR}")
+    endif()
+
+    if (Boost_FOUND)
+       add_executable(ex_custom_pointer examples/custom_pointer.cc phmap.natvis)
+       target_include_directories(ex_custom_pointer PRIVATE ${Boost_INCLUDE_DIRS})
+
+       add_executable(ex_llil examples/llil.cc phmap.natvis)
+       target_include_directories(ex_llil PRIVATE ${Boost_INCLUDE_DIRS})
+       target_compile_features(ex_llil PUBLIC cxx_std_20)
+       target_link_libraries(ex_llil Threads::Threads)
+    endif()
 
     target_link_libraries(ex_knucleotide Threads::Threads)
     target_link_libraries(ex_bench Threads::Threads)
 endif()
-

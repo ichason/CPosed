@@ -27,9 +27,9 @@ import androidx.annotation.NonNull;
 import org.lsposed.lspd.impl.LSPosedContext;
 import org.lsposed.lspd.util.Hookers;
 
-import oc.os.lz.secure.CBridge;
-import oc.os.lz.secure.CInit;
-import oc.os.lz.secure.callbacks.XC_LoadPackage;
+import de.robv.android.xposed.XposedBridge;
+import de.robv.android.xposed.XposedInit;
+import de.robv.android.xposed.callbacks.XC_LoadPackage;
 import io.github.libxposed.api.XposedInterface;
 import io.github.libxposed.api.XposedModuleInterface;
 import io.github.libxposed.api.annotations.BeforeInvocation;
@@ -43,9 +43,9 @@ public class StartBootstrapServicesHooker implements XposedInterface.Hooker {
         logD("SystemServer#startBootstrapServices() starts");
 
         try {
-            CInit.loadedPackagesInProcess.add("android");
+            XposedInit.loadedPackagesInProcess.add("android");
 
-            XC_LoadPackage.LoadPackageParam lpparam = new XC_LoadPackage.LoadPackageParam(CBridge.sLoadedPackageCallbacks);
+            XC_LoadPackage.LoadPackageParam lpparam = new XC_LoadPackage.LoadPackageParam(XposedBridge.sLoadedPackageCallbacks);
             lpparam.packageName = "android";
             lpparam.processName = "android"; // it's actually system_server, but other functions return this as well
             lpparam.classLoader = HandleSystemServerProcessHooker.systemServerCL;

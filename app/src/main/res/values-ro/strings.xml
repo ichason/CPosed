@@ -51,7 +51,7 @@
     <string name="selinux_policy_not_loaded_summary">SEPolicy nu este încărcată corect</string>
     <string name="selinux_policy_not_loaded"><![CDATA[Unele funcții nu vor funcționa.<br/>Vă rugăm să raportați acest lucru la <a href="https://github.com/topjohnwu/Magisk/issues"><b>Magisk</b></a> dezvoltator.]]></string>
     <string name="system_inject_fail_summary">Injectarea System Framework a eșuat</string>
-    <string name="system_inject_fail"><![CDATA[Acest lucru este rar și poate fi cauzat de <b>Magisk</b> sau de unele module Magisk de calitate scăzută.<br/>Vă rugăm să încercați să dezactivați modulele Magisk altele decât Riru și LSPosed sau să trimiteți jurnalul complet dezvoltatorilor.]]></string>
+    <string name="system_inject_fail"><![CDATA[Acest lucru este rar și poate fi cauzat de <b>Magisk</b> sau de unele module Magisk de calitate scăzută.<br/>Vă rugăm să încercați să dezactivați modulele Magisk altele decât Zygisk și LSPosed sau să trimiteți jurnalul complet dezvoltatorilor.]]></string>
     <string name="system_prop_incorrect_summary">System prop incorect</string>
     <string name="system_prop_incorrect"><![CDATA[Unele proprietăți necesare de sistem au fost șterse sau modificate<br/>modulele pot invalida ocazional.]]></string>
     <string name="need_update">Trebuie actualizat</string>
@@ -75,14 +75,6 @@
     <string name="update_lsposed">Actualizează LSPosed</string>
     <string name="update_lsposed_msg">Confirmați actualizarea LSPosed? Acest dispozitiv va reporni după finalizarea actualizării</string>
     <string name="info_copied">Copiat în clipboard</string>
-    <!-- WelcomeDialog -->
-    <string name="parasitic_welcome">Bine ați venit la LSPosed</string>
-    <string name="parasitic_welcome_summary">Folosiți managerul de paraziți, care poate crea o comandă rapidă sau poate fi deschis încă din notificare.</string>
-    <string name="parasitic_welcome_summary_no_shortcut_support">Folosiți managerul de paraziți, care se poate deschide din notificare.</string>
-    <string name="create_shortcut">Creează scurtătură</string>
-    <string name="never_show">Nu arăta niciodată</string>
-    <string name="app_welcome">Manager parazitar recomandat</string>
-    <string name="app_welcome_summary">LSPosed suportă acum parazitarea sistemului pentru a evita detectarea, puteți deschide managerul de paraziți din notificare. Se recomandă dezinstalarea aplicației curente.</string>
     <!-- LogsActivity -->
     <string name="menuSaveToSd">Salvează</string>
     <string name="nav_item_logs_verbose">Jurnalele Verbose</string>
@@ -191,12 +183,8 @@
     <string name="settings_translation_contributors">Contribuitori la traducere</string>
     <string name="settings_translation">Participă în traducere</string>
     <string name="settings_translation_summary">Ajută-ne să traducem %s în limba ta</string>
-    <string name="settings_create_shortcut_summary">Creați o comandă rapidă care poate deschide managerul de paraziți</string>
-    <string name="settings_shortcut_pinned_hint">Comenzi rapide fixate</string>
-    <string name="settings_unsupported_pin_shortcut_summary">Lansatorul implicit actual nu acceptă comenzi rapide de tip pin</string>
     <string name="settings_enable_status_notification">Notificare de stare</string>
     <string name="settings_enable_status_notification_summary">Afișați o notificare care poate deschide managerul de paraziți</string>
-    <string name="disable_status_notification_error">Nu există scurtătură, nu se poate dezactiva notificarea</string>
     <string name="settings_update_channel">Canal de actualizare</string>
     <string name="update_channel_stable">Stabil</string>
     <string name="update_channel_bate">Beta</string>

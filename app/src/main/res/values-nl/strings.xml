@@ -49,7 +49,7 @@
     <string name="selinux_policy_not_loaded_summary">SEPolicy is niet correct geladen</string>
     <string name="selinux_policy_not_loaded"><![CDATA[Sommige functies zullen niet werken.<br/>Gelieve dit te melden aan <a href="https://github.com/topjohnwu/Magisk/issues"><b>Magisk</b></a> ontwikkelaar.]]></string>
     <string name="system_inject_fail_summary">Systeem Framework injectie is mislukt</string>
-    <string name="system_inject_fail"><![CDATA[Systeem Framework injectie mislukt.<br/>Dit is zeldzaam en kan worden veroorzaakt door <b>Magisk</b> of sommige Magisk-modules van lage kwaliteit.<br/>Probeer andere Magisk-modules dan Riru en LSPosed uit te schakelen of stuur een volledig logboek naar de ontwikkelaars.]]></string>
+    <string name="system_inject_fail"><![CDATA[Systeem Framework injectie mislukt.<br/>Dit is zeldzaam en kan worden veroorzaakt door <b>Magisk</b> of sommige Magisk-modules van lage kwaliteit.<br/>Probeer andere Magisk-modules dan Zygisk en LSPosed uit te schakelen of stuur een volledig logboek naar de ontwikkelaars.]]></string>
     <string name="system_prop_incorrect_summary">Systeem prop incorrect</string>
     <string name="system_prop_incorrect"><![CDATA[Enkele noodzakelijke systeemeigenschappen verwijderd of gewijzigd.<br/>Modules kunnen af en toe ongeldig worden.]]></string>
     <string name="need_update">Bijwerken is nodig</string>
@@ -73,14 +73,6 @@
     <string name="update_lsposed">Update LSPosed</string>
     <string name="update_lsposed_msg">Bevestig bijwerken van LSPosed? Dit apparaat zal opnieuw opstarten nadat de update is voltooid</string>
     <string name="info_copied">Gekopieerd naar klembord</string>
-    <!-- WelcomeDialog -->
-    <string name="parasitic_welcome">Welkom bij LSPosed</string>
-    <string name="parasitic_welcome_summary">U gebruikt de parasitaire manager, die een snelkoppeling kan maken of nog steeds kan openen vanuit een melding.</string>
-    <string name="parasitic_welcome_summary_no_shortcut_support">Je gebruikt de parasiterende manager, die kan openen vanuit de melding.</string>
-    <string name="create_shortcut">Snelkoppeling maken</string>
-    <string name="never_show">Nooit tonen</string>
-    <string name="app_welcome">Parasitaire manager aanbevolen</string>
-    <string name="app_welcome_summary">LSPosed ondersteunt nu systeemparasitisatie om detectie te voorkomen, u kunt parasitaire manager openen vanuit een melding. Het wordt aanbevolen om de huidige applicatie te verwijderen.</string>
     <!-- LogsActivity -->
     <string name="menuSaveToSd">Opslaan</string>
     <string name="nav_item_logs_verbose">Uitgebreide logs</string>
@@ -189,12 +181,8 @@
     <string name="settings_translation_contributors">Bijdragers van vertalingen</string>
     <string name="settings_translation">Deelnemen aan vertaling</string>
     <string name="settings_translation_summary">Help ons %s te vertalen in uw taal</string>
-    <string name="settings_create_shortcut_summary">Maak een snelkoppeling die parasitaire manager kan openen</string>
-    <string name="settings_shortcut_pinned_hint">Snelkoppeling vastgezet</string>
-    <string name="settings_unsupported_pin_shortcut_summary">De huidige standaard launcher ondersteunt geen pin-snelkoppelingen</string>
     <string name="settings_enable_status_notification">Statusmelding</string>
     <string name="settings_enable_status_notification_summary">Toon een melding die parasitaire manager kan openen</string>
-    <string name="disable_status_notification_error">Geen snelkoppeling, kan melding niet uitschakelen</string>
     <string name="settings_update_channel">Kanaal bijwerken</string>
     <string name="update_channel_stable">Stabiel</string>
     <string name="update_channel_bate">Bèta</string>

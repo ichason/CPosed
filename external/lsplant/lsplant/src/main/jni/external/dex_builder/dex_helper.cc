@@ -686,12 +686,15 @@ size_t DexHelper::CreateMethodIndex(std::string_view class_name, std::string_vie
             const auto *params = param_off ? dex.dataPtr<dex::TypeList>(param_off) : nullptr;
             if (params && params->size != params_name.size()) continue;
             if (!params_name.empty() && !params) continue;
+            bool are_params_same = true;
             for (auto i = 0zu; i < params_name.size(); ++i) {
                 if (strs[dex.TypeIds()[params->list[i].type_idx].descriptor_idx] !=
                     params_name[i]) {
-                    continue;
+                    are_params_same = false;
+                    break;
                 }
             }
+            if (!are_params_same) continue;
             if (auto idx = rev_method_indices_[dex_idx][method_id]; idx != size_t(-1)) return idx;
             created = true;
             method_ids[dex_idx] = method_id;

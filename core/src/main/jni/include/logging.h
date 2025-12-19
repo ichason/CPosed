@@ -26,7 +26,7 @@
 #include <array>
 
 #ifndef LOG_TAG
-#define LOG_TAG    "SPosed"
+#define LOG_TAG    "LSPosed"
 #endif
 
 #ifdef LOG_DISABLED

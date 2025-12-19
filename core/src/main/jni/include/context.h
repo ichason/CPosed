@@ -44,7 +44,7 @@ namespace lspd {
 
         inline jobject GetCurrentClassLoader() const { return inject_class_loader_; }
 
-        inline splant::ScopedLocalRef<jclass>
+        inline lsplant::ScopedLocalRef<jclass>
         FindClassFromCurrentLoader(JNIEnv *env, std::string_view className) const {
             return FindClassFromLoader(env, GetCurrentClassLoader(), className);
         };
@@ -97,7 +97,7 @@ namespace lspd {
 
         Context() {}
 
-        static splant::ScopedLocalRef<jclass> FindClassFromLoader(JNIEnv *env, jobject class_loader,
+        static lsplant::ScopedLocalRef<jclass> FindClassFromLoader(JNIEnv *env, jobject class_loader,
                                                                    std::string_view class_name);
 
         template<typename ...Args>
@@ -107,15 +107,15 @@ namespace lspd {
                 LOGE("cannot call method {}, entry class is null", method_name);
                 return;
             }
-            jmethodID mid = splant::JNI_GetStaticMethodID(env, entry_class_, method_name, method_sig);
+            jmethodID mid = lsplant::JNI_GetStaticMethodID(env, entry_class_, method_name, method_sig);
             if (mid) [[likely]] {
-                env->CallStaticVoidMethod(entry_class_, mid, splant::UnwrapScope(std::forward<Args>(args))...);
+                env->CallStaticVoidMethod(entry_class_, mid, lsplant::UnwrapScope(std::forward<Args>(args))...);
             } else {
                 LOGE("method {} id is null", method_name);
             }
         }
 
-        virtual void InitArtHooker(JNIEnv *env, const splant::InitInfo &initInfo);
+        virtual void InitArtHooker(JNIEnv *env, const lsplant::InitInfo &initInfo);
 
         virtual void InitHooks(JNIEnv *env);
 

@@ -50,7 +50,7 @@
     <string name="selinux_policy_not_loaded"><![CDATA[برخی از ویژگی ها کار نمی کنند لطفا این مشکل را به برنامه‌ نویس Magisk گزارش دهید لینک صفحه مشکلات Magisk در گیت هاب :
 https://github.com/topjohnwu/Magisk/issues]]></string>
     <string name="system_inject_fail_summary">تزریق فریمورک سیستم انجام نشد</string>
-    <string name="system_inject_fail"><![CDATA[این مشکل ممکن است توسط Magisk یا برخی از ماژول های Magisk که دارای کیفیت پایینی هستند ایجاد شود لطفا سعی کنید ماژول‌ های Magisk را به غیر از Riru و LSPosed غیرفعال کنید یا گزارش کامل را به توسعه‌ دهندگان ارسال کنید]]></string>
+    <string name="system_inject_fail"><![CDATA[این مشکل ممکن است توسط Magisk یا برخی از ماژول های Magisk که دارای کیفیت پایینی هستند ایجاد شود لطفا سعی کنید ماژول‌ های Magisk را به غیر از Zygisk و LSPosed غیرفعال کنید یا گزارش کامل را به توسعه‌ دهندگان ارسال کنید]]></string>
     <string name="system_prop_incorrect_summary">پایه سیستم نادرست است</string>
     <string name="system_prop_incorrect"><![CDATA[برخی از ویژگی های ضروری سیستم حذف شده یا تغییر داده شده به همین دلیل ماژول ها ممکن است گاهی اوقات غیرفعال شوند]]></string>
     <string name="need_update">باید به روز رسانی شود</string>
@@ -74,14 +74,6 @@ https://github.com/topjohnwu/Magisk/issues]]></string>
     <string name="update_lsposed">به روزرسانی LSPosed</string>
     <string name="update_lsposed_msg">آیا شما می خواهید LSPosed به روز رسانی شود؟ دستگاه شما پس از نصب به روز رسانی به طور خودکار خاموش و روشن خواهد شد</string>
     <string name="info_copied">در کلیپ بورد کپی شد</string>
-    <!-- WelcomeDialog -->
-    <string name="parasitic_welcome">به LSPosed خوش آمدید</string>
-    <string name="parasitic_welcome_summary">شما در حال استفاده برنامه مدیر lsposed هستید که می تواند میانبر بسازد یا همچنان از طریق اعلان باز باشد</string>
-    <string name="parasitic_welcome_summary_no_shortcut_support">شما از برنامه مدیر lsposed استفاده می کنید که می تواند از طریق اعلان باز شود</string>
-    <string name="create_shortcut">ساخت میانبر</string>
-    <string name="never_show">هرگز نشان نده</string>
-    <string name="app_welcome">مدیر lsposed توصیه می شود</string>
-    <string name="app_welcome_summary">LSPosed اکنون از پارازیتیزاسیون سیستم برای جلوگیری از شناسایی پشتیبانی می کند شما می توانید مدیر lsposed را از اعلان باز کنید توصیه می شود برنامه فعلی را حذف نصب کنید</string>
     <!-- LogsActivity -->
     <string name="menuSaveToSd">ذخیره</string>
     <string name="nav_item_logs_verbose">گزارش های کامل</string>
@@ -190,12 +182,8 @@ https://github.com/topjohnwu/Magisk/issues]]></string>
     <string name="settings_translation_contributors">مشارکت کنندگان ترجمه</string>
     <string name="settings_translation">شرکت در ترجمه</string>
     <string name="settings_translation_summary">به ما کمک کنید تا %s را به زبان شما ترجمه کنیم</string>
-    <string name="settings_create_shortcut_summary">یک میانبر بسازید تا بتوانید مدیر lsposed را باز کنید</string>
-    <string name="settings_shortcut_pinned_hint">میانبر پین شده</string>
-    <string name="settings_unsupported_pin_shortcut_summary">اجرا کننده پیش فرض فعلی از میانبر های پین پشتیبانی نمی کند</string>
     <string name="settings_enable_status_notification">اعلان وضعیت</string>
     <string name="settings_enable_status_notification_summary">نمایش یک اعلان که می‌تواند مدیر lsposed را باز کند</string>
-    <string name="disable_status_notification_error">بدون میانبر نمی توان اعلان را غیرفعال کرد</string>
     <string name="settings_update_channel">نوع به روز رسانی </string>
     <string name="update_channel_stable">نسخه پایدار</string>
     <string name="update_channel_bate">نسخه آزمایشی</string>

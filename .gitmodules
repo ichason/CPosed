@@ -1,12 +1,24 @@
 [submodule "external/lsplant"]
 	path = external/lsplant
-	url = https://github.com/LSPosed/LSPlant.git
+	url = https://github.com/ichason/LSPlant.git
 [submodule "external/dobby"]
 	path = external/dobby
-	url = https://github.com/LSPosed/Dobby.git
+	url = https://github.com/re-zero001/Dobby.git
 [submodule "external/fmt"]
 	path = external/fmt
 	url = https://github.com/fmtlib/fmt.git
 [submodule "external/cxx"]
 	path = external/cxx
 	url = https://github.com/topjohnwu/libcxx.git
+[submodule "external/xz-embedded"]
+	path = external/xz-embedded
+	url = https://github.com/tukaani-project/xz-embedded.git
+[submodule "external/system_properties"]
+	path = external/system_properties
+	url = https://github.com/topjohnwu/system_properties.git
+[submodule "libxposed/api/api"]
+	path = libxposed/api/api
+	url = https://github.com/libxposed/api.git
+[submodule "libxposed/service/service"]
+	path = libxposed/service/service
+	url = https://github.com/libxposed/service.git

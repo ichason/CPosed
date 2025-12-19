@@ -1,3 +1,4 @@
+@file:Suppress("UnstableApiUsage")
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 pluginManagement {
@@ -13,18 +14,10 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        mavenLocal {
-            content {
-                includeGroup("io.github.libxposed")
-            }
-        }
-    }
-    versionCatalogs {
-        create("libs")
     }
 }
 
-rootProject.name = "CPosed"
+rootProject.name = "LSPosed"
 include(
     ":app",
     ":core",
@@ -33,6 +26,9 @@ include(
     ":hiddenapi:stubs",
     ":hiddenapi:bridge",
     ":magisk-loader",
+    ":libxposed:api",
+    ":libxposed:service",
+    ":libxposed:compat",
     ":services:manager-service",
     ":services:daemon-service",
 )

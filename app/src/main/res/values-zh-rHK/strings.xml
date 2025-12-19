@@ -47,7 +47,7 @@
     <string name="selinux_policy_not_loaded_summary">SEPolicy 未被正確讀取</string>
     <string name="selinux_policy_not_loaded"><![CDATA[部分功能將無法運作。<br/>請將此回報給 <a href="https://github.com/topjohnwu/Magisk/issues"><b>Magisk</b></a> 開發人員。]]></string>
     <string name="system_inject_fail_summary">系統架構插入失敗</string>
-    <string name="system_inject_fail"><![CDATA[這是極罕見的情況，可能是由 <b>Magisk</b> 或低品質 Magisk 模組導致，<br/>請嘗試停用除 Riru 和 LSPosed 外的 Magisk 模組，或向開發人員提供完整記錄。]]></string>
+    <string name="system_inject_fail"><![CDATA[這是極罕見的情況，可能是由 <b>Magisk</b> 或低品質 Magisk 模組導致，<br/>請嘗試停用除 Zygisk 和 LSPosed 外的 Magisk 模組，或向開發人員提供完整記錄。]]></string>
     <string name="system_prop_incorrect_summary">系統屬性異常</string>
     <string name="system_prop_incorrect"><![CDATA[部分必須的系統屬性被刪除或被修改，<br/>模組可能會隨機失效。]]></string>
     <string name="need_update">需要更新</string>
@@ -70,14 +70,6 @@
     <string name="update_lsposed">更新 LSPosed</string>
     <string name="update_lsposed_msg">確認更新LSPosed? 此裝置會於更新完成後重啟</string>
     <string name="info_copied">已複製到剪貼簿</string>
-    <!-- WelcomeDialog -->
-    <string name="parasitic_welcome">歡迎使用 LSPosed</string>
-    <string name="parasitic_welcome_summary">您正在使用寄生管理員，您可以建立捷徑或從通知開啟。</string>
-    <string name="parasitic_welcome_summary_no_shortcut_support">您正在使用寄生管理員，它可以從通知中開啟。</string>
-    <string name="create_shortcut">建立捷徑</string>
-    <string name="never_show">不再顯示</string>
-    <string name="app_welcome">建議使用寄生管理員</string>
-    <string name="app_welcome_summary">LSPosed 現在支援系統寄生以避免偵測，您可以從通知開啟寄生管理員。建議解除安裝目前應用程式。</string>
     <!-- LogsActivity -->
     <string name="menuSaveToSd">儲存</string>
     <string name="nav_item_logs_verbose">詳細記錄</string>
@@ -185,12 +177,8 @@
     <string name="settings_translation_contributors">譯者</string>
     <string name="settings_translation">參與翻譯</string>
     <string name="settings_translation_summary">幫助我們翻譯 %s 到您的語言</string>
-    <string name="settings_create_shortcut_summary">建立可以開啟寄生管理員的捷徑</string>
-    <string name="settings_shortcut_pinned_hint">捷徑已釘選</string>
-    <string name="settings_unsupported_pin_shortcut_summary">目前的預設啟動器不支援釘選捷徑</string>
     <string name="settings_enable_status_notification">狀態通知</string>
     <string name="settings_enable_status_notification_summary">顯示通知以便開啟寄生管理員</string>
-    <string name="disable_status_notification_error">沒有捷徑，無法停用通知</string>
     <string name="settings_update_channel">更新頻道</string>
     <string name="update_channel_stable">穩定版</string>
     <string name="update_channel_bate">測試版</string>

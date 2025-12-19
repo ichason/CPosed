@@ -49,7 +49,7 @@
     <string name="selinux_policy_not_loaded_summary">SEPolicy não está devidamente carregado</string>
     <string name="selinux_policy_not_loaded"><![CDATA[Algumas características não funcionarão.<br/>Por favor informe <a href="https://github.com/topjohnwu/Magisk/issues"><b>Magisk</b></a> desenvolvedor.]]></string>
     <string name="system_inject_fail_summary">Falha na injeção ao Framework do Sistema</string>
-    <string name="system_inject_fail"><![CDATA[Isso é raro e pode ter sido causado pelo <b>Magisk</b> ou por algum módulo do Magisk de baixa qualidade.<br/>Por favor, tente desativar os módulos do Magisk, exceto o LSPosed (e o Riru, caso esteja em uso). Ou envie todos os registros para os desenvolvedores.]]></string>
+    <string name="system_inject_fail"><![CDATA[Isso é raro e pode ter sido causado pelo <b>Magisk</b> ou por algum módulo do Magisk de baixa qualidade.<br/>Por favor, tente desativar os módulos do Magisk, exceto o LSPosed (e o Zygisk, caso esteja em uso). Ou envie todos os registros para os desenvolvedores.]]></string>
     <string name="system_prop_incorrect_summary">Propriedade do sistema incorreta</string>
     <string name="system_prop_incorrect"><![CDATA[Algumas propriedades necessárias do sistema foram excluídas ou modificadas.<br/>Alguns módulos podem falhar ocasionalmente.]]></string>
     <string name="need_update">Necessário atualizar</string>
@@ -73,14 +73,6 @@
     <string name="update_lsposed">Atualizar o LSPosed</string>
     <string name="update_lsposed_msg">Confirmar atualização do LSPosed? O aparelho irá reiniciar após completar a atualização</string>
     <string name="info_copied">Copiado para a área de transferência</string>
-    <!-- WelcomeDialog -->
-    <string name="parasitic_welcome">Bem-vindo ao LSPosed</string>
-    <string name="parasitic_welcome_summary">Você está usando o gerenciador parasita, você pode criar o atalho ou então abrir a partir da notificação.</string>
-    <string name="parasitic_welcome_summary_no_shortcut_support">Você está usando o gerenciador parasita, ele pode ser aberto a partir da notificação.</string>
-    <string name="create_shortcut">Criar Atalho do Gerenciador Parasita</string>
-    <string name="never_show">Não mostrar novamente</string>
-    <string name="app_welcome">É recomendado o gerenciador parasita</string>
-    <string name="app_welcome_summary">O LSPosed agora oferece suporte a parasitização do sistema para evitar detecções, você pode abrir o gerenciador parasita a partir da notificação. É recomendado desinstalar o aplicativo atual.</string>
     <!-- LogsActivity -->
     <string name="menuSaveToSd">Salvar</string>
     <string name="nav_item_logs_verbose">Registros Detalhados</string>
@@ -189,12 +181,8 @@
     <string name="settings_translation_contributors">Tradutores</string>
     <string name="settings_translation">Participe das Traduções</string>
     <string name="settings_translation_summary">Ajude a traduzir o %s para o Português 🇵🇹🇧🇷</string>
-    <string name="settings_create_shortcut_summary">Criar um atalho para abrir gerenciador parasita</string>
-    <string name="settings_shortcut_pinned_hint">Atalho com alfinete</string>
-    <string name="settings_unsupported_pin_shortcut_summary">O lançador padrão actual não suporta atalhos de pinos</string>
     <string name="settings_enable_status_notification">Notificação de estado</string>
     <string name="settings_enable_status_notification_summary">Mostrar uma notificação que possa abrir o gerenciador parasita</string>
-    <string name="disable_status_notification_error">Nenhum atalho, não é possível desativar a notificação</string>
     <string name="settings_update_channel">Canal de Atualizações</string>
     <string name="update_channel_stable">Estável</string>
     <string name="update_channel_bate">Beta</string>

@@ -26,7 +26,7 @@
 #include "resources_hook.h"
 #include "config_bridge.h"
 
-using namespace splant;
+using namespace lsplant;
 
 namespace lspd {
     using TYPE_GET_ATTR_NAME_ID = int32_t (*)(void *, int);
@@ -75,9 +75,9 @@ namespace lspd {
                           "_ZNK7android12ResXMLParser18getAttributeNameIDEm")))) {
             return false;
         }
-        return android::ResStringPool::setup(HookHandler{
+        return android::ResStringPool::setup(InitInfo{
             .art_symbol_resolver = [&](auto s) {
-                return fw.template getSymbAddress(s);
+                return fw.template getSymbAddress<>(s);
             }
         });
     }
@@ -111,7 +111,7 @@ namespace lspd {
 
     // @ApiSensitive(Level.MIDDLE)
     LSP_DEF_NATIVE_METHOD(jboolean, ResourcesHook, makeInheritable, jclass target_class) {
-        if (splant::MakeClassInheritable(env, target_class)) {
+        if (lsplant::MakeClassInheritable(env, target_class)) {
             return JNI_TRUE;
         }
         return JNI_FALSE;

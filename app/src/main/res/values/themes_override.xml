@@ -53,7 +53,6 @@
 
         <item name="colorPrimary">@color/primary_light</item>
         <item name="colorPrimaryVariant">@color/primary_dark_light</item>
-        <item name="swipeRefreshLayoutProgressSpinnerBackgroundColor">?cardBackground</item>
 
         <item name="colorAlert">@color/material_red_A200</item>
         <item name="colorSafe">@color/material_green_600</item>
@@ -70,7 +69,6 @@
 
         <item name="colorPrimary">@color/primary_dark</item>
         <item name="colorPrimaryVariant">@color/primary_dark_dark</item>
-        <item name="swipeRefreshLayoutProgressSpinnerBackgroundColor">?cardBackground</item>
 
         <item name="colorAlert">@color/material_red_A100</item>
         <item name="colorSafe">@color/material_green_A100</item>
@@ -78,4 +76,5 @@
 
         <item name="navigationBarDividerColor">@android:color/transparent</item>
     </style>
+
 </resources>

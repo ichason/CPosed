@@ -6,7 +6,7 @@
 #include <functional>
 
 /// \namespace lsplant
-namespace clant {
+namespace lsplant {
 
 inline namespace v2 {
 /// \struct InitInfo
@@ -52,7 +52,7 @@ struct InitInfo {
 
     /// \brief The generated class name. Must not be empty. It contains a field and a method
     /// and they could be set by \p generated_field_name and \p generated_method_name respectively.
-    std::string_view generated_class_name = "CPHooker_";
+    std::string_view generated_class_name = "LSPHooker_";
     /// \brief The generated source name. Could be empty.
     std::string_view generated_source_name = "LSP";
     /// \brief The generated field name. Must not be empty.
@@ -75,8 +75,6 @@ struct InitInfo {
 /// \see InitInfo.
 [[nodiscard, maybe_unused, gnu::visibility("default")]] bool Init(JNIEnv *env,
                                                                   const InitInfo &info);
-
-[[nodiscard, maybe_unused, gnu::visibility("default")]] void Restore();                                                                  
 
 /// \brief Hook a Java method by providing the \p target_method together with the context object
 /// \p hooker_object and its callback \p callback_method.
@@ -181,5 +179,8 @@ struct InitInfo {
 /// \return Indicate whether the operation has succeed.
 [[nodiscard, maybe_unused, gnu::visibility("default")]] bool MakeDexFileTrusted(JNIEnv *env,
                                                                                 jobject cookie);
+
+[[maybe_unused, gnu::visibility("default")]] void updateTrampolineToOnlyRead();
+
 }  // namespace v1
 }  // namespace lsplant

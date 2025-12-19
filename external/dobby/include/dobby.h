@@ -150,7 +150,7 @@ int DobbyWrap(void *function_address, PreCallTy pre_call, PostCallTy post_call);
 #endif
 
 // function inline hook
-int CobbyHook(void *address, dobby_dummy_func_t replace_func, dobby_dummy_func_t *origin_func);
+int DobbyHook(void *address, dobby_dummy_func_t replace_func, dobby_dummy_func_t *origin_func);
 
 // dynamic binary instruction instrument
 // [!!! READ ME !!!]
@@ -158,7 +158,7 @@ int CobbyHook(void *address, dobby_dummy_func_t replace_func, dobby_dummy_func_t
 typedef void (*dobby_instrument_callback_t)(void *address, DobbyRegisterContext *ctx);
 int DobbyInstrument(void *address, dobby_instrument_callback_t pre_handler);
 
-int CobbyDestroy(void *address);
+int DobbyDestroy(void *address);
 
 const char *DobbyGetVersion();
 

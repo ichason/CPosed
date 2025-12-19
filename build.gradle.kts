@@ -57,8 +57,8 @@ cmaker {
 }
 
 val repo = jgit.repo()
-val commitCount = (repo?.commitCount("refs/remotes/origin/master") ?: 1) + 4200
-val latestTag = repo?.latestTag?.removePrefix("v") ?: "1.0"
+val commitCount = (repo?.commitCount("refs/remotes/origin/dev") ?: 1) + 4200
+val latestTag = repo?.latestTag?.removePrefix("v")?.substringBefore("-") ?: "1.9.2"
 
 val injectedPackageName by extra("com.android.shell")
 val injectedPackageUid by extra(2000)
@@ -66,13 +66,14 @@ val injectedPackageUid by extra(2000)
 val defaultManagerPackageName by extra("org.lsposed.manager")
 val verCode by extra(commitCount)
 val verName by extra(latestTag)
-val androidTargetSdkVersion by extra(34)
+val androidTargetSdkVersion by extra(36)
 val androidMinSdkVersion by extra(27)
-val androidBuildToolsVersion by extra("34.0.0")
-val androidCompileSdkVersion by extra(34)
-val androidCompileNdkVersion by extra("26.1.10909125")
-val androidSourceCompatibility by extra(JavaVersion.VERSION_17)
-val androidTargetCompatibility by extra(JavaVersion.VERSION_17)
+val androidBuildToolsVersion by extra("36.0.0")
+val androidCompileSdkVersion by extra(36)
+val androidCompileNdkVersion by extra(libs.versions.ndk.get())
+val androidSourceCompatibility by extra(JavaVersion.VERSION_21)
+val androidTargetCompatibility by extra(JavaVersion.VERSION_21)
+val androidCmakeVersion by extra("3.28.0+")
 
 tasks.register("Delete", Delete::class) {
     delete(rootProject.layout.buildDirectory)
@@ -87,7 +88,7 @@ subprojects {
 
             externalNativeBuild {
                 cmake {
-                    version = "3.22.1+"
+                    version = androidCmakeVersion
                 }
             }
 

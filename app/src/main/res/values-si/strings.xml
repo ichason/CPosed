@@ -49,7 +49,7 @@
     <string name="selinux_policy_not_loaded_summary">SEPolicy හරියට ලෝඩ් වෙන් නෑ</string>
     <string name="selinux_policy_not_loaded"><![CDATA[සමහර විශේෂාංග ක්‍රියා නොකරනු ඇත.<br/>කරුණාකර මෙය <a href="https://github.com/topjohnwu/Magisk/issues"><b>Magisk</b></a> ඩිවලෝපර් වෙත රිපෝට් කරන්න.]]></string>
     <string name="system_inject_fail_summary">පද්ධති ෆ්‍රෙම්වවර් ඉන්ජෙක්ෂන් ෆෙල්ඩ්</string>
-    <string name="system_inject_fail"><![CDATA[මෙය කලාතුරකින් වන අතර <b>Magisk</b> හෝ සමහර අඩු ගුණාත්මක Magisk මොඩියුල නිසා ඇති විය හැක.<br/>කරුණාකර Riru සහ LSPosed හැර අනෙකුත් Magisk මොඩියුල අක්‍රිය කිර උත්සාහ කරන්න හෝ ඩිවලොපර්ස්ලට සම්පූර්ණ ලොගය ඉදිරිපත් කරන්න.]]></string>
+    <string name="system_inject_fail"><![CDATA[මෙය කලාතුරකින් වන අතර <b>Magisk</b> හෝ සමහර අඩු ගුණාත්මක Magisk මොඩියුල නිසා ඇති විය හැක.<br/>කරුණාකර Zygisk සහ LSPosed හැර අනෙකුත් Magisk මොඩියුල අක්‍රිය කිර උත්සාහ කරන්න හෝ ඩිවලොපර්ස්ලට සම්පූර්ණ ලොගය ඉදිරිපත් කරන්න.]]></string>
     <string name="system_prop_incorrect_summary">පද්ධති ප්‍රෝප් වැරදියි</string>
     <string name="system_prop_incorrect"><![CDATA[සමහර අවශ්‍ය පද්ධති ගුණාංග මකා හෝ වෙනස් කරන ඇත.<br/>මොඩියුල වරින් වර අවලංගු විය හැක.]]></string>
     <string name="need_update">අප්ඩේට් කිරීම අවශ්‍ය වේ</string>
@@ -73,14 +73,6 @@
     <string name="update_lsposed">LSPposed යාවත්කාලීන කරන්න</string>
     <string name="update_lsposed_msg">LSPposed යාවත්කාලීන කිරීම තහවුරු කරන්නද? යාවත්කාලීන කිරීම අවසන් වූ පසු මෙම උපාංගය නැවත ආරම්භ වේ</string>
     <string name="info_copied">පසුරු පුවරුවට පිටපත් කර ඇත</string>
-    <!-- WelcomeDialog -->
-    <string name="parasitic_welcome">LSPposed වෙත සාදරයෙන් පිළිගනිමු</string>
-    <string name="parasitic_welcome_summary">ඔබ කෙටිමඟ නිර්මාණය කළ හැකි හෝ තවමත් දැනුම්දීමෙන් විවෘත කළ හැකි පරපෝෂිත කළමනාකරු භාවිත කරයි.</string>
-    <string name="parasitic_welcome_summary_no_shortcut_support">දැනුම්දීමකින් විවෘත කළ හැකි පරපෝෂිත කළමනාකරු ඔබ භාවිත කරයි.</string>
-    <string name="create_shortcut">කෙටිමං සාදන්න</string>
-    <string name="never_show">කවදාවත් පෙන්වන්න එපා</string>
-    <string name="app_welcome">පරපෝෂිත කළමනාකරු නිර්දේශ කෙරේ</string>
-    <string name="app_welcome_summary">LSPosed දැන් හඳුනාගැනීම වැළැක්වීම සඳහා පද්ධති පරපෝෂිතකරණයට සහය දක්වයි, ඔබට දැනුම්දීමෙන් පරපෝෂිත කළමනාකරු විවෘත කළ හැක. වත්මන් යෙදුම අස්ථාපනය කිරීම නිර්දේශ කෙරේ.</string>
     <!-- LogsActivity -->
     <string name="menuSaveToSd">සුරකින්න</string>
     <string name="nav_item_logs_verbose">වාචික ලඝු-සටහන්</string>
@@ -189,12 +181,8 @@
     <string name="settings_translation_contributors">පරිවර්තන දායකයින්</string>
     <string name="settings_translation">පරිවර්තනයට සහභාගී වන්න</string>
     <string name="settings_translation_summary">%s ඔබේ භාෂාවට පරිවර්තනය කිරීමට අපට උදවු කරන්න</string>
-    <string name="settings_create_shortcut_summary">පරපෝෂිත කළමනාකරු විවෘත කළ හැකි කෙටිමඟක් සාදන්න</string>
-    <string name="settings_shortcut_pinned_hint">කෙටිමඟ අමුණා ඇත</string>
-    <string name="settings_unsupported_pin_shortcut_summary">වත්මන් පෙරනිමි දියත් කිරීම pin කෙටිමං සඳහා සහය නොදක්වයි</string>
     <string name="settings_enable_status_notification">තත්ත්ව දැනුම්දීම</string>
     <string name="settings_enable_status_notification_summary">පරපෝෂිත කළමනාකරු විවෘත කළ හැකි දැනුම්දීමක් පෙන්වන්න</string>
-    <string name="disable_status_notification_error">කෙටි මගක් නැත, දැනුම්දීම අක්‍රිය කළ නොහැක</string>
     <string name="settings_update_channel">නාලිකාව යාවත්කාලීන කරන්න</string>
     <string name="update_channel_stable">ස්ථාවර</string>
     <string name="update_channel_bate">බීටා</string>

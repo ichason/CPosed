@@ -25,10 +25,13 @@ android {
     namespace = "org.lsposed.dex2oat"
 
     buildFeatures {
-        androidResources = false
         buildConfig = false
         prefab = true
         prefabPublishing = true
+    }
+
+    androidResources {
+        enable = false
     }
 
     defaultConfig {

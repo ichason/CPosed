@@ -1,0 +1,171 @@
+
+XZ Embedded
+===========
+
+    XZ Embedded is a relatively small, limited implementation of the .xz
+    file format. Currently only decoding is implemented.
+
+    XZ Embedded was written for use in the Linux kernel, but the code can
+    be easily used in other environments too, including regular userspace
+    applications. See userspace/xzminidec.c for an example program.
+
+        NOTE: The version of XZ Embedded in the Linux kernel lacks a few
+        build-time-selectable optional features that are present in the
+        upstream XZ Embedded project: support for concatated .xz files,
+        CRC64, and ignoring unsupported check. These aren't in Linux
+        because they don't seem useful there but they would add to the
+        code size.
+
+    This README contains information that is useful only when the copy
+    of XZ Embedded isn't part of the Linux kernel tree. You should also
+    read linux/Documentation/staging/xz.rst even if you aren't using
+    XZ Embedded as part of Linux; information in that file is not
+    repeated in this README.
+
+Conformance to the .xz file format specification
+
+    As of the .xz file format specification version 1.2.0, this
+    decompressor implementation has the following limitations:
+
+      - SHA-256 isn't supported. It can be ignored as an unsupported
+        checked type if that feature is enabled at build time.
+
+      - Delta filter is not included.
+
+      - BCJ filters don't support non-default start offset.
+
+      - LZMA2 supports at most 3 GiB dictionary.
+
+    There are a couple of corner cases where things have been simplified
+    at expense of detecting errors as early as possible. These should not
+    matter in practice at all since they don't cause security issues. But
+    it is good to know this if testing the code with the test files from
+    XZ Utils.
+
+Compiler requirements
+
+    XZ Embedded should compile with any C99 or C11 compiler. The code
+    should also be GNU-C89 compatible still. GNU-C89 was used in the
+    Linux kernel until 2022. GNU-C89 support likely will be dropped
+    at some point.
+
+Embedding into userspace applications
+
+    To embed the XZ decoder, copy the following files into a single
+    directory in your source code tree:
+
+        linux/include/linux/xz.h
+        linux/lib/xz/xz_crc32.c
+        linux/lib/xz/xz_dec_lzma2.c
+        linux/lib/xz/xz_dec_stream.c
+        linux/lib/xz/xz_lzma2.h
+        linux/lib/xz/xz_private.h
+        linux/lib/xz/xz_stream.h
+        userspace/xz_config.h
+
+    Alternatively, xz.h may be placed into a different directory but then
+    that directory must be in the compiler include path when compiling
+    the .c files.
+
+    Your code should use only the functions declared in xz.h. The rest of
+    the .h files are meant only for internal use in XZ Embedded.
+
+    You may want to modify xz_config.h to be more suitable for your build
+    environment. Probably you should at least skim through it even if the
+    default file works as is.
+
+Supporting concatenated .xz files
+
+    Regular .xz files can be concatenated as is and the xz command line
+    tool will decompress all streams from a concatenated file (a few
+    other popular formats and tools support this too). This kind of .xz
+    files are more common than one might think because pxz, an early
+    threaded XZ compressor, created this kind of .xz files.
+
+    The xz_dec_run() function will stop after decompressing one stream.
+    This is good when XZ data is stored inside some other file format.
+    However, if one is decompressing regular standalone .xz files, one
+    will want to decompress all streams in the file. This is easy with
+    xz_dec_catrun(). To include support for xz_dec_catrun(), you need
+    to #define XZ_DEC_CONCATENATED in xz_config.h or in compiler flags.
+
+Integrity check support
+
+    XZ Embedded always supports the integrity check types None and
+    CRC32. Support for CRC64 is optional. SHA-256 is currently not
+    supported in XZ Embedded although the .xz format does support it.
+    The xz tool from XZ Utils uses CRC64 by default, but CRC32 is usually
+    enough in embedded systems to keep the code size smaller.
+
+    If you want support for CRC64, you need to copy linux/lib/xz/xz_crc64.c
+    into your application, and #define XZ_USE_CRC64 in xz_config.h or in
+    compiler flags.
+
+    When using the internal CRC32 or CRC64, their lookup tables need to be
+    initialized with xz_crc32_init() and xz_crc64_init(), respectively.
+    See xz.h for details.
+
+    To use external CRC32 or CRC64 code instead of the code from
+    xz_crc32.c or xz_crc64.c, the following #defines may be used
+    in xz_config.h or in compiler flags:
+
+        #define XZ_INTERNAL_CRC32 0
+        #define XZ_INTERNAL_CRC64 0
+
+    Then it is up to you to provide compatible xz_crc32() or xz_crc64()
+    functions.
+
+    If the .xz file being decompressed uses an integrity check type that
+    isn't supported by XZ Embedded, it is treated as an error and the
+    file cannot be decompressed. For multi-call mode, this can be modified
+    by #defining XZ_DEC_ANY_CHECK. Then xz_dec_run() will return
+    XZ_UNSUPPORTED_CHECK when unsupported check type is detected. After
+    that decompression can be continued normally except that the
+    integrity check won't be verified. In single-call mode there's
+    no way to continue decoding, so XZ_DEC_ANY_CHECK is almost useless
+    in single-call mode.
+
+BCJ filter support
+
+    If you want support for one or more BCJ filters, you need to copy
+    linux/lib/xz/xz_dec_bcj.c into your application, and use appropriate
+    #defines in xz_config.h or in compiler flags. You don't need these
+    #defines in the code that just uses XZ Embedded via xz.h, but having
+    them always #defined doesn't hurt either.
+
+        #define             Instruction set     BCJ filter endianness
+        XZ_DEC_X86          x86-32 or x86-64    Little endian only
+        XZ_DEC_POWERPC      PowerPC             Big endian only
+        XZ_DEC_IA64         Itanium (IA-64)     Big or little endian
+        XZ_DEC_ARM          ARM                 Little endian instructions
+        XZ_DEC_ARMTHUMB     ARM-Thumb           Big or little endian
+        XZ_DEC_ARM64        ARM64               Big or little endian
+        XZ_DEC_SPARC        SPARC               Big or little endian
+        XZ_DEC_RISCV        RISC-V              Big or little endian
+
+    While some architectures are (partially) bi-endian, the endianness
+    setting doesn't change the endianness of the instructions on all
+    architectures. That's why many filters work for both big and little
+    endian executables (Itanium and ARM based architectures have little
+    endian instructions and SPARC has big endian instructions).
+
+Notes about shared libraries
+
+    If you are including XZ Embedded into a shared library, you should
+    rename the xz_* functions to prevent symbol conflicts in case your
+    library is linked against some other library or application that
+    also has XZ Embedded in it (which may even be a different version
+    of XZ Embedded).
+
+    Please don't create a shared library of XZ Embedded itself unless
+    it is fine to rebuild everything depending on that shared library
+    every time you upgrade to a newer version of XZ Embedded. There are
+    no API or ABI stability guarantees between different versions of
+    XZ Embedded.
+
+Contact information
+
+    Email: Lasse Collin <lasse.collin@tukaani.org>
+    IRC: Larhzu on #tukaani on Libera Chat
+    GitHub: https://github.com/tukaani-project/xz-embedded
+

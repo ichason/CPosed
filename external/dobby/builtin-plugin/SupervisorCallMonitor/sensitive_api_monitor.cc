@@ -89,7 +89,7 @@ void supervisor_call_monitor_register_sensitive_api_handler() {
   }
 
   // ===============
-  CobbyHook((void *)sysctl, (void *)fake_sysctl, (void **)&orig_sysctl);
+  DobbyHook((void *)sysctl, (void *)fake_sysctl, (void **)&orig_sysctl);
 
   supervisor_call_monitor_register_handler(sensitive_api_handler);
 }

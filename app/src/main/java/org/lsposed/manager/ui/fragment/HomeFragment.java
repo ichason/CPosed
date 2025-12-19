@@ -48,7 +48,6 @@ import org.lsposed.manager.databinding.DialogAboutBinding;
 import org.lsposed.manager.databinding.FragmentHomeBinding;
 import org.lsposed.manager.ui.dialog.BlurBehindDialogBuilder;
 import org.lsposed.manager.ui.dialog.FlashDialogBuilder;
-import org.lsposed.manager.ui.dialog.WelcomeDialog;
 import org.lsposed.manager.util.NavUtil;
 import org.lsposed.manager.util.Telemetry;
 import org.lsposed.manager.util.UpdateUtil;
@@ -70,7 +69,6 @@ public class HomeFragment extends BaseFragment implements MenuProvider {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        WelcomeDialog.showIfNeed(getChildFragmentManager());
     }
 
     @Override
@@ -80,7 +78,7 @@ public class HomeFragment extends BaseFragment implements MenuProvider {
             return true;
         });
         menu.findItem(R.id.menu_issue).setOnMenuItemClickListener(v -> {
-            NavUtil.startURL(requireActivity(), "https://github.com/LSPosed/LSPosed/issues/new/choose");
+            NavUtil.startURL(requireActivity(), "https://github.com/re-zero001/LSPosed-Irena/issues/new/choose");
             return true;
         });
     }
@@ -151,8 +149,8 @@ public class HomeFragment extends BaseFragment implements MenuProvider {
                 binding.statusTitle.setText(R.string.activated);
                 binding.statusIcon.setImageResource(R.drawable.ic_round_check_circle_24);
             }
-            binding.statusSummary.setText(String.format(LocaleDelegate.getDefaultLocale(), "%s (%d) - %s",
-                    ConfigManager.getXposedVersionName(), ConfigManager.getXposedVersionCode(), ConfigManager.getApi()));
+            binding.statusSummary.setText(String.format(LocaleDelegate.getDefaultLocale(), "%s (%d) - Irena",
+                    ConfigManager.getXposedVersionName(), ConfigManager.getXposedVersionCode()));
             binding.developerWarningCard.setVisibility(isDeveloper() ? View.VISIBLE : View.GONE);
         } else {
             boolean isMagiskInstalled = ConfigManager.isMagiskInstalled();
@@ -298,8 +296,8 @@ public class HomeFragment extends BaseFragment implements MenuProvider {
             binding.designAboutInfo.setTransformationMethod(new LinkTransformationMethod(requireActivity()));
             binding.designAboutInfo.setText(HtmlCompat.fromHtml(getString(
                     R.string.about_view_source_code,
-                    "<b><a href=\"https://github.com/LSPosed/LSPosed\">GitHub</a></b>",
-                    "<b><a href=\"https://t.me/LSPosed\">Telegram</a></b>"), HtmlCompat.FROM_HTML_MODE_LEGACY));
+                    "<b><a href=\"https://github.com/re-zero001/LSPosed-Irena\">GitHub</a></b>",
+                    "<b><a href=\"https://t.me/lsposed-irena\">Telegram</a></b>"), HtmlCompat.FROM_HTML_MODE_LEGACY));
             binding.designAboutVersion.setText(String.format(LocaleDelegate.getDefaultLocale(), "%s (%d)", BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE));
             return new BlurBehindDialogBuilder(requireContext())
                     .setView(binding.getRoot()).create();

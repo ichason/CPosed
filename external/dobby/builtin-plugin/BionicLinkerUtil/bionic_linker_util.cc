@@ -190,7 +190,7 @@ void linker_disable_namespace_restriction() {
   void *linker_namespace_is_is_accessible_ptr = resolve_elf_internal_symbol(
       get_android_linker_path(), "__dl__ZN19android_namespace_t13is_accessibleERKNSt3__112basic_"
                                  "stringIcNS0_11char_traitsIcEENS0_9allocatorIcEEEE");
-  CobbyHook(linker_namespace_is_is_accessible_ptr, (void *)linker_namespace_is_is_accessible,
+  DobbyHook(linker_namespace_is_is_accessible_ptr, (void *)linker_namespace_is_is_accessible,
             (void **)&orig_linker_namespace_is_is_accessible);
 
   LOG(1, "disable namespace restriction done");

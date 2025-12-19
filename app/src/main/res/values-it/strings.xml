@@ -49,7 +49,7 @@
     <string name="selinux_policy_not_loaded_summary">SEPolicy non è caricato correttamente</string>
     <string name="selinux_policy_not_loaded"><![CDATA[Alcune funzionalità non funzioneranno.<br/>Segnalalo allo sviluppatore di <a href="https://github.com/topjohnwu/Magisk/issues"><b>Magisk</b></a>.]]></string>
     <string name="system_inject_fail_summary">Injection del framework di sistema fallita</string>
-    <string name="system_inject_fail"><![CDATA[L\'injection del framework di sistema è fallita.<br/>Questo problema si verifica raramente e può essere causato da <b>Magisk</b> o da alcuni moduli Magisk di scarsa qualità.<br/>Prova a disabilitare i moduli Magisk tranne Riru e LSPosed o invia il log completo agli sviluppatori.]]></string>
+    <string name="system_inject_fail"><![CDATA[L\'injection del framework di sistema è fallita.<br/>Questo problema si verifica raramente e può essere causato da <b>Magisk</b> o da alcuni moduli Magisk di scarsa qualità.<br/>Prova a disabilitare i moduli Magisk tranne Zygisk e LSPosed o invia il log completo agli sviluppatori.]]></string>
     <string name="system_prop_incorrect_summary">Proprietà di sistema errate</string>
     <string name="system_prop_incorrect"><![CDATA[Alcune proprietà di sistema necessarie sono state eliminate o modificate.<br/>In alcuni casi i moduli potrebbero non funzionare.]]></string>
     <string name="need_update">Aggiornamento richiesto</string>
@@ -75,14 +75,6 @@
     <string name="update_lsposed">Aggiorna LSPosed</string>
     <string name="update_lsposed_msg">Confermi di voler aggiornare LSPosed? Il dispositivo verrà riavviato dopo il completamento dell\'aggiornamento</string>
     <string name="info_copied">Copiato negli appunti</string>
-    <!-- WelcomeDialog -->
-    <string name="parasitic_welcome">Benvenuto in LSPosed</string>
-    <string name="parasitic_welcome_summary">Stai usando il manager parassitario, che può creare scorciatoie o essere aperto dalla notifica.</string>
-    <string name="parasitic_welcome_summary_no_shortcut_support">Stai usando il manager parassitario, che può essere aperto dalla notifica.</string>
-    <string name="create_shortcut">Crea scorciatoia</string>
-    <string name="never_show">Non mostrare mai</string>
-    <string name="app_welcome">Manager parassitario consigliato</string>
-    <string name="app_welcome_summary">LSPosed ora supporta la parassitazione del sistema per evitarne il rilevamento, è possibile aprire il manager parassitario dalla notifica. Si consiglia di disinstallare l\'applicazione attuale.</string>
     <!-- LogsActivity -->
     <string name="menuSaveToSd">Salva</string>
     <string name="nav_item_logs_verbose">Log verbosi</string>
@@ -191,12 +183,8 @@
     <string name="settings_translation_contributors">Contributori alla traduzione</string>
     <string name="settings_translation">Partecipa alla traduzione</string>
     <string name="settings_translation_summary">Aiutaci a tradurre %s nella tua lingua</string>
-    <string name="settings_create_shortcut_summary">Crea una scorciatoia che può aprire il manager parassitario</string>
-    <string name="settings_shortcut_pinned_hint">Scorciatoia fissata</string>
-    <string name="settings_unsupported_pin_shortcut_summary">L\'attuale launcher predefinito non supporta le scorciatoie con i pin</string>
     <string name="settings_enable_status_notification">Notifica di stato</string>
     <string name="settings_enable_status_notification_summary">Mostra una notifica che può aprire il manager parassitario</string>
-    <string name="disable_status_notification_error">Nessuna scorciatoia, impossibile disattivare la notifica</string>
     <string name="settings_update_channel">Canale di aggiornamento</string>
     <string name="update_channel_stable">Stabile</string>
     <string name="update_channel_bate">Beta</string>

@@ -28,7 +28,10 @@ namespace dex {
 
 Reader::Reader(const dex::u1* image, size_t size, const dex::u1* data, size_t data_size) : image_(image), size_(size), data_(data ? data : image), data_size_(data ? data_size : size) {
   // init the header reference
-  header_ = ptr<dex::Header>(0);
+  header_ = reinterpret_cast<const dex::Header*>(image_);
+  if (size_ == 0) {
+      data_size_ = size_ = header_->file_size;
+  }
   ValidateHeader();
 
   // start with an "empty" .dex IR

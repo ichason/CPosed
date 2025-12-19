@@ -47,7 +47,7 @@
     <string name="selinux_policy_not_loaded_summary">SEPolicy tidak dimuat dengan benar</string>
     <string name="selinux_policy_not_loaded"><![CDATA[Beberapa fitur tidak akan berfungsi.<br/>Harap laporkan ini ke pengembang <a href="https://github.com/topjohnwu/Magisk/issues"><b>Magisk</b></a>.]]></string>
     <string name="system_inject_fail_summary">Injeksi Kerangka Sistem gagal</string>
-    <string name="system_inject_fail"><![CDATA[Ini jarang terjadi dan mungkin disebabkan oleh <b>Magisk</b> atau beberapa modul Magisk berkualitas rendah.<br/>Coba nonaktifkan modul Magisk selain Riru dan LSPosed atau kirimkan log lengkap ke pengembang.]]></string>
+    <string name="system_inject_fail"><![CDATA[Ini jarang terjadi dan mungkin disebabkan oleh <b>Magisk</b> atau beberapa modul Magisk berkualitas rendah.<br/>Coba nonaktifkan modul Magisk selain Zygisk dan LSPosed atau kirimkan log lengkap ke pengembang.]]></string>
     <string name="system_prop_incorrect_summary">Prop sistem salah</string>
     <string name="system_prop_incorrect"><![CDATA[Beberapa properti sistem yang diperlukan dihapus atau diubah.<br/>Modul terkadang tidak valid.]]></string>
     <string name="need_update">Butuh pembaruan</string>
@@ -71,14 +71,6 @@
     <string name="update_lsposed">Perbarui LSPosed</string>
     <string name="update_lsposed_msg">Konfirmasi untuk pembaruan LSPosed? Perangkat ini akan mulai ulang setelah pembaruan selesai</string>
     <string name="info_copied">Disalin ke papan klip</string>
-    <!-- WelcomeDialog -->
-    <string name="parasitic_welcome">Selamat datang di LSPosed</string>
-    <string name="parasitic_welcome_summary">Anda menggunakan manajer parasit, yang dapat membuat pintasan atau dapat terbuka dari notifikasi.</string>
-    <string name="parasitic_welcome_summary_no_shortcut_support">Anda menggunakan manajer parasit, yang dapat dibuka dari notifikasi.</string>
-    <string name="create_shortcut">Buat pintasan</string>
-    <string name="never_show">Jangan pernah tampilkan</string>
-    <string name="app_welcome">Manajer Parasit Direkomendasikan</string>
-    <string name="app_welcome_summary">LSPosed sekarang mendukung parasitisasi sistem untuk menghindari deteksi, Anda dapat membuka manajer parasit dari pemberitahuan. Disarankan untuk menghapus aplikasi saat ini.</string>
     <!-- LogsActivity -->
     <string name="menuSaveToSd">Simpan</string>
     <string name="nav_item_logs_verbose">Log Verbose</string>
@@ -187,12 +179,8 @@
     <string name="settings_translation_contributors">Kontributor terjemahan</string>
     <string name="settings_translation">Berpartisipasi dalam terjemahan</string>
     <string name="settings_translation_summary">Bantu kami menerjemahkan %s ke dalam bahasamu</string>
-    <string name="settings_create_shortcut_summary">Buat pintasan yang dapat membuka manajer parasit</string>
-    <string name="settings_shortcut_pinned_hint">Pintasan disematkan</string>
-    <string name="settings_unsupported_pin_shortcut_summary">Peluncur default saat ini tidak mendukung pintasan pin</string>
     <string name="settings_enable_status_notification">Notifikasi Status</string>
     <string name="settings_enable_status_notification_summary">Tampilkan notifikasi yang dapat membuka manajer parasit</string>
-    <string name="disable_status_notification_error">Tidak ada pintasan, tidak dapat mematikan notifikasi</string>
     <string name="settings_update_channel">Perbarui saluran</string>
     <string name="update_channel_stable">Stabil</string>
     <string name="update_channel_bate">Beta</string>

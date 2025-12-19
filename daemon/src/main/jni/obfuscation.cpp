@@ -36,11 +36,11 @@
 #include "obfuscation.h"
 #include "logging.h"
 
-using namespace splant;
+using namespace lsplant;
 namespace {
 std::mutex init_lock{};
 std::map<const std::string, std::string> signatures = {
-        {"Loc/os/lz/secure/", ""},
+        {"Lde/robv/android/xposed/", ""},
         { "Landroid/app/AndroidApp", ""},
         { "Landroid/content/res/XRes", ""},
         { "Landroid/content/res/XModule", ""},

@@ -50,7 +50,7 @@ JJ108</string>
     <string name="selinux_policy_not_loaded_summary">SEPolicy wird nicht korrekt geladen</string>
     <string name="selinux_policy_not_loaded"><![CDATA[Einige Funktionen werden nicht ordnungsgemäß funktionieren.<br/>Bitte melde es dem <a href="https://github.com/topjohnwu/Magisk/issues"><b>Magisk</b></a> Entwickler.]]></string>
     <string name="system_inject_fail_summary">System-Framework-Injektion fehlgeschlagen</string>
-    <string name="system_inject_fail"><![CDATA[Dies ist selten und kann durch <b>Magisk</b> oder einige minderwertige Magisk Module verursacht werden.<br/>Bitte deaktiviere alle Magisk-Module bis auf Riru und LSPosed, oder sende eine vollständige Fehlermeldung an die Entwickler.]]></string>
+    <string name="system_inject_fail"><![CDATA[Dies ist selten und kann durch <b>Magisk</b> oder einige minderwertige Magisk Module verursacht werden.<br/>Bitte deaktiviere alle Magisk-Module bis auf Zygisk und LSPosed, oder sende eine vollständige Fehlermeldung an die Entwickler.]]></string>
     <string name="system_prop_incorrect_summary">System-Prop falsch</string>
     <string name="system_prop_incorrect"><![CDATA[Einige notwendige Systemeigenschaften wurden gelöscht oder geändert.<br/>Module können gelegentlich außer Kraft gesetzt werden.]]></string>
     <string name="need_update">Aktualisierung erforderlich</string>
@@ -76,14 +76,6 @@ JJ108</string>
     <string name="update_lsposed">Bitte LSPosed aktualisieren</string>
     <string name="update_lsposed_msg">Soll LSPosed aktualisiert werden? Dieses Gerät wird nach dem Update neu gestartet</string>
     <string name="info_copied">In die Zwischenablage kopiert</string>
-    <!-- WelcomeDialog -->
-    <string name="parasitic_welcome">Willkommen bei LSPosed</string>
-    <string name="parasitic_welcome_summary">Du verwendest den parasitären Manager, der eine Verknüpfung erstellen oder über eine Benachrichtigung noch geöffnet werden kann.</string>
-    <string name="parasitic_welcome_summary_no_shortcut_support">Du verwendest den parasitären Manager, der von der Benachrichtigung geöffnet werden kann.</string>
-    <string name="create_shortcut">Verknüpfung erstellen</string>
-    <string name="never_show">Niemals anzeigen</string>
-    <string name="app_welcome">Parasitärer Manager empfohlen</string>
-    <string name="app_welcome_summary">LSPosed unterstützt nun Systemparasitisierung, um eine Erkennung zu vermeiden. Du kannst den parasitären Manager über die Benachrichtigung öffnen. Es wird empfohlen, die aktuelle App zu deinstallieren.</string>
     <!-- LogsActivity -->
     <string name="menuSaveToSd">Speichern</string>
     <string name="nav_item_logs_verbose">Ausführliche Protokolle</string>
@@ -192,12 +184,8 @@ JJ108</string>
     <string name="settings_translation_contributors">Übersetzer</string>
     <string name="settings_translation">Beim Übersetzen mitmachen</string>
     <string name="settings_translation_summary">Helfe uns, %s in deine Sprache zu übersetzen</string>
-    <string name="settings_create_shortcut_summary">Eine Verknüpfung zum Öffnen des parasitären Managers erstellen</string>
-    <string name="settings_shortcut_pinned_hint">Verknüpfung angeheftet</string>
-    <string name="settings_unsupported_pin_shortcut_summary">Der aktuelle Standard-Launcher unterstützt keine Pin-Verknüpfungen</string>
     <string name="settings_enable_status_notification">Status-Benachrichtigung</string>
     <string name="settings_enable_status_notification_summary">Eine Benachrichtigung anzeigen, die den parasitären Manager öffnen kann</string>
-    <string name="disable_status_notification_error">Keine Verknüpfung, Benachrichtigung kann nicht deaktiviert werden</string>
     <string name="settings_update_channel">Update-Kanal</string>
     <string name="update_channel_stable">Stabil</string>
     <string name="update_channel_bate">Beta</string>

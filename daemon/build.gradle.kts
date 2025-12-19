@@ -114,7 +114,7 @@ android.applicationVariants.all {
 }
 
 dependencies {
-    implementation(libs.libxposed.`interface`)
+    implementation(projects.libxposed.service)
     implementation(libs.agp.apksig)
     implementation(libs.commons.lang3)
     implementation(projects.hiddenapi.bridge)

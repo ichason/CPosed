@@ -1,0 +1,8 @@
+[codespell]
+
+# Add extra dictionaries to help improvement comments, docs, etc.
+builtin = clear,rare,informal,usage,names
+
+# Always default to highest interactive level to avoid accidentally
+# changing a false positive or picking the wrong replacement.
+interactive = 3

@@ -21,12 +21,12 @@
 package android.content.res;
 
 import static org.lsposed.lspd.nativebridge.ResourcesHook.rewriteXmlReferencesNative;
-import static oc.os.lz.secure.CHelpers.decrementMethodDepth;
-import static oc.os.lz.secure.CHelpers.findAndHookMethod;
-import static oc.os.lz.secure.CHelpers.getBooleanField;
-import static oc.os.lz.secure.CHelpers.getLongField;
-import static oc.os.lz.secure.CHelpers.getObjectField;
-import static oc.os.lz.secure.CHelpers.incrementMethodDepth;
+import static de.robv.android.xposed.XposedHelpers.decrementMethodDepth;
+import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
+import static de.robv.android.xposed.XposedHelpers.getBooleanField;
+import static de.robv.android.xposed.XposedHelpers.getLongField;
+import static de.robv.android.xposed.XposedHelpers.getObjectField;
+import static de.robv.android.xposed.XposedHelpers.incrementMethodDepth;
 
 import android.content.Context;
 import android.content.pm.PackageParser;
@@ -58,15 +58,15 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.WeakHashMap;
 
-import oc.os.lz.secure.ICHookZygoteInit;
-import oc.os.lz.secure.XC_MethodHook;
-import oc.os.lz.secure.XC_MethodHook.MethodHookParam;
-import oc.os.lz.secure.CBridge;
-import oc.os.lz.secure.CBridge.CopyOnWriteSortedSet;
-import oc.os.lz.secure.CInit;
-import oc.os.lz.secure.callbacks.XC_LayoutInflated;
-import oc.os.lz.secure.callbacks.XC_LayoutInflated.LayoutInflatedParam;
-import oc.os.lz.secure.callbacks.XCallback;
+import de.robv.android.xposed.IXposedHookZygoteInit;
+import de.robv.android.xposed.XC_MethodHook;
+import de.robv.android.xposed.XC_MethodHook.MethodHookParam;
+import de.robv.android.xposed.XposedBridge;
+import de.robv.android.xposed.XposedBridge.CopyOnWriteSortedSet;
+import de.robv.android.xposed.XposedInit;
+import de.robv.android.xposed.callbacks.XC_LayoutInflated;
+import de.robv.android.xposed.callbacks.XC_LayoutInflated.LayoutInflatedParam;
+import de.robv.android.xposed.callbacks.XCallback;
 import xposed.dummy.XResourcesSuperClass;
 import xposed.dummy.XTypedArraySuperClass;
 
@@ -543,7 +543,7 @@ public class XResources extends XResourcesSuperClass {
 	 * <p>Some resources are part of the Android framework and can be used in any app. They're
 	 * accessible via {@link android.R android.R} and are not bound to a specific
 	 * {@link android.content.res.Resources} instance. Such resources can be replaced in
-	 * {@link ICHookZygoteInit#initZygote initZygote()} for all apps. As there is no
+	 * {@link IXposedHookZygoteInit#initZygote initZygote()} for all apps. As there is no
 	 * {@link XResources} object easily available in that scope, this static method can be used
 	 * to set resource replacements. All other details (e.g. how certain types can be replaced) are
 	 * mentioned in {@link #setReplacement(String, String, String, Object)}.
@@ -567,7 +567,7 @@ public class XResources extends XResourcesSuperClass {
 		String resDir = (res != null) ? res.mResDir : null;
 		if (res == null) {
 			try {
-				CInit.hookResources();
+				XposedInit.hookResources();
 			} catch (Throwable throwable) {
 				throw new IllegalStateException("Failed to initialize resources hook");
 			}
@@ -764,7 +764,7 @@ public class XResources extends XResourcesSuperClass {
 						Drawable result = ((DrawableLoader) replacement).newDrawable(this, id);
 						if (result != null)
 							return result;
-					} catch (Throwable t) { CBridge.log(t); }
+					} catch (Throwable t) { XposedBridge.log(t); }
 				} else if (replacement instanceof Integer) {
 					return new ColorDrawable((Integer) replacement);
 				} else if (replacement instanceof XResForwarder) {
@@ -790,7 +790,7 @@ public class XResources extends XResourcesSuperClass {
 						Drawable result = ((DrawableLoader) replacement).newDrawable(this, id);
 						if (result != null)
 							return result;
-					} catch (Throwable t) { CBridge.log(t); }
+					} catch (Throwable t) { XposedBridge.log(t); }
 				} else if (replacement instanceof Integer) {
 					return new ColorDrawable((Integer) replacement);
 				} else if (replacement instanceof XResForwarder) {
@@ -816,7 +816,7 @@ public class XResources extends XResourcesSuperClass {
 						Drawable result = ((DrawableLoader) replacement).newDrawableForDensity(this, id, density);
 						if (result != null)
 							return result;
-					} catch (Throwable t) { CBridge.log(t); }
+					} catch (Throwable t) { XposedBridge.log(t); }
 				} else if (replacement instanceof Integer) {
 					return new ColorDrawable((Integer) replacement);
 				} else if (replacement instanceof XResForwarder) {
@@ -842,7 +842,7 @@ public class XResources extends XResourcesSuperClass {
 						Drawable result = ((DrawableLoader) replacement).newDrawableForDensity(this, id, density);
 						if (result != null)
 							return result;
-					} catch (Throwable t) { CBridge.log(t); }
+					} catch (Throwable t) { XposedBridge.log(t); }
 				} else if (replacement instanceof Integer) {
 					return new ColorDrawable((Integer) replacement);
 				} else if (replacement instanceof XResForwarder) {
@@ -967,10 +967,10 @@ public class XResources extends XResourcesSuperClass {
 					if (components.length == 3)
 						variant = components[1];
 					else
-						CBridge.log("Unexpected resource path \"" + value.string.toString()
+						XposedBridge.log("Unexpected resource path \"" + value.string.toString()
 								+ "\" for resource id 0x" + Integer.toHexString(id));
 				} else {
-					CBridge.log(new NotFoundException("Could not find file name for resource id 0x") + Integer.toHexString(id));
+					XposedBridge.log(new NotFoundException("Could not find file name for resource id 0x") + Integer.toHexString(id));
 				}
 
 				synchronized (sXmlInstanceDetails) {
@@ -1091,7 +1091,7 @@ public class XResources extends XResourcesSuperClass {
 			repRes.getValue(repId, outValue, resolveRefs);
 		} else {
 			if (replacement != null) {
-				CBridge.log("Replacement of resource ID #0x" + Integer.toHexString(id) + " escaped because of deprecated replacement. Please use XResForwarder instead.");
+				XposedBridge.log("Replacement of resource ID #0x" + Integer.toHexString(id) + " escaped because of deprecated replacement. Please use XResForwarder instead.");
 			}
 			super.getValue(id, outValue, resolveRefs);
 		}
@@ -1107,7 +1107,7 @@ public class XResources extends XResourcesSuperClass {
 			repRes.getValueForDensity(repId, density, outValue, resolveRefs);
 		} else {
 			if (replacement != null) {
-				CBridge.log("Replacement of resource ID #0x" + Integer.toHexString(id) + " escaped because of deprecated replacement. Please use XResForwarder instead.");
+				XposedBridge.log("Replacement of resource ID #0x" + Integer.toHexString(id) + " escaped because of deprecated replacement. Please use XResForwarder instead.");
 			}
 			super.getValueForDensity(id, density, outValue, resolveRefs);
 		}
@@ -1174,7 +1174,7 @@ public class XResources extends XResourcesSuperClass {
 			} catch (NotFoundException ignored) {}
 
 			if (!repResDefined && origResId == 0 && !entryType.equals("id")) {
-				CBridge.log(entryType + "/" + entryName + " is neither defined in module nor in original resources");
+				XposedBridge.log(entryType + "/" + entryName + " is neither defined in module nor in original resources");
 				return 0;
 			}
 
@@ -1188,7 +1188,7 @@ public class XResources extends XResourcesSuperClass {
 
 			return origResId;
 		} catch (Exception e) {
-			CBridge.log(e);
+			XposedBridge.log(e);
 			return id;
 		}
 	}
@@ -1255,7 +1255,7 @@ public class XResources extends XResourcesSuperClass {
 		try {
 			origAttrId = origRes.getIdentifier(attrName, "attr", origPackage);
 		} catch (NotFoundException e) {
-			CBridge.log("Attribute " + attrName + " not found in original resources");
+			XposedBridge.log("Attribute " + attrName + " not found in original resources");
 		}
 		return origAttrId;
 	}
@@ -1372,7 +1372,7 @@ public class XResources extends XResourcesSuperClass {
 					Drawable result = ((DrawableLoader) replacement).newDrawable(xres, resId);
 					if (result != null)
 						return result;
-				} catch (Throwable t) { CBridge.log(t); }
+				} catch (Throwable t) { XposedBridge.log(t); }
 			} else if (replacement instanceof Integer) {
 				return new ColorDrawable((Integer) replacement);
 			} else if (replacement instanceof XResForwarder) {
@@ -1518,7 +1518,7 @@ public class XResources extends XResourcesSuperClass {
 				return outValue.type != TypedValue.TYPE_NULL;
 			} else {
 				if (replacement != null) {
-					CBridge.log("Replacement of resource ID #0x" + Integer.toHexString(id) + " escaped because of deprecated replacement. Please use XResForwarder instead.");
+					XposedBridge.log("Replacement of resource ID #0x" + Integer.toHexString(id) + " escaped because of deprecated replacement. Please use XResForwarder instead.");
 				}
 				return super.getValue(index, outValue);
 			}
@@ -1539,7 +1539,7 @@ public class XResources extends XResourcesSuperClass {
 				return value;
 			} else {
 				if (replacement != null) {
-					CBridge.log("Replacement of resource ID #0x" + Integer.toHexString(id) + " escaped because of deprecated replacement. Please use XResForwarder instead.");
+					XposedBridge.log("Replacement of resource ID #0x" + Integer.toHexString(id) + " escaped because of deprecated replacement. Please use XResForwarder instead.");
 				}
 				return super.peekValue(index);
 			}
@@ -1739,7 +1739,7 @@ public class XResources extends XResourcesSuperClass {
 	 * <p>Some layouts are part of the Android framework and can be used in any app. They're
 	 * accessible via {@link android.R.layout android.R.layout} and are not bound to a specific
 	 * {@link android.content.res.Resources} instance. Such resources can be replaced in
-	 * {@link ICHookZygoteInit#initZygote initZygote()} for all apps. As there is no
+	 * {@link IXposedHookZygoteInit#initZygote initZygote()} for all apps. As there is no
 	 * {@link XResources} object easily available in that scope, this static method can be used
 	 * to hook layouts.
 	 *
@@ -1765,7 +1765,7 @@ public class XResources extends XResourcesSuperClass {
 
 		if (resDir == null) {
 			try {
-				CInit.hookResources();
+				XposedInit.hookResources();
 			} catch (Throwable throwable) {
 				throw new IllegalStateException("Failed to initialize resources hook", throwable);
 			}

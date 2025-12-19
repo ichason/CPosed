@@ -2,6 +2,7 @@ package org.lsposed.lspd.service;
 
 import static org.lsposed.lspd.service.ServiceManager.TAG;
 
+import android.annotation.SuppressLint;
 import android.app.INotificationManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -27,6 +28,7 @@ import android.util.Log;
 import org.lsposed.daemon.R;
 import org.lsposed.lspd.util.FakeContext;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.UUID;
@@ -50,6 +52,37 @@ public class LSPNotificationManager {
 
     private static INotificationManager notificationManager = null;
     private static IBinder binder = null;
+
+    static {
+        try {
+            @SuppressLint("PrivateApi")
+            Class<?> flagsClass = Class.forName("android.app.Flags", false, null);
+            Field featureFlagsField = flagsClass.getDeclaredField("FEATURE_FLAGS");
+            featureFlagsField.setAccessible(true);
+            Object featureFlags = featureFlagsField.get(null);
+            Field cacheField;
+            if (featureFlags != null) {
+                cacheField = featureFlags.getClass().getDeclaredField("systemui_is_cached");
+                cacheField.setAccessible(true);
+                cacheField.set(featureFlags, Boolean.TRUE);
+            }
+        } catch (Throwable ignored) {
+        }
+        try {
+            Class<?> ConfigClass = Class.forName("com.mediatek.res.AsyncDrawableCache", false, null);
+            Field featureConfigField = ConfigClass.getDeclaredField("sFeatureConfig");
+            featureConfigField.setAccessible(true);
+            featureConfigField.set(null, "0");
+        } catch (Throwable ignored) {
+        }
+        try {
+            new Notification.Builder(new FakeContext(), "LSPosed").build();
+        } catch (AbstractMethodError unused) {
+            FakeContext.ContentResolver = !FakeContext.ContentResolver;
+        } catch (Throwable th) {
+            Log.e(TAG, "failed to build notifications", th);
+        }
+    }
 
     private static final IBinder.DeathRecipient recipient = new IBinder.DeathRecipient() {
         @Override

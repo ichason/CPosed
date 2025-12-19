@@ -83,8 +83,7 @@ inline int HookFunction(void *original, void *replace, void **backup) {
              info.dli_sname ? info.dli_sname : "(unknown symbol)", info.dli_saddr,
              info.dli_fname ? info.dli_fname : "(unknown file)", info.dli_fbase);
     }
-    // return DobbyHook(original, reinterpret_cast<dobby_dummy_func_t>(replace), reinterpret_cast<dobby_dummy_func_t *>(backup));
-    return SobbyHook(original, reinterpret_cast<dobby_dummy_func_t>(replace), reinterpret_cast<dobby_dummy_func_t *>(backup));
+    return DobbyHook(original, reinterpret_cast<dobby_dummy_func_t>(replace), reinterpret_cast<dobby_dummy_func_t *>(backup));
 }
 
 inline int UnhookFunction(void *original) {
@@ -95,7 +94,7 @@ inline int UnhookFunction(void *original) {
              info.dli_sname ? info.dli_sname : "(unknown symbol)", info.dli_saddr,
              info.dli_fname ? info.dli_fname : "(unknown file)", info.dli_fbase);
     }
-    return SobbyDestroy(original);
+    return DobbyDestroy(original);
 }
 
 inline std::string GetNativeBridgeSignature() {

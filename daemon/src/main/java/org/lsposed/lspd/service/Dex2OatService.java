@@ -50,11 +50,21 @@ public class Dex2OatService implements Runnable {
     private static final String TAG = "LSPosedDex2Oat";
     private static final String WRAPPER32 = "bin/dex2oat32";
     private static final String WRAPPER64 = "bin/dex2oat64";
+    private static final String PRELOAD32 = "lib/libpreload32.so";
+    private static final String PRELOAD64 = "lib/libpreload64.so";
 
     private final String[] dex2oatArray = new String[4];
-    private final FileDescriptor[] fdArray = new FileDescriptor[4];
+    private final FileDescriptor[] fdArray = new FileDescriptor[6];
     private final FileObserver selinuxObserver;
     private int compatibility = DEX2OAT_OK;
+
+    private void openPreload(int id, String path) {
+        try {
+            var fd = Os.open(path, OsConstants.O_RDONLY, 0);
+            fdArray[id] = fd;
+        } catch (ErrnoException ignored) {
+        }
+    }
 
     private void openDex2oat(int id, String path) {
         try {
@@ -75,6 +85,9 @@ public class Dex2OatService implements Runnable {
             openDex2oat(2, "/apex/com.android.art/bin/dex2oat64");
             openDex2oat(3, "/apex/com.android.art/bin/dex2oatd64");
         }
+
+        openPreload(4,"/data/adb/modules/zygisk_lsposed/lib/libpreload32.so");
+        openPreload(5,"/data/adb/modules/zygisk_lsposed/lib/libpreload64.so");
 
         var enforce = Paths.get("/sys/fs/selinux/enforce");
         var policy = Paths.get("/sys/fs/selinux/policy");
@@ -171,16 +184,19 @@ public class Dex2OatService implements Runnable {
         Log.i(TAG, "Dex2oat wrapper daemon start");
         var sockPath = getSockPath();
         Log.d(TAG, "wrapper path: " + sockPath);
-        var magisk_file = "u:object_r:magisk_file:s0";
+        var lsposed_file = "u:object_r:lsposed_file:s0";
         var dex2oat_exec = "u:object_r:dex2oat_exec:s0";
+        var system_file = "u:object_r:system_file:s0";
+        SELinux.setFileContext(PRELOAD32, system_file);
+        SELinux.setFileContext(PRELOAD64, system_file);
         if (SELinux.checkSELinuxAccess("u:r:dex2oat:s0", dex2oat_exec,
                 "file", "execute_no_trans")) {
             SELinux.setFileContext(WRAPPER32, dex2oat_exec);
             SELinux.setFileContext(WRAPPER64, dex2oat_exec);
             setSockCreateContext("u:r:dex2oat:s0");
         } else {
-            SELinux.setFileContext(WRAPPER32, magisk_file);
-            SELinux.setFileContext(WRAPPER64, magisk_file);
+            SELinux.setFileContext(WRAPPER32, lsposed_file);
+            SELinux.setFileContext(WRAPPER64, lsposed_file);
             setSockCreateContext("u:r:installd:s0");
         }
         try (var server = new LocalServerSocket(sockPath)) {

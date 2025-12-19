@@ -53,7 +53,7 @@
     <string name="selinux_policy_not_loaded_summary">SEPolicy не завантажено належним чином</string>
     <string name="selinux_policy_not_loaded"><![CDATA[Деякі функції не працюватимуть.<br/>Будь ласка, повідомте про це на <a href="https://github.com/topjohnwu/Magisk/issues"><b>Magisk</b></a> розробнику.]]></string>
     <string name="system_inject_fail_summary">Помилка ін\'єкції System Framework</string>
-    <string name="system_inject_fail"><![CDATA[Це рідкісна проблема, яка може бути спричинена <b>Magisk</b> або деякими неякісними модулями Magisk.<br/>Спробуйте вимкнути всі модулі Magisk, крім Riru та LSPosed, або надішліть повний звіт розробникам.]]></string>
+    <string name="system_inject_fail"><![CDATA[Це рідкісна проблема, яка може бути спричинена <b>Magisk</b> або деякими неякісними модулями Magisk.<br/>Спробуйте вимкнути всі модулі Magisk, крім Zygisk та LSPosed, або надішліть повний звіт розробникам.]]></string>
     <string name="system_prop_incorrect_summary">Неправильні системні налаштування</string>
     <string name="system_prop_incorrect"><![CDATA[Деякі необхідні параметри системи видалені або змінені.<br/>Модулі можуть не працювати належним чином.]]></string>
     <string name="need_update">Потрібно оновити</string>
@@ -77,14 +77,6 @@
     <string name="update_lsposed">Оновити LSPosed</string>
     <string name="update_lsposed_msg">Підтвердити оновлення LSPosed? Цей пристрій перезавантажиться після завершення оновлення</string>
     <string name="info_copied">Скопійовано до буфера обміну</string>
-    <!-- WelcomeDialog -->
-    <string name="parasitic_welcome">Ласкаво просимо до LSPosed</string>
-    <string name="parasitic_welcome_summary">Ви використовуєте паразитний менеджер, який може створювати ярлик або все одно відкриватися з повідомлення.</string>
-    <string name="parasitic_welcome_summary_no_shortcut_support">Ви використовуєте паразитний менеджер, який може відкриватися з повідомлення.</string>
-    <string name="create_shortcut">Створити ярлик</string>
-    <string name="never_show">Ніколи не показувати</string>
-    <string name="app_welcome">Рекомендується менеджер-паразит</string>
-    <string name="app_welcome_summary">LSPosed тепер підтримує паразитування системи, щоб уникнути виявлення, ви можете відкрити диспетчер паразитів з повідомлення. Рекомендується видалити поточну програму.</string>
     <!-- LogsActivity -->
     <string name="menuSaveToSd">Зберегти</string>
     <string name="nav_item_logs_verbose">Детальні звіти</string>
@@ -193,12 +185,8 @@
     <string name="settings_translation_contributors">Автори перекладу</string>
     <string name="settings_translation">Допомогти з перекладом</string>
     <string name="settings_translation_summary">Доповнити український переклад %s</string>
-    <string name="settings_create_shortcut_summary">Створіть ярлик, який зможе відкрити паразитний менеджер</string>
-    <string name="settings_shortcut_pinned_hint">Ярлик закріплено</string>
-    <string name="settings_unsupported_pin_shortcut_summary">Поточна панель запуску за замовчуванням не підтримує шорткати пін-кодів</string>
     <string name="settings_enable_status_notification">Повідомлення про статус</string>
     <string name="settings_enable_status_notification_summary">Показати повідомлення, яке може відкрити паразитний менеджер</string>
-    <string name="disable_status_notification_error">Немає ярлика, не можна відключити сповіщення</string>
     <string name="settings_update_channel">Канал оновлень</string>
     <string name="update_channel_stable">Стабільний</string>
     <string name="update_channel_bate">Бета-версія</string>

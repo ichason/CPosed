@@ -26,7 +26,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 
@@ -46,7 +45,6 @@ import org.lsposed.manager.databinding.ActivityMainBinding;
 import org.lsposed.manager.repo.RepoLoader;
 import org.lsposed.manager.ui.activity.base.BaseActivity;
 import org.lsposed.manager.util.ModuleUtil;
-import org.lsposed.manager.util.ShortcutUtil;
 import org.lsposed.manager.util.UpdateUtil;
 
 import java.util.HashSet;
@@ -103,7 +101,7 @@ public class MainActivity extends BaseActivity implements RepoLoader.RepoListene
     }
 
     @Override
-    protected void onNewIntent(Intent intent) {
+    protected void onNewIntent(@NonNull Intent intent) {
         super.onNewIntent(intent);
         handleIntent(intent);
     }
@@ -259,10 +257,6 @@ public class MainActivity extends BaseActivity implements RepoLoader.RepoListene
                     nav.getMenu().removeItem(R.id.repo_nav);
                 }
             }
-        }
-        if (App.isParasitic) {
-            var updateShortcut = ShortcutUtil.updateShortcut();
-            Log.d(App.TAG, "update shortcut success = " + updateShortcut);
         }
     }
 

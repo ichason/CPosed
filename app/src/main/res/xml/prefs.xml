@@ -18,7 +18,8 @@
   ~ Copyright (C) 2021 LSPosed Contributors
   -->
 
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+<PreferenceScreen xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <PreferenceCategory android:title="@string/group_network">
 
@@ -38,7 +39,8 @@
             android:key="language"
             android:popupTheme="@style/language_menu_style"
             android:summary="%s"
-            android:title="@string/settings_language" />
+            android:title="@string/settings_language"
+            tools:ignore="DuplicateSpeakableTextCheck" />
 
         <Preference
             android:icon="@drawable/ic_outline_groups_24"
@@ -98,12 +100,6 @@
             android:persistent="false"
             android:summary="@string/settings_xposed_api_call_protection_summary"
             android:title="@string/settings_xposed_api_call_protection" />
-
-        <Preference
-            android:icon="@drawable/ic_outline_app_shortcut_24"
-            android:key="add_shortcut"
-            android:summary="@string/settings_create_shortcut_summary"
-            android:title="@string/create_shortcut" />
 
         <rikka.material.preference.MaterialSwitchPreference
             android:defaultValue="false"

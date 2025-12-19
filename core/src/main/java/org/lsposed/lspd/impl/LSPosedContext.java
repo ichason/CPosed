@@ -105,7 +105,7 @@ public class LSPosedContext implements XposedInterface {
             var ctx = new LSPosedContext(module.packageName, module.applicationInfo, module.service);
             for (var entry : module.file.moduleClassNames) {
                 var moduleClass = mcl.loadClass(entry);
-                // Log.d(TAG, "  Loading class " + moduleClass);
+                Log.d(TAG, "  Loading class " + moduleClass);
                 if (!XposedModule.class.isAssignableFrom(moduleClass)) {
                     Log.e(TAG, "    This class doesn't implement any sub-interface of XposedModule, skipping it");
                     continue;
@@ -207,10 +207,27 @@ public class LSPosedContext implements XposedInterface {
         return doDeoptimize(constructor);
     }
 
+    @NonNull
+    @Override
+    public <T> MethodUnhooker<Constructor<T>> hookClassInitializer(@NonNull Class<T> origin, @NonNull Class<? extends Hooker> hooker) {
+        return LSPosedBridge.doHookClassInitializer(origin, PRIORITY_DEFAULT, hooker);
+    }
+
+    @NonNull
+    @Override
+    public <T> MethodUnhooker<Constructor<T>> hookClassInitializer(@NonNull Class<T> origin, int priority, @NonNull Class<? extends Hooker> hooker) {
+        return LSPosedBridge.doHookClassInitializer(origin, priority, hooker);
+    }
+
     @Nullable
     @Override
     public Object invokeOrigin(@NonNull Method method, @Nullable Object thisObject, Object[] args) throws InvocationTargetException, IllegalArgumentException, IllegalAccessException {
         return HookBridge.invokeOriginalMethod(method, thisObject, args);
+    }
+
+    @Override
+    public <T> void invokeOrigin(@NonNull Constructor<T> constructor, @NonNull T thisObject, Object... args) throws InvocationTargetException, IllegalArgumentException, IllegalAccessException {
+        HookBridge.invokeOriginalMethod(constructor, thisObject, args);
     }
 
     private static char getTypeShorty(Class<?> type) {
@@ -254,6 +271,14 @@ public class LSPosedContext implements XposedInterface {
             throw new IllegalArgumentException("Cannot invoke special on static method: " + method);
         }
         return HookBridge.invokeSpecialMethod(method, getExecutableShorty(method), method.getDeclaringClass(), thisObject, args);
+    }
+
+    @Override
+    public <T> void invokeSpecial(@NonNull Constructor<T> constructor, @NonNull T thisObject, Object... args) throws InvocationTargetException, IllegalArgumentException, IllegalAccessException {
+        if (Modifier.isStatic(constructor.getModifiers())) {
+            throw new IllegalArgumentException("Cannot invoke special on static constructor: " + constructor);
+        }
+        HookBridge.invokeSpecialMethod(constructor, getExecutableShorty(constructor), constructor.getDeclaringClass(), thisObject, args);
     }
 
     @NonNull

@@ -2,10 +2,12 @@ VagrantFile
 benchmark/build
 benchmark/output
 benchmark/charts.html
+examples/llil_utils/tmp
 build*
 .vagrant
 .cache
 .gdb_history
 compile_commands.json
+.emacs.desktop*
 **/.vscode
 TAGS

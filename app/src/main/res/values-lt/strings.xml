@@ -53,7 +53,7 @@
     <string name="selinux_policy_not_loaded_summary">\"SEPolicy\" nėra tinkamai įkelta</string>
     <string name="selinux_policy_not_loaded"><![CDATA[Kai kurios funkcijos neveiks.<br/>Apie tai praneškite <a href="https://github.com/topjohnwu/Magisk/issues"><b>Magisk</b></a> kūrėjui.]]></string>
     <string name="system_inject_fail_summary">Nepavyko įšvirkšti sistemos pagrindo</string>
-    <string name="system_inject_fail"><![CDATA[Tai pasitaiko retai ir gali būti dėl <b>"Magisk"</b> arba kai kurių nekokybiškų "Magisk" modulių.<br/>Pabandykite išjungti kitus "Magisk" modulius, išskyrus "Riru" ir "LSPosed", arba pateikite visą žurnalą kūrėjams.]]></string>
+    <string name="system_inject_fail"><![CDATA[Tai pasitaiko retai ir gali būti dėl <b>"Magisk"</b> arba kai kurių nekokybiškų "Magisk" modulių.<br/>Pabandykite išjungti kitus "Magisk" modulius, išskyrus "Zygisk" ir "LSPosed", arba pateikite visą žurnalą kūrėjams.]]></string>
     <string name="system_prop_incorrect_summary">Neteisingas sistemos rekvizitas</string>
     <string name="system_prop_incorrect"><![CDATA[Ištrintos arba pakeistos kai kurios būtinos sistemos savybės.<br/>Moduliai kartais gali būti pripažinti negaliojančiais.]]></string>
     <string name="need_update">Reikia atnaujinti</string>
@@ -77,14 +77,6 @@
     <string name="update_lsposed">Atnaujinti LSPosed</string>
     <string name="update_lsposed_msg">Patvirtinkite, kad atnaujintumėte LSPosed? Baigus atnaujinimą šis prietaisas bus perkrautas</string>
     <string name="info_copied">Nukopijuota į iškarpinę</string>
-    <!-- WelcomeDialog -->
-    <string name="parasitic_welcome">Sveiki atvykę į LSPosed</string>
-    <string name="parasitic_welcome_summary">Jūs naudojate parazitinį tvarkytuvą, kuris gali sukurti nuorodą arba vis dar atidaryti iš pranešimo.</string>
-    <string name="parasitic_welcome_summary_no_shortcut_support">Naudojate parazitinį tvarkytuvą, kuris gali būti atidarytas iš pranešimo.</string>
-    <string name="create_shortcut">Sukurti nuorodą</string>
-    <string name="never_show">Niekada nerodykite</string>
-    <string name="app_welcome">Rekomenduojama parazitinė vadybininkė</string>
-    <string name="app_welcome_summary">\"LSPosed\" dabar palaiko sistemos parazitavimą, kad išvengtų aptikimo, galite atidaryti parazitų tvarkyklę iš pranešimo. Rekomenduojama pašalinti dabartinę programą.</string>
     <!-- LogsActivity -->
     <string name="menuSaveToSd">Išsaugoti</string>
     <string name="nav_item_logs_verbose">Žurnalai su verbaline informacija</string>
@@ -193,12 +185,8 @@
     <string name="settings_translation_contributors">Vertimo paslaugų teikėjai</string>
     <string name="settings_translation">Dalyvaukite vertimo procese</string>
     <string name="settings_translation_summary">Padėkite mums išversti %s į savo kalbą</string>
-    <string name="settings_create_shortcut_summary">Sukurti nuorodą, kuri gali atidaryti parazitinį tvarkytuvą</string>
-    <string name="settings_shortcut_pinned_hint">Prisegtas trumpinys</string>
-    <string name="settings_unsupported_pin_shortcut_summary">Dabartinė numatytoji paleidimo programa nepalaiko prisegamų nuorodų</string>
     <string name="settings_enable_status_notification">Pranešimas apie būseną</string>
     <string name="settings_enable_status_notification_summary">Rodyti pranešimą, kad galima atidaryti parazitinį tvarkytuvą</string>
-    <string name="disable_status_notification_error">Nėra sparčiųjų klavišų, negalima išjungti pranešimo</string>
     <string name="settings_update_channel">Atnaujinti kanalą</string>
     <string name="update_channel_stable">Stabilus</string>
     <string name="update_channel_bate">Beta</string>

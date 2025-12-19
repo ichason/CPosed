@@ -47,7 +47,7 @@
     <string name="selinux_policy_not_loaded_summary">SEPolicy 未被正确加载</string>
     <string name="selinux_policy_not_loaded"><![CDATA[某些功能将不起作用。<br/>请将此问题报告给 <a href="https://github.com/topjohnwu/Magisk/issues"><b>Magisk</b></a> 开发者]]></string>
     <string name="system_inject_fail_summary">系统框架注入失败</string>
-    <string name="system_inject_fail"><![CDATA[这是极罕见的情况，可能是由 <b>Magisk</b> 或低质 Magisk 模块导致。<br/>请尝试禁用除 Riru 和 LSPosed 外的其他 Magisk 模块，或向开发者提供完整日志。]]></string>
+    <string name="system_inject_fail"><![CDATA[这是极罕见的情况，可能是由 <b>Magisk</b> 或低质 Magisk 模块导致。<br/>请尝试禁用除 Zygisk 和 LSPosed 外的其他 Magisk 模块，或向开发者提供完整日志。]]></string>
     <string name="system_prop_incorrect_summary">系统属性异常</string>
     <string name="system_prop_incorrect"><![CDATA[一些必须的系统属性被删除或被修改。<br/>模块可能会随机失效。]]></string>
     <string name="need_update">需要更新</string>
@@ -73,14 +73,6 @@
     <string name="update_lsposed">更新 LSPosed</string>
     <string name="update_lsposed_msg">确认更新 LSPosed? 设备将会在完成更新后自动重启。</string>
     <string name="info_copied">已复制到剪贴板</string>
-    <!-- WelcomeDialog -->
-    <string name="parasitic_welcome">欢迎使用 LSPosed</string>
-    <string name="parasitic_welcome_summary">你正在使用寄生管理器，可创建快捷方式或继续从通知中打开。</string>
-    <string name="parasitic_welcome_summary_no_shortcut_support">你正在使用寄生管理器，可以从通知打开它。</string>
-    <string name="create_shortcut">创建快捷方式</string>
-    <string name="never_show">不再显示</string>
-    <string name="app_welcome">推荐使用寄生管理器</string>
-    <string name="app_welcome_summary">LSPosed 现在支持系统寄生以避免检测，你可以从通知中打开寄生管理器。建议卸载当前应用。</string>
     <!-- LogsActivity -->
     <string name="menuSaveToSd">保存</string>
     <string name="nav_item_logs_verbose">详细日志</string>
@@ -189,12 +181,8 @@
     <string name="settings_translation_contributors">译者</string>
     <string name="settings_translation">参与翻译</string>
     <string name="settings_translation_summary">帮助我们把 %s 翻译到你的语言</string>
-    <string name="settings_create_shortcut_summary">创建一个能打开寄生管理器的快捷方式</string>
-    <string name="settings_shortcut_pinned_hint">已创建快捷方式</string>
-    <string name="settings_unsupported_pin_shortcut_summary">当前默认桌面不支持固定快捷方式</string>
     <string name="settings_enable_status_notification">状态通知</string>
     <string name="settings_enable_status_notification_summary">显示一个通知以打开寄生管理器</string>
-    <string name="disable_status_notification_error">没有快捷方式，无法禁用通知</string>
     <string name="settings_update_channel">模块更新通道</string>
     <string name="update_channel_stable">稳定版</string>
     <string name="update_channel_bate">测试版</string>

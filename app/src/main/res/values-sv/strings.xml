@@ -49,7 +49,7 @@
     <string name="selinux_policy_not_loaded_summary">SEPolicy är inte korrekt laddat</string>
     <string name="selinux_policy_not_loaded"><![CDATA[Vissa funktioner kommer inte att fungera.<br/>Vänligen rapportera detta till <a href="https://github.com/topjohnwu/Magisk/issues"><b>Magisk</b></a> utvecklaren.]]></string>
     <string name="system_inject_fail_summary">Injektion i System Framework misslyckades</string>
-    <string name="system_inject_fail"><![CDATA[Detta är sällsynt och kan orsakas av <b>Magisk</b> eller några Magisk-moduler av låg kvalitet.<br/>Försök att inaktivera andra Magisk-moduler än Riru och LSPosed eller skicka fullständig logg till utvecklare.]]></string>
+    <string name="system_inject_fail"><![CDATA[Detta är sällsynt och kan orsakas av <b>Magisk</b> eller några Magisk-moduler av låg kvalitet.<br/>Försök att inaktivera andra Magisk-moduler än Zygisk och LSPosed eller skicka fullständig logg till utvecklare.]]></string>
     <string name="system_prop_incorrect_summary">Felaktig System prop</string>
     <string name="system_prop_incorrect"><![CDATA[Vissa nödvändiga systemegenskaper är raderade eller ändrade.<br/>Moduler kan komma att ogiltigförklara.]]></string>
     <string name="need_update">Behöver uppdateras</string>
@@ -73,14 +73,6 @@
     <string name="update_lsposed">Uppdatera LSPosed</string>
     <string name="update_lsposed_msg">Bekräfta att uppdatera LSPosed? Denna enhet kommer att starta om efter att uppdateringen är slutförd</string>
     <string name="info_copied">Kopieras till urklipp</string>
-    <!-- WelcomeDialog -->
-    <string name="parasitic_welcome">Välkommen till LSPosed</string>
-    <string name="parasitic_welcome_summary">Du använder Parasitic Manager, som kan skapa genvägar eller fortfarande öppna från anmälan.</string>
-    <string name="parasitic_welcome_summary_no_shortcut_support">Du använder Parasitic Manager, som kan öppnas från en avisering.</string>
-    <string name="create_shortcut">Skapa genväg</string>
-    <string name="never_show">Visa aldrig</string>
-    <string name="app_welcome">Parasitic Manager Rekommenderad</string>
-    <string name="app_welcome_summary">LSPosed stöder nu systemparasitering för att undvika upptäckt, du kan öppna parasithanteraren från anmälan. Det rekommenderas att avinstallera det aktuella programmet.</string>
     <!-- LogsActivity -->
     <string name="menuSaveToSd">Spara</string>
     <string name="nav_item_logs_verbose">Utförliga Loggar</string>
@@ -189,12 +181,8 @@
     <string name="settings_translation_contributors">Bidragande översättare</string>
     <string name="settings_translation">Delta i översättning</string>
     <string name="settings_translation_summary">Hjälp oss att översätta %s till ditt språk</string>
-    <string name="settings_create_shortcut_summary">Skapa en genväg som kan öppna Parasitic Manager</string>
-    <string name="settings_shortcut_pinned_hint">Genväg fastlåst</string>
-    <string name="settings_unsupported_pin_shortcut_summary">Den nuvarande standardstartaren har inte stöd för genvägar med stift</string>
     <string name="settings_enable_status_notification">Meddelande om status</string>
     <string name="settings_enable_status_notification_summary">Visa en anmälan som kan öppna parasitansvarig</string>
-    <string name="disable_status_notification_error">Ingen genväg, kan inte inaktivera anmälan</string>
     <string name="settings_update_channel">Uppdatera kanal</string>
     <string name="update_channel_stable">Stabil</string>
     <string name="update_channel_bate">Beta</string>
