@@ -16,17 +16,29 @@ This project will continue to improve and optimize based on technological develo
 
 **Android 8.1 - Android 16** (API 27-36)
 
-## Important Notice
+## Important Notice & Premium Features
 
-> **Open Source Limitations**
+> **Open Source vs Premium Version**
 >
-> This open-source version only provides partial detection bypass functionality. For complete detection bypass capabilities and premium features, please join our community or contact the author.
+> 📦 **Open Source Version**: Provides basic functionality with partial detection bypass capabilities.
+> 
+> 💎 **Premium Version**: Complete detection bypass, enhanced stability, priority support, and exclusive features.
+
+### Premium Features Demo
+
+See the **Premium Version** in action - advanced detection bypass capabilities:
+
+<video src="https://github.com/user-attachments/assets/015b1858-c64e-4d94-881c-e081cbbebd16" width="100%" controls></video>
+
+*The above video demonstrates the detection effect using a customized version.*
+
+**Want access to premium features?** Contact us via Telegram: [@pangpangacc](https://t.me/pangpangacc)
 
 ## Community & Support
 
 ### Telegram Discussion Group
 Join our community for discussions, updates, and support:
-- **Group**: [t.me/lsposedhook](https://t.me/lsposedhook)
+- **Group**: [t.me/cposed](https://t.me/cposed)
 
 ### Contact Author
 For premium features, custom requirements, or collaboration:
