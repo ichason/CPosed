@@ -4,7 +4,9 @@
 [![Telegram](https://img.shields.io/badge/Telegram-Group-blue.svg)](https://t.me/lsposedhook)
 [![License](https://img.shields.io/badge/License-GPL--3.0-orange.svg)](LICENSE)
 
-An enhanced LSPosed fork focused on improving compatibility, stability, and detection bypass capabilities in modern Android environments.
+An enhanced LSPosed fork focused on improving compatibility, stability, and detection bypass capabilities in modern Android environments.  
+
+Cposed project does not guarantee that it can bypass any security checks. If it doesn’t work, please submit an issue. I will take a look when I have time, so please don’t abuse me.
 
 ## Project Overview
 
@@ -16,23 +18,9 @@ This project will continue to improve and optimize based on technological develo
 
 **Android 8.1 - Android 16** (API 27-36)
 
-## Important Notice & Premium Features
-
-> **Open Source vs Premium Version**
->
-> 📦 **Open Source Version**: Provides basic functionality with partial detection bypass capabilities.
-> 
-> 💎 **Premium Version**: Complete detection bypass, enhanced stability, priority support, and exclusive features.
-
-### Premium Features Demo
-
-See the **Premium Version** in action - advanced detection bypass capabilities:
+## view demo
 
 <video src="https://github.com/user-attachments/assets/015b1858-c64e-4d94-881c-e081cbbebd16" width="100%" controls></video>
-
-*The above video demonstrates the detection effect using a customized version.*
-
-**Want access to premium features?** Contact us via Telegram: [@pangpangacc](https://t.me/pangpangacc)
 
 ## Community & Support
 
