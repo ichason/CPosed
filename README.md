@@ -22,11 +22,6 @@ This project will continue to improve and optimize based on technological develo
 
 <video src="https://github.com/user-attachments/assets/015b1858-c64e-4d94-881c-e081cbbebd16" width="100%" controls></video>
 
-## Community & Support
-
-### Telegram Discussion Group
-Join our community for discussions, updates, and support:
-- **Group**: [t.me/cposed](https://t.me/cposed)
 
 ### Contact Author
 For premium features, custom requirements, or collaboration:
